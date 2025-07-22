@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>preview</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <!--<NoWarn>$(NoWarn);1591</NoWarn>-->
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Api\**" />
+      <EmbeddedResource Remove="Api\**" />
+      <None Remove="Api\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="Trarizon.Bangumi.Run" />
+    </ItemGroup>
+</Project>

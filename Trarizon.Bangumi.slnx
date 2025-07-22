@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/解决方案项/">
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="src/Trarizon.Bangumi.Api/Trarizon.Bangumi.Api.csproj" Id="3017b194-3729-40fc-8e1b-fe96948754bb" />
+  <Project Path="src/Trarizon.Bangumi/Trarizon.Bangumi.csproj" Id="cfdafd2a-489d-4fb9-b904-9aea677dd548" />
+  <Project Path="tests/Trarizon.Bangumi.Run/Trarizon.Bangumi.Run.csproj" Id="497e4620-d1ae-4197-a77f-88741859e75c" />
+</Solution>
