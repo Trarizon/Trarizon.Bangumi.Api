@@ -7,6 +7,7 @@ using Trarizon.Bangumi.Api.Models.Episodes;
 using Trarizon.Bangumi.Api.Models.Persons;
 using Trarizon.Bangumi.Api.Models.Subjects;
 using Trarizon.Bangumi.Api.Models.Users;
+using Trarizon.Bangumi.Collections;
 
 namespace Trarizon.Bangumi.Run;
 public static class Examples
@@ -15,14 +16,14 @@ public static class Examples
 #pragma warning disable CS0618 // 类型或成员已过时
     public static async Task Api(IBangumiClient client, CancellationToken cancellationToken)
     {
-        // All apis returns `Task<BangumiApiResult>` or `Task<BangumiApiResult<T>>`
-        // Which provides a `ThrowIfError` to convert it to a `Task` or `Task<T>`,
-        // and error request will throw as `BangumiApiException`
+        // 所有API对应方法返回`Task<BangumiApiResult>` 或 `Task<BangumiApiResult<T>>`,
+        // 这些返回值都可以使用`Unwrap`方法转换成可直接await或ConfigureAwait的`UnwrapAwaitable`或`UnwrapAwaitable<T>`
+        // Unwrap后，API请求返回的错误会被包装为`BangumiApiException`抛出
+
+        BangumiApiResult<Calendar> calendarResult = await client.GetCalendarAsync(cancellationToken);
+        Calendar calendar = await client.GetCalendarAsync(cancellationToken).Unwrap();
 
         // Subjects
-
-        var calendar = await client.GetCalendarAsync(cancellationToken)
-            .Unwrap();
 
         var searchSubjectsRequestBody = new SearchSubjectsRequestBody
         {
@@ -42,14 +43,18 @@ public static class Examples
         var searchPagedSubjects = await client.SearchPagedSubjectsAsync(searchSubjectsRequestBody, cancellationToken: cancellationToken);
         var subjectsPagedQueries = new GetSubjectsQueries
         {
-            Category = new(SubjectGameCategory.Game), // SubjectBook/Anime/Game/RealCategory, can implicit cast
+            Category = new(SubjectGameCategory.Game),
+            //Category = SubjectCategory.Game(),
+            //Category = SubjectCategory.Game(SubjectGameCategory.Game),
+            //Category = SubjectGameCategory.Game
+            //Category = SubjectType.Game,
             IsSeries = false,
             GamePlatform = "PC",
             Sort = GetSubjectsSortKind.Date,
             Year = 2018,
             Month = 6,
         };
-        var subjectsPaged = await client.GetPagedSubjectsAsync(SubjectType.Anime, subjectsPagedQueries, cancellationToken: cancellationToken);
+        var subjectsPaged = await client.GetPagedSubjectsAsync(subjectsPagedQueries, cancellationToken: cancellationToken);
         var subject = await client.GetSubjectAsync(200763u, cancellationToken);
         var subjectImageUrl = await client.GetSubjectImageUrlAsync(200763u, SubjectImageSize.Common, cancellationToken);
         var subjectPersons = await client.GetSubjectRelatedPersonsAsync(200763u, cancellationToken);
@@ -105,10 +110,10 @@ public static class Examples
 
         // Collections
 
-        var colSubjectsPaged = await client.GetPagedUserCollectionSubjectsAsync("Trarizon", SubjectType.Game, SubjectCollectionType.Collect);
-        var colSubject = await client.GetUserCollectionSubjectAsync("Trarizon", 200763, cancellationToken);
+        var colSubjectsPaged = await client.GetPagedUserSubjectCollectionsAsync("Trarizon", SubjectType.Game, SubjectCollectionType.Collect);
+        var colSubject = await client.GetUserSubjectCollectionAsync("Trarizon", 200763, cancellationToken);
 
-        var updateColSubjectRequestBody = new UpdateUserCollectionSubjectRequestBody
+        var updateColSubjectRequestBody = new UpdateUserSubjectCollectionRequestBody
         {
             Type = SubjectCollectionType.Collect,
             Rate = 0,
@@ -118,29 +123,29 @@ public static class Examples
             IsPrivate = false,
             Tags = ["gal改"],
         };
-        var addUpdateColSubjectResult = await client.AddOrUpdateUserCollectionSubjectAsync(363957, updateColSubjectRequestBody, cancellationToken);
-        var updateColSubjectResult = await client.UpdateUserCollectionSubjectAsync(363957, updateColSubjectRequestBody, cancellationToken);
+        var addUpdateColSubjectResult = await client.AddOrUpdateUserSubjectCollectionAsync(363957, updateColSubjectRequestBody, cancellationToken);
+        var updateColSubjectResult = await client.UpdateUserSubjectCollectionAsync(363957, updateColSubjectRequestBody, cancellationToken);
 
-        var colSubjectEpsPaged = await client.GetPagedUserCollectionSubjectEpisodesAsync(363957, EpisodeType.Normal, cancellationToken: cancellationToken);
-        var updateColSubjectEpRequestBody = new UpdateUserCollectionSubjectEpisodesRequestBody
+        var colSubjectEpsPaged = await client.GetPagedUserSubjectEpisodeCollectionsAsync(363957, EpisodeType.Normal, cancellationToken: cancellationToken);
+        var updateColSubjectEpRequestBody = new UpdateUserSubjectEpisodeCollectionsRequestBody
         {
             Episodes = [1, 2, 3, 4, 5, 6],
             Type = EpisodeCollectionType.Collect,
         };
-        var updateColSubjectEpsResult = await client.UpdateUserCollectionSubjectEpisodesAsync(363957, updateColSubjectEpRequestBody, cancellationToken);
+        var updateColSubjectEpsResult = await client.UpdateUserSubjectEpisodeCollectionsAsync(363957, updateColSubjectEpRequestBody, cancellationToken);
 
         var colEp = await client.GetUserCollectionEpisodeAsync(1459757, cancellationToken);
-        var updateColEpRequestBody = new UpdateUserCollectionEpisodeRequestBody
+        var updateColEpRequestBody = new UpdateUserEpisodeCollectionRequestBody
         {
             Type = EpisodeCollectionType.Collect,
         };
-        var updateColEpResult = await client.UpdateUserCollectionEpisodeAsync(1459757, updateColEpRequestBody, cancellationToken);
+        var updateColEpResult = await client.UpdateUserEpisodeCollectionAsync(1459757, updateColEpRequestBody, cancellationToken);
 
-        var colCharactersPaged = await client.GetPagedUserCollectionCharactersAsync("Trarizon", cancellationToken);
-        var colCharacter = await client.GetUserCollectionCharacterAsync("Trarizon", 59846, cancellationToken);
+        var colCharactersPaged = await client.GetPagedUserCharacterCollectionsAsync("Trarizon", cancellationToken: cancellationToken);
+        var colCharacter = await client.GetUserCharacterCollectionAsync("Trarizon", 59846, cancellationToken);
 
-        var colPersonsPaged = await client.GetPagedUserCollectionPersonsAsync("Trarizon", cancellationToken);
-        var colPerson = await client.GetUserCollectionPersonAsync("Trarizon", 17796, cancellationToken);
+        var colPersonsPaged = await client.GetPagedUserPersonCollectionsAsync("Trarizon", cancellationToken: cancellationToken);
+        var colPerson = await client.GetUserPersonCollectionAsync("Trarizon", 17796, cancellationToken);
 
         // Revisions
 
@@ -159,7 +164,7 @@ public static class Examples
 
         // Index
 
-        var addIdxRequestBody = new AddIndexRequestBody 
+        var addIdxRequestBody = new AddIndexRequestBody
         {
             Title = "Title",
             Description = "Description",
@@ -189,11 +194,28 @@ public static class Examples
 #pragma warning restore CS0618
 #pragma warning restore BgmExprApi
 
-    public static void Ext(IBangumiClient client,CancellationToken cancellationToken)
+    // Trarizon.Bangumi提供了一些扩展
+    public static async Task Ext(IBangumiClient client, CancellationToken cancellationToken)
     {
-        // `SearchPagedXXXAsync` and `GetPagedXXXAsync` returns `PagedResult<T>`
-        // Related `SearchXXX` and `GetXXX` will return a async collection
-        // You can directly async iterate the collection or use LinqAsync
-        //var searchSubjects = client.SearchSubjects(searchSubjectsRequestBody, cancellationToken: cancellationToken);
+        // 对于所有返回`Task<BangumiApiResult<PagedData<T>>>`的方法，提供了返回PageCollection<T>的对应方法
+        // PageCollection<T>为异步集合，会依次读取每一页，遍历所有结果，可设定单页大小
+
+        var queries = new GetSubjectsQueries() { Category = SubjectType.Game };
+
+        PagedData<Subject> pagedSubjects = await client.GetPagedSubjectsAsync(queries, cancellationToken: cancellationToken).Unwrap();
+        foreach (var subject in pagedSubjects.Datas) {
+            Console.WriteLine(subject.Name);
+        }
+
+        PageCollection<Subject> subjects = client.GetSubjects(queries);
+        await foreach (var subject in subjects) {
+            Console.WriteLine(subject.Name);
+        }
+        // 可以通过GetPageAsync()获取单独一页
+        var page = await subjects.GetPageAsync(cancellationToken: cancellationToken).Unwrap();
+        // 提供了CountAsync()，LongCountAsync()，Take()，Skip()等AsyncLinq优化
+        await foreach (var subject in subjects.Take(10)) {
+            Console.WriteLine(subject.Name);
+        }
     }
 }

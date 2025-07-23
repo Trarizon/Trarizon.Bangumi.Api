@@ -12,13 +12,44 @@
         <!--<NoWarn>$(NoWarn);1591</NoWarn>-->
     </PropertyGroup>
 
+    <!-- Nuget -->
+
+    <PropertyGroup>
+        <Title>Trarizon.Bangumi.Api</Title>
+        <Authors>Trarizon</Authors>
+        <Description>Bangumi API的C#实现</Description>
+        <Copyright>Copyright (c) Trarizon 2025</Copyright>
+        <PackageProjectUrl>https://github.com/Trarizon/Trarizon.Bangumi</PackageProjectUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
+        <PackageTags>Bangumi</PackageTags>
+        <AssemblyVersion>0.0.1</AssemblyVersion>
+        <FileVersion>$(AssemblyVersion)</FileVersion>
+        <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    </PropertyGroup>
+
     <ItemGroup>
-      <Compile Remove="Api\**" />
-      <EmbeddedResource Remove="Api\**" />
-      <None Remove="Api\**" />
+        <Compile Remove="Api\**" />
+        <EmbeddedResource Remove="Api\**" />
+        <None Remove="Api\**" />
     </ItemGroup>
 
     <ItemGroup>
         <InternalsVisibleTo Include="Trarizon.Bangumi.Run" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\..\LICENSE.txt">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="README.md">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
     </ItemGroup>
 </Project>

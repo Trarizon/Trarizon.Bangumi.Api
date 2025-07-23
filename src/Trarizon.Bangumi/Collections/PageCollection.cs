@@ -3,35 +3,42 @@
 namespace Trarizon.Bangumi.Collections;
 public sealed class PageCollection<T> : IAsyncEnumerable<T>
 {
-    private static readonly PageCollection<T> Empty = new(default, default, takeCount: 0, default, default!);
+    private static readonly PageCollection<T> Empty = new(default, default, takeCount: 0, default!, pageFetcher: default!);
 
     private readonly Func<int?, int, CancellationToken, Task<BangumiApiResult<PagedData<T>>>> _pageFetcher;
     private readonly int? _limit;
     private readonly int _offset;
     private readonly int _takeCount; // -1 for infinite
-    private readonly CancellationToken _cancellationToken;
+    private readonly PageCollectionOptions _options;
 
-    internal PageCollection(int? limit, CancellationToken cancellationToken, Func<int?, int, CancellationToken, Task<BangumiApiResult<PagedData<T>>>> pageFetcher)
+    internal PageCollection(int? limit, Func<int?, int, CancellationToken, Task<BangumiApiResult<PagedData<T>>>> pageFetcher)
     {
         _pageFetcher = pageFetcher;
         _limit = limit;
         _offset = 0;
         _takeCount = -1;
-        _cancellationToken = cancellationToken;
+        _options = PageCollectionOptions.Default;
     }
 
-    private PageCollection(int? limit, int offset, int takeCount, CancellationToken cancellationToken, Func<int?, int, CancellationToken, Task<BangumiApiResult<PagedData<T>>>> pageFetcher)
+    private PageCollection(int? limit, int offset, int takeCount, PageCollectionOptions options, Func<int?, int, CancellationToken, Task<BangumiApiResult<PagedData<T>>>> pageFetcher)
     {
         _pageFetcher = pageFetcher;
         _limit = limit;
         _offset = offset;
         _takeCount = takeCount;
-        _cancellationToken = cancellationToken;
+        _options = options;
     }
+
+    /// <summary>
+    /// Clone the collection with new page limit
+    /// </summary>
+    /// <param name="limit"></param>
+    /// <returns>A new collection with given page limit</returns>
+    public PageCollection<T> WithPageLimit(int? limit)
+        => new PageCollection<T>(limit, _offset, _takeCount, _options, _pageFetcher);
 
     public Task<BangumiApiResult<PagedData<T>>> GetPageAsync(int? limit = null, int rawOffset = 0, CancellationToken cancellationToken = default)
     {
-        cancellationToken = CombineCancellationToken(_cancellationToken, cancellationToken);
         return _pageFetcher(limit, rawOffset, cancellationToken);
     }
 
@@ -43,8 +50,6 @@ public sealed class PageCollection<T> : IAsyncEnumerable<T>
         if (_takeCount == 0)
             return 0;
 
-        cancellationToken = CombineCancellationToken(_cancellationToken, cancellationToken);
-
         var page = await _pageFetcher(1, 0, cancellationToken).Unwrap().ConfigureAwait(false);
         var total = page.Total - _offset;
 
@@ -55,18 +60,23 @@ public sealed class PageCollection<T> : IAsyncEnumerable<T>
 
     public PageCollection<T> Take(int count)
     {
-        if (count == 0)
+        if (count >= _takeCount) {
+            return this;
+        }
+        if (count <= 0) {
             return Empty;
-        if (_takeCount >= 0)
-            count += _takeCount;
-        return new PageCollection<T>(_limit, _offset, count, _cancellationToken, _pageFetcher);
+        }
+        return new PageCollection<T>(_limit, _offset, count, _options, _pageFetcher);
     }
 
     public PageCollection<T> Skip(int count)
     {
+        if (count >= _takeCount) {
+            return Empty;
+        }
         if (count <= 0)
             return this;
-        return new PageCollection<T>(_limit, _offset + count, _takeCount, _cancellationToken, _pageFetcher);
+        return new PageCollection<T>(_limit, _offset + count, _takeCount - count, _options, _pageFetcher);
     }
 
     public async IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
@@ -75,11 +85,12 @@ public sealed class PageCollection<T> : IAsyncEnumerable<T>
             yield break;
 
         int offset = _offset;
-        cancellationToken = CombineCancellationToken(_cancellationToken, cancellationToken);
 
         while (true) {
             var page = await _pageFetcher(_limit, offset, cancellationToken)
                 .Unwrap().ConfigureAwait(false);
+            var delayTask = Task.Delay(_options.RequestInterval, cancellationToken);
+
             var items = page.Datas;
             if (items.Length == 0)
                 yield break;
@@ -88,6 +99,7 @@ public sealed class PageCollection<T> : IAsyncEnumerable<T>
                 var expectedRest = _takeCount + _offset - offset;
                 if (expectedRest < items.Length) {
                     for (int i = 0; i < expectedRest; i++) {
+                        cancellationToken.ThrowIfCancellationRequested();
                         var data = items[i];
                         yield return data;
                     }
@@ -96,20 +108,12 @@ public sealed class PageCollection<T> : IAsyncEnumerable<T>
             }
 
             foreach (var data in page.Datas) {
+                cancellationToken.ThrowIfCancellationRequested();
                 yield return data;
             }
             offset += page.Datas.Length;
-        }
-    }
 
-    private static CancellationToken CombineCancellationToken(CancellationToken first, CancellationToken second)
-    {
-        if (first == default)
-            return second;
-        if (second == default)
-            return first;
-        if (first == second)
-            return first;
-        return CancellationTokenSource.CreateLinkedTokenSource(first, second).Token;
+            await delayTask.ConfigureAwait(false);
+        }
     }
 }

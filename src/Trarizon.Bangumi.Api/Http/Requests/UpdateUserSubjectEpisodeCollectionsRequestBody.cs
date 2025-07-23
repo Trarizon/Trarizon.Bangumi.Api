@@ -5,7 +5,7 @@ namespace Trarizon.Bangumi.Api.Http.Requests;
 /// <summary>
 /// 
 /// </summary>
-public sealed class UpdateUserCollectionSubjectEpisodesRequestBody
+public sealed class UpdateUserSubjectEpisodeCollectionsRequestBody
 {
     /// <summary>
     /// 更新的章节ID

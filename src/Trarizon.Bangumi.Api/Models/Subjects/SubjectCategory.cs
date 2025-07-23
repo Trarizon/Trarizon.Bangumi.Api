@@ -84,7 +84,7 @@ public readonly struct SubjectCategory
     }
 
     /// <summary>
-    /// 从SubjectType创建，
+    /// 从SubjectType创建
     /// </summary>
     /// <param name="subjectType"></param>
     public SubjectCategory(SubjectType subjectType)
@@ -118,6 +118,11 @@ public readonly struct SubjectCategory
 
     internal ushort? ToQueryValue() => _hasCategory ? _value : null;
 
+    /// <summary>
+    /// 隐式转换从SubjectType创建
+    /// </summary>
+    /// <param name="subjectType"></param>
+    public static implicit operator SubjectCategory(SubjectType subjectType) => new(subjectType);
     /// <summary>
     /// 隐式转换创建书籍类别
     /// </summary>

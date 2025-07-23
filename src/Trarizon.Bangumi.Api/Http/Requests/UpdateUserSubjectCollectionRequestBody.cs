@@ -11,7 +11,7 @@ namespace Trarizon.Bangumi.Api.Http.Requests;
 /// SubjectEpisodeCollectionPatch 
 /// </see>
 /// </remarks>
-public sealed class UpdateUserCollectionSubjectRequestBody
+public sealed class UpdateUserSubjectCollectionRequestBody
 {
     /// <inheritdoc cref="UserSubjectCollection.Type"/>
     [JsonInclude, JsonPropertyName("type"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -54,7 +54,7 @@ public sealed class UpdateUserCollectionSubjectRequestBody
 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
-    public UpdateUserCollectionSubjectRequestBody Clone() => new()
+    public UpdateUserSubjectCollectionRequestBody Clone() => new()
     {
         Type = Type,
         Rate = Rate,

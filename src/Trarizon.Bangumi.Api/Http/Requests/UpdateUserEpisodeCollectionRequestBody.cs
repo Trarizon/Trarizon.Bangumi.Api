@@ -10,7 +10,7 @@ namespace Trarizon.Bangumi.Api.Http.Requests;
 /// UpdateUserEpisodeCollection 
 /// </see>
 /// </remarks>
-public sealed class UpdateUserCollectionEpisodeRequestBody
+public sealed class UpdateUserEpisodeCollectionRequestBody
 {
     /// <inheritdoc cref="UserEpisodeCollection.Type"/>
     [JsonInclude, JsonPropertyName("type")]
@@ -18,7 +18,7 @@ public sealed class UpdateUserCollectionEpisodeRequestBody
 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
-    public UpdateUserCollectionEpisodeRequestBody Clone() => new()
+    public UpdateUserEpisodeCollectionRequestBody Clone() => new()
     {
         Type = Type,
     };

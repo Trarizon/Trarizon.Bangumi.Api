@@ -1,1 +1,0 @@
-﻿# Trarizon.Bangumi.Api

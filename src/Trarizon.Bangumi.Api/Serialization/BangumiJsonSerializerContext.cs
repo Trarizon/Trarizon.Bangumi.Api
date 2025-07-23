@@ -51,11 +51,11 @@ namespace Trarizon.Bangumi.Api.Serialization;
 
 [JsonSerializable(typeof(PagedData<UserSubjectCollection>))]
 
-[JsonSerializable(typeof(UpdateUserCollectionSubjectRequestBody))]
+[JsonSerializable(typeof(UpdateUserSubjectCollectionRequestBody))]
 
 [JsonSerializable(typeof(PagedData<UserEpisodeCollection>))]
-[JsonSerializable(typeof(UpdateUserCollectionSubjectEpisodesRequestBody))]
-[JsonSerializable(typeof(UpdateUserCollectionEpisodeRequestBody))]
+[JsonSerializable(typeof(UpdateUserSubjectEpisodeCollectionsRequestBody))]
+[JsonSerializable(typeof(UpdateUserEpisodeCollectionRequestBody))]
 
 [JsonSerializable(typeof(PagedData<UserCharacterCollection>))]
 [JsonSerializable(typeof(PagedData<UserPersonCollection>))]
