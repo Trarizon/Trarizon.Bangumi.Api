@@ -7,11 +7,16 @@ namespace Trarizon.Bangumi.Api.Models.Persons;
 /// <summary>
 /// 人物履历
 /// </summary>
+/// <remarks>
+/// src: <see href="https://github.com/bangumi/server/blob/master/internal/model/person.go#L42">
+/// Careers
+/// </see>
+/// </remarks>
 [JsonConverter(typeof(StringEnumerationJsonConverter<PersonCareer>))]
 public readonly struct PersonCareer : IStringEnumeration<PersonCareer>, IEquatable<PersonCareer>, IEquatable<string>
 {
     /// <summary>
-    /// 制作人
+    /// 制作人员
     /// </summary>
     public static PersonCareer Producer => new("producer");
     /// <summary>
@@ -19,7 +24,7 @@ public readonly struct PersonCareer : IStringEnumeration<PersonCareer>, IEquatab
     /// </summary>
     public static PersonCareer Mangaka => new("mangaka");
     /// <summary>
-    /// 插画家
+    /// 音乐人
     /// </summary>
     public static PersonCareer Artist => new("artist");
     /// <summary>

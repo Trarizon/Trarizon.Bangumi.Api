@@ -2,10 +2,14 @@
 using System.Text.Json.Serialization;
 
 namespace Trarizon.Bangumi.Api.Models.Subjects;
-// src: https://github.com/bangumi/server/blob/master/web/res/subject.go#L38
 /// <summary>
 /// 条目tag
 /// </summary>
+/// <remarks>
+/// src: <see href="https://github.com/bangumi/server/blob/master/web/res/subject.go#L38">
+/// SubjectTag
+/// </see>
+/// </remarks>
 [DebuggerDisplay("{Name} (Count = {Count})")]
 public struct SubjectTag
 {
@@ -23,8 +27,10 @@ public struct SubjectTag
     public int Count { get; internal set; }
 
     // src: uint
-    // TODO: API页定义不存在，但是返回结果存在
-    // search结果存在值，其他值都是0
-    //[JsonInclude, JsonPropertyName("total_cont")]
-    //public int TotalCount { get; internal set; }
+    /// <remarks>
+    /// 该值目前仅在Search结果中存在，其他使用的 <see href="https://github.com/bangumi/server/blob/master/web/res/subject.go#L144">ToSubjectV0</see>
+    /// 没有进行赋值
+    /// </remarks>
+    [JsonInclude, JsonPropertyName("total_cont")]
+    public int TotalCount { get; internal set; }
 }

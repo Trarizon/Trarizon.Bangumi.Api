@@ -1,40 +1,150 @@
-﻿using Trarizon.Bangumi.Api.Attributes;
+﻿using System.Diagnostics;
 
 namespace Trarizon.Bangumi.Api.Models.Subjects;
-[GoSource<ushort>("https://github.com/bangumi/server/blob/master/web/handler/subject/browse.go#L88")]
+/// <summary>
+/// 条目分类
+/// </summary>
+/// <remarks>
+/// 该类型提供了`Subject.XXX()`，`new(XXX)`，隐式转换三种构造方式
+/// <br/>
+/// src: <see href="https://github.com/bangumi/server/blob/master/web/handler/subject/browse.go#L88">
+/// uint16
+/// </see>
+/// </remarks>
 public readonly struct SubjectCategory
 {
+    /// <summary>
+    /// 构造书籍类型条目分类，无具体分类
+    /// </summary>
+    /// <returns></returns>
+    public static SubjectCategory Book() => new(SubjectType.Book);
+
+    /// <summary>
+    /// 构造书籍类型条目分类
+    /// </summary>
+    /// <param name="category"></param>
+    /// <returns></returns>
+    public static SubjectCategory Book(SubjectBookCategory category) => new(SubjectType.Book, (ushort)category);
+
+    /// <summary>
+    /// 构造动画类型条目分类，无具体分类
+    /// </summary>
+    /// <returns></returns>
+    public static SubjectCategory Anime() => new(SubjectType.Anime);
+
+    /// <summary>
+    /// 构造动画类型条目分类
+    /// </summary>
+    /// <param name="category"></param>
+    /// <returns></returns>
+    public static SubjectCategory Anime(SubjectAnimeCategory category) => new(SubjectType.Anime, (ushort)category);
+
+    /// <summary>
+    /// 构造游戏类型条目分类，无具体分类
+    /// </summary>
+    /// <returns></returns>
+    public static SubjectCategory Game() => new(SubjectType.Game);
+
+    /// <summary>
+    /// 构造游戏类型条目分类
+    /// </summary>
+    /// <param name="category"></param>
+    /// <returns></returns>
+    public static SubjectCategory Game(SubjectGameCategory category) => new(SubjectType.Game, (ushort)category);
+
+    /// <summary>
+    /// 构造音乐类型条目分类，无具体分类
+    /// </summary>
+    /// <returns></returns>
+    public static SubjectCategory Music() => new(SubjectType.Music);
+
+    /// <summary>
+    /// 构造三次元类型条目分类，无具体分类
+    /// </summary>
+    /// <returns></returns>
+    public static SubjectCategory Real() => new(SubjectType.Real);
+
+    /// <summary>
+    /// 构造三次元类型条目分类
+    /// </summary>
+    /// <param name="category"></param>
+    /// <returns></returns>
+    public static SubjectCategory Real(SubjectRealCategory category) => new(SubjectType.Real, (ushort)category);
+
     private readonly ushort _value;
+    private readonly bool _hasCategory;
+    private readonly byte _type;
 
-    internal SubjectCategoryKind Kind { get; }
-
-    private SubjectCategory(SubjectCategoryKind kind, ushort value)
+    private SubjectCategory(SubjectType kind, ushort value)
     {
-        Kind = kind;
+        Debug.Assert((int)kind is >= 0 and <= 255);
+        _type = (byte)kind;
+        _hasCategory = true;
         _value = value;
     }
 
-    public SubjectCategory(SubjectBookCategory category) : this(SubjectCategoryKind.Book, (ushort)category) { }
-    public SubjectCategory(SubjectAnimeCategory category) : this(SubjectCategoryKind.Anime, (ushort)category) { }
-    public SubjectCategory(SubjectGameCategory category) : this(SubjectCategoryKind.Game, (ushort)category) { }
-    public SubjectCategory(SubjectRealCategory category) : this(SubjectCategoryKind.Real, (ushort)category) { }
+    /// <summary>
+    /// 从SubjectType创建，
+    /// </summary>
+    /// <param name="subjectType"></param>
+    public SubjectCategory(SubjectType subjectType)
+    {
+        Debug.Assert((int)subjectType is >= 0 and <= 255);
+        _type = (byte)subjectType;
+    }
 
+    /// <summary>
+    /// 创建书籍类别
+    /// </summary>
+    /// <param name="category"></param>
+    public SubjectCategory(SubjectBookCategory category) : this(SubjectType.Book, (ushort)category) { }
+    /// <summary>
+    /// 创建动画类别
+    /// </summary>
+    /// <param name="category"></param>
+    public SubjectCategory(SubjectAnimeCategory category) : this(SubjectType.Anime, (ushort)category) { }
+    /// <summary>
+    /// 创建游戏类别
+    /// </summary>
+    /// <param name="category"></param>
+    public SubjectCategory(SubjectGameCategory category) : this(SubjectType.Game, (ushort)category) { }
+    /// <summary>
+    /// 创建三次元类别
+    /// </summary>
+    /// <param name="category"></param>
+    public SubjectCategory(SubjectRealCategory category) : this(SubjectType.Real, (ushort)category) { }
+
+    internal SubjectType SubjectType => (SubjectType)_type;
+
+    internal ushort? ToQueryValue() => _hasCategory ? _value : null;
+
+    /// <summary>
+    /// 隐式转换创建书籍类别
+    /// </summary>
+    /// <param name="category"></param>
     public static implicit operator SubjectCategory(SubjectBookCategory category) => new(category);
+    /// <summary>
+    /// 隐式转换创建动画类别
+    /// </summary>
+    /// <param name="category"></param>
     public static implicit operator SubjectCategory(SubjectAnimeCategory category) => new(category);
+    /// <summary>
+    /// 隐式转换创建游戏类别
+    /// </summary>
+    /// <param name="category"></param>
     public static implicit operator SubjectCategory(SubjectGameCategory category) => new(category);
+    /// <summary>
+    /// 隐式转换创建三次元类别
+    /// </summary>
+    /// <param name="category"></param>
     public static implicit operator SubjectCategory(SubjectRealCategory category) => new(category);
-
-    internal ushort ToQueryValue() => _value;
 }
 
-internal enum SubjectCategoryKind : ushort
-{
-    Book,
-    Anime,
-    Game,
-    Real,
-}
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
+/// <summary>
+/// 书籍条目类别
+/// </summary>
 public enum SubjectBookCategory : ushort
 {
     Other = 0,
@@ -43,6 +153,9 @@ public enum SubjectBookCategory : ushort
     Artbook = 1003,
 }
 
+/// <summary>
+/// 动画条目类别
+/// </summary>
 public enum SubjectAnimeCategory : ushort
 {
     Other = 0,
@@ -52,6 +165,9 @@ public enum SubjectAnimeCategory : ushort
     WEB = 5,
 }
 
+/// <summary>
+/// 游戏条目类别
+/// </summary>
 public enum SubjectGameCategory : ushort
 {
     Other = 0,
@@ -61,6 +177,9 @@ public enum SubjectGameCategory : ushort
     BoardGame = 4005,
 }
 
+/// <summary>
+/// 三次元条目类别
+/// </summary>
 public enum SubjectRealCategory : ushort
 {
     /// <summary>

@@ -22,7 +22,7 @@ public static class Examples
         // Subjects
 
         var calendar = await client.GetCalendarAsync(cancellationToken)
-            .ThrowIfError();
+            .Unwrap();
 
         var searchSubjectsRequestBody = new SearchSubjectsRequestBody
         {
@@ -105,12 +105,12 @@ public static class Examples
 
         // Collections
 
-        var colSubjectsPaged = await client.GetPagedUserCollectionSubjectsAsync("Trarizon", SubjectType.Game, CollectionType.Collect);
+        var colSubjectsPaged = await client.GetPagedUserCollectionSubjectsAsync("Trarizon", SubjectType.Game, SubjectCollectionType.Collect);
         var colSubject = await client.GetUserCollectionSubjectAsync("Trarizon", 200763, cancellationToken);
 
         var updateColSubjectRequestBody = new UpdateUserCollectionSubjectRequestBody
         {
-            Type = CollectionType.Collect,
+            Type = SubjectCollectionType.Collect,
             Rate = 0,
             EpisodeStatus = 26,
             VolumeStatus = 1,
@@ -145,26 +145,27 @@ public static class Examples
         // Revisions
 
         var personRevisions = await client.GetPagedPersonRevisionsAsync(17796, cancellationToken: cancellationToken)
-            .ThrowIfError();
+            .Unwrap();
         var personRevision = await client.GetPersonRevisionAsync(personRevisions.Datas[0].Id, cancellationToken);
         var characterRevs = await client.GetPagedCharacterRevisionsAsync(59846, cancellationToken: cancellationToken)
-            .ThrowIfError();
+            .Unwrap();
         var characterRev = await client.GetCharacterRevisionAsync(characterRevs.Datas[0].Id, cancellationToken);
         var subjectRevs = await client.GetPagedSubjectRevisionsAsync(200763, cancellationToken: cancellationToken)
-            .ThrowIfError();
+            .Unwrap();
         var subjectRev = await client.GetSubjectRevisionAsync(subjectRevs.Datas[0].Id, cancellationToken);
         var epRevs = await client.GetPagedEpisodeRevisionsAsync(363957, cancellationToken: cancellationToken)
-            .ThrowIfError();
+            .Unwrap();
         var epRev = await client.GetEpisodeRevisionAsync(epRevs.Datas[0].Id, cancellationToken);
 
         // Index
 
-        var updateIdxRequestBody = new UpdateIndexInfoRequestBody
+        var addIdxRequestBody = new AddIndexRequestBody 
         {
             Title = "Title",
             Description = "Description",
         };
-        var createIdx = await client.CreateIndexAsync(updateIdxRequestBody, cancellationToken);
+        var updateIdxRequestBody = addIdxRequestBody.ToUpdateIndexInfoRequestBody();
+        var createIdx = await client.CreateIndexAsync(addIdxRequestBody, cancellationToken);
         var index = await client.GetIndexAsync(79713, cancellationToken);
         var updateIdx = await client.UpdateIndexInfoAsync(79713, updateIdxRequestBody, cancellationToken);
         var idxSubject = await client.GetPagedIndexSubjectsAsync(79713, SubjectType.Game, cancellationToken: cancellationToken);

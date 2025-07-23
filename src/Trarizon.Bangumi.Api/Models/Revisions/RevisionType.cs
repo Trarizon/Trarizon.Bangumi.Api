@@ -1,7 +1,14 @@
-﻿using Trarizon.Bangumi.Api.Attributes;
+﻿namespace Trarizon.Bangumi.Api.Models.Revisions;
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
-namespace Trarizon.Bangumi.Api.Models.Revisions;
-[GoSource<byte>("https://github.com/bangumi/server/blob/master/internal/model/revision.type.go")]
+/// <summary>
+/// 编辑记录类型
+/// </summary>
+/// <remarks>
+/// src: <see href="https://github.com/bangumi/server/blob/master/internal/model/revision.type.go">
+/// RevisionType
+/// </see>
+/// </remarks>
 public enum RevisionType
 {
     /// <summary>
@@ -78,3 +85,5 @@ public enum RevisionType
     EpisodeUnlock = 184,
     EpisodeErase = 185,
 }
+
+#pragma warning restore CS1591

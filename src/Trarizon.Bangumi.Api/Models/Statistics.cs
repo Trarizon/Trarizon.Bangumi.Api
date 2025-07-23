@@ -1,15 +1,23 @@
 ﻿using System.Text.Json.Serialization;
-using Trarizon.Bangumi.Api.Attributes;
 
 namespace Trarizon.Bangumi.Api.Models;
 // https://github.com/bangumi/server/blob/master/web/res/common.go#L17
-public struct Stat
+/// <summary>
+/// 数据统计
+/// </summary>
+public struct Statistics
 {
+    // src: 属性均为uint32
+
+    /// <summary>
+    /// 评论数
+    /// </summary>
     [JsonInclude, JsonPropertyName("comments")]
-    [GoSource<uint>]
     public int CommentCount { get; internal set; }
 
+    /// <summary>
+    /// 收藏数
+    /// </summary>
     [JsonInclude, JsonPropertyName("collects")]
-    [GoSource<uint>]
     public int CollectCount { get; internal set; }
 }

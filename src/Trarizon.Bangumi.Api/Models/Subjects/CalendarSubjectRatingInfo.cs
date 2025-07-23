@@ -19,7 +19,6 @@ public struct CalendarSubjectRatingInfo
     /// 评分详细统计
     /// </summary>
     [JsonInclude, JsonPropertyName("count")]
-    [JsonConverter(typeof(RatingSetCountsJsonPropertyConverter))]
     public RatingCounts Counts { get; internal set; }
 
     /// <summary>

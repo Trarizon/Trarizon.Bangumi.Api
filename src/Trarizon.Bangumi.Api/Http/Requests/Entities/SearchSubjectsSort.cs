@@ -3,6 +3,9 @@ using Trarizon.Bangumi.Api.Serialization;
 using Trarizon.Bangumi.Api.Utilities;
 
 namespace Trarizon.Bangumi.Api.Http.Requests.Entities;
+/// <summary>
+/// 条目搜索结果排序方式
+/// </summary>
 [JsonConverter(typeof(StringEnumerationJsonConverter<SearchSubjectsSort>))]
 public struct SearchSubjectsSort : IStringEnumeration<SearchSubjectsSort>
 {

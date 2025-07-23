@@ -7,6 +7,11 @@ namespace Trarizon.Bangumi.Api.Models.Subjects;
 /// <summary>
 /// 评分数据
 /// </summary>
+/// <remarks>
+/// src: <see href="https://github.com/bangumi/server/blob/master/web/res/subject.go#L205">
+/// Rating
+/// </see>
+/// </remarks>
 [DebuggerDisplay("Rank: {Rank}, Total: {Total}, Score: {Score}")]
 public struct RatingInfo
 {
@@ -28,7 +33,6 @@ public struct RatingInfo
     /// 评分详细统计
     /// </summary>
     [JsonInclude, JsonPropertyName("count")]
-    [JsonConverter(typeof(RatingSetCountsJsonPropertyConverter))]
     public RatingCounts Counts { get; internal set; }
 
     /// <summary>
@@ -38,10 +42,15 @@ public struct RatingInfo
     public double Score { get; internal set; }
 }
 
-// src: https://github.com/bangumi/server/blob/master/web/res/subject.go#L192
 /// <summary>
 /// 各分数的评分人数
 /// </summary>
+/// <remarks>
+/// src: <see href="https://github.com/bangumi/server/blob/master/web/res/subject.go#L192">
+/// Count
+/// </see>
+/// </remarks>
+[JsonConverter(typeof(RatingSetCountsJsonPropertyConverter))]
 public readonly struct RatingCounts
 {
     internal readonly int[] _counts;

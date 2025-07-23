@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization.Metadata;
 using Trarizon.Bangumi.Api.Http.Responses;
@@ -9,14 +8,21 @@ namespace Trarizon.Bangumi.Api;
 /// <summary>
 /// Bangumi API的入口实现
 /// </summary>
+/// <remarks>
+/// src: <see href="https://github.com/bangumi/server/blob/master/web/routes.go">
+/// AddRouters
+/// </see>
+/// </remarks>
 public static partial class BangumiApis
 {
     private const string ExperimentalApiDiagnosticId = "BgmExprApi";
 
     private const string V0Url = "/v0";
 
+    private static readonly MediaTypeHeaderValue _jsonHeaderValue = new("application/json");
+
     private static JsonContent CreateJsonContent<T>(T value, JsonTypeInfo<T> jsonTypeInfo)
-        => JsonContent.Create(value, jsonTypeInfo, new MediaTypeHeaderValue("application/json"));
+        => JsonContent.Create(value, jsonTypeInfo, _jsonHeaderValue);
 
     private static async ValueTask<BangumiApiResult<Uri?>> GetRequestUriWhenSuccessStatusCodeAsync(this HttpResponseMessage resp, CancellationToken cancellationToken)
     {
@@ -90,7 +96,7 @@ public static partial class BangumiApis
 
     private static async Task<BangumiApiResult<TResponse>> PutAsJsonAndFromJsonWhenSuccessStatusCodeAsync<TRequest, TResponse>(this IBangumiClient client, string uri, TRequest requestBody, JsonTypeInfo<TRequest> requestJsonTypeInfo, JsonTypeInfo<TResponse> responseJsonTypeInfo, CancellationToken cancellationToken)
     {
-        var resp = await client.HttpClient.PatchAsync(uri, CreateJsonContent(requestBody, requestJsonTypeInfo), cancellationToken).ConfigureAwait(false);
+        var resp = await client.HttpClient.PutAsync(uri, CreateJsonContent(requestBody, requestJsonTypeInfo), cancellationToken).ConfigureAwait(false);
         return await resp.ReadFromJsonWhenSuccessStatusCodeAsync(responseJsonTypeInfo, cancellationToken).ConfigureAwait(false);
     }
 

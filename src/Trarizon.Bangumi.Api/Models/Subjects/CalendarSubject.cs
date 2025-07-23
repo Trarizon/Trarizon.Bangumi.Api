@@ -20,35 +20,25 @@ public sealed class CalendarSubject : ISubject
     [JsonInclude, JsonPropertyName("url")]
     public string Url { get; internal set; }
 
-    /// <summary>
-    /// 条目类型
-    /// </summary>
+    /// <inheritdoc cref="Subject.Type"/>
     [JsonInclude, JsonPropertyName("type")]
     public SubjectType Type { get; internal set; }
 
-    /// <summary>
-    /// 条目名称
-    /// </summary>
+    /// <inheritdoc cref="Subject.Name"/>
     [JsonInclude, JsonPropertyName("name")]
     public string Name { get; internal set; }
 
-    /// <summary>
-    /// 条目中文名称
-    /// </summary>
+    /// <inheritdoc cref="Subject.ChineseName"/>
     [JsonInclude, JsonPropertyName("name_cn")]
     public string ChineseName { get; internal set; }
 
     // api: 有返回，但是全空
-    /// <summary>
-    /// 剧情简介
-    /// </summary>
+    /// <inheritdoc cref="Subject.Summary"/>
     [JsonInclude, JsonPropertyName("summary")]
     public string Summary { get; internal set; }
 
     // api: string
-    /// <summary>
-    /// 放送开始日期
-    /// </summary>
+    /// <inheritdoc cref="Subject.Date"/>
     [JsonInclude, JsonPropertyName("air_date")]
     public DateOnly AirDate { get; internal set; }
 
@@ -58,9 +48,7 @@ public sealed class CalendarSubject : ISubject
     [JsonInclude, JsonPropertyName("air_weekday")]
     public DayOfWeek AirWeekDay { get; internal set; }
 
-    /// <summary>
-    /// 条目封面
-    /// </summary>
+    /// <inheritdoc cref="Subject.Images"/>
     [JsonInclude, JsonPropertyName("images")]
     public SubjectImageSet? Images { get; internal set; }
 

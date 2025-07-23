@@ -1,11 +1,20 @@
 ﻿using System.Text.Json.Serialization;
-using Trarizon.Bangumi.Api.Attributes;
 
 namespace Trarizon.Bangumi.Api.Models.Revisions;
-[GoSource("https://github.com/bangumi/server/blob/master/web/res/revision.go#L37")]
+/// <summary>
+/// 编辑历史额外信息
+/// </summary>
+/// <remarks>
+/// src: <see href="https://github.com/bangumi/server/blob/master/web/res/revision.go#L33">
+/// Extra
+/// </see>
+/// </remarks>
 public sealed class RevisionExtra
 {
-    [JsonInclude,JsonPropertyName("img")]
+    /// <summary>
+    /// 图片
+    /// </summary>
+    [JsonInclude, JsonPropertyName("img")]
     public string? Image { get; internal set; }
 
     [JsonConstructor]

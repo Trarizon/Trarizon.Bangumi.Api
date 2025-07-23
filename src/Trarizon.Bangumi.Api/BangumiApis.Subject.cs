@@ -10,6 +10,9 @@ using Json = Trarizon.Bangumi.Api.Serialization.BangumiJsonSerializerContext;
 namespace Trarizon.Bangumi.Api;
 partial class BangumiApis
 {
+    // routes: https://github.com/bangumi/server/blob/master/web/handler/subject/subject.go#L54
+    // https://github.com/bangumi/server/tree/master/web/handler/subject
+
     private const string CalendarUrl = "/calendar";
     private const string SubjectsUrl = V0Url + "/subjects";
 
@@ -30,18 +33,17 @@ partial class BangumiApis
     /// 获取单页条目信息
     /// </summary>
     /// <param name="client"></param>
-    /// <param name="type">条目类型</param>
     /// <param name="queries">详细条目筛选选项</param>
     /// <param name="pageLimit">单页最大数量</param>
     /// <param name="pageOffset">页面跳过的数量</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<PagedData<Subject>>> GetPagedSubjectsAsync(this IBangumiClient client, SubjectType type, GetSubjectsQueries? queries = null, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<PagedData<Subject>>> GetPagedSubjectsAsync(this IBangumiClient client, GetSubjectsQueries queries, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
     {
         var builder = new QueryBuilder(SubjectsUrl);
-        builder.AppendQuery("type", type.ToQueryValue());
+        builder.AppendQuery("type", queries.Category.SubjectType);
         if (queries is not null) {
-            builder.CheckAppendQuery("cat", queries.Category?.ToQueryValue());
+            builder.CheckAppendQuery("cat", queries.Category.ToQueryValue());
             builder.CheckAppendQuery("series", queries.IsSeries switch { true => "true", false => "false", null => null });
             builder.CheckAppendQuery("platform", queries.GamePlatform);
             builder.CheckAppendQuery("sort", queries.Sort?.ToQueryString());

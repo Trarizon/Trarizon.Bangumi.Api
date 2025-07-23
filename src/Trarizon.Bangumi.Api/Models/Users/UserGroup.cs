@@ -1,7 +1,8 @@
-﻿using Trarizon.Bangumi.Api.Attributes;
-
-namespace Trarizon.Bangumi.Api.Models.Users;
-[GoSource<byte>]
+﻿namespace Trarizon.Bangumi.Api.Models.Users;
+// src: uint8
+/// <summary>
+/// 用户组
+/// </summary>
 public enum UserGroup
 {
     /// <summary>

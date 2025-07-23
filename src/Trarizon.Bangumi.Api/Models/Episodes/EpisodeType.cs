@@ -1,8 +1,12 @@
-﻿using Trarizon.Bangumi.Api.Attributes;
-
-namespace Trarizon.Bangumi.Api.Models.Episodes;
-// https://github.com/bangumi/server/blob/master/internal/episode/model.go#L21
-[GoSource<byte>]
+﻿namespace Trarizon.Bangumi.Api.Models.Episodes;
+/// <summary>
+/// 章节类型
+/// </summary>
+/// <remarks>
+/// src: <see href="https://github.com/bangumi/server/blob/master/internal/episode/model.go#L21">
+/// Type: uint8
+/// </see>
+/// </remarks>
 public enum EpisodeType
 {
     /// <summary>

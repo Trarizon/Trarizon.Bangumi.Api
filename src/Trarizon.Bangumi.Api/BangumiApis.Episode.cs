@@ -6,6 +6,8 @@ using Json = Trarizon.Bangumi.Api.Serialization.BangumiJsonSerializerContext;
 namespace Trarizon.Bangumi.Api;
 partial class BangumiApis
 {
+    // src: https://github.com/bangumi/server/blob/master/web/handler/episode.go
+
     private const string EpisodesUrl = V0Url + "/episodes";
 
     /// <summary>

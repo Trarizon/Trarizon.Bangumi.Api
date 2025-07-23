@@ -4,36 +4,53 @@ using Trarizon.Bangumi.Api.Models.Characters;
 using Trarizon.Bangumi.Api.Models.Subjects;
 
 namespace Trarizon.Bangumi.Api.Models.Persons;
-// PersonCharacter
-// https://github.com/bangumi/server/blob/master/web/res/subject.go#L221
+/// <summary>
+/// 人物关联角色
+/// </summary>
+/// <remarks>
+/// src: <see href="https://github.com/bangumi/server/blob/master/web/res/subject.go#L221">
+/// PersonRelatedCharacter
+/// </see>
+/// </remarks>
 public sealed class PersonRelatedCharacter : ICharacter
 {
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]
     public uint Id { get; internal set; }
 
+    /// <inheritdoc cref="Character.Name" />
     [JsonInclude, JsonPropertyName("name")]
     public string Name { get; internal set; }
 
+    /// <inheritdoc cref="Character.Type" />
     [JsonInclude, JsonPropertyName("type")]
     public CharacterType Type { get; internal set; }
 
+    // api: 源码非指针，scheme 明确nullable
+    /// <inheritdoc cref="Character.Images" />
     [JsonInclude, JsonPropertyName("images")]
-    public PersonImageSet? Images { get; internal set; } // 源码非指针，scheme 明确nullable
+    public PersonImageSet Images { get; internal set; } 
 
+    /// <inheritdoc cref="ISubject.Id"/>
     [JsonInclude, JsonPropertyName("subject_id")]
     public uint SubjectId { get; internal set; }
 
+    /// <inheritdoc cref="Subject.Type"/>
     [JsonInclude, JsonPropertyName("subject_type")]
     public SubjectType SubjectType { get; internal set; }
 
+    /// <inheritdoc cref="Subject.Name"/>
     [JsonInclude, JsonPropertyName("subject_name")]
     public string SubjectName { get; internal set; }
 
+    /// <inheritdoc cref="Subject.ChineseName"/>
     [JsonInclude, JsonPropertyName("subject_name_cn")]
     public string SubjectChineseName { get; internal set; }
 
+    // api: 源码非指针，scheme nullable
+    /// <inheritdoc cref="SubjectRelatedCharacter.Relation"/>
     [JsonInclude, JsonPropertyName("staff")]
-    public string Staff { get; internal set; } // 源码非指针，scheme nullable
+    public string Staff { get; internal set; }
 
 #pragma warning disable CS8618      
     [JsonConstructor]

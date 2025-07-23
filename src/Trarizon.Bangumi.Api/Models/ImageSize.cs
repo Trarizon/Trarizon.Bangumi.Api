@@ -1,6 +1,11 @@
 ﻿using Trarizon.Bangumi.Api.Utilities;
 
 namespace Trarizon.Bangumi.Api.Models;
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
+/// <summary>
+/// 条目图片尺寸
+/// </summary>
 public enum SubjectImageSize
 {
     Small,
@@ -10,6 +15,9 @@ public enum SubjectImageSize
     Common
 }
 
+/// <summary>
+/// 人物图片尺寸
+/// </summary>
 public enum PersonImageSize
 {
     Small = SubjectImageSize.Small,
@@ -18,6 +26,9 @@ public enum PersonImageSize
     Medium = SubjectImageSize.Medium,
 }
 
+/// <summary>
+/// 用户头像尺寸
+/// </summary>
 public enum AvatarSize
 {
     Small = SubjectImageSize.Small,
@@ -25,9 +36,9 @@ public enum AvatarSize
     Medium = SubjectImageSize.Medium,
 }
 
-public static class ImageSizeExtensions
+internal static class ImageSizeExtensions
 {
-    public static string ToUrlQueryString(this SubjectImageSize size) => size switch
+    internal static string ToUrlQueryString(this SubjectImageSize size) => size switch
     {
         SubjectImageSize.Small => "small",
         SubjectImageSize.Grid => "grid",
@@ -37,7 +48,7 @@ public static class ImageSizeExtensions
         _ => Throws.ThrowUnknownEnumValue<string>(size),
     };
 
-    public static string ToUrlQueryString(this PersonImageSize size) => size switch
+    internal static string ToUrlQueryString(this PersonImageSize size) => size switch
     {
         PersonImageSize.Small => "small",
         PersonImageSize.Grid => "grid",
@@ -46,7 +57,7 @@ public static class ImageSizeExtensions
         _ => Throws.ThrowUnknownEnumValue<string>(size),
     };
 
-    public static string ToUrlQueryString(this AvatarSize size) => size switch
+    internal static string ToUrlQueryString(this AvatarSize size) => size switch
     {
         AvatarSize.Small => "small",
         AvatarSize.Large => "large",

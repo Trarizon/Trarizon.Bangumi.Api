@@ -1,62 +1,104 @@
 ﻿using System.Text.Json.Serialization;
-using Trarizon.Bangumi.Api.Attributes;
 using Trarizon.Bangumi.Api.Models.Abstractions;
 using Trarizon.Bangumi.Api.Models.Persons;
 
 namespace Trarizon.Bangumi.Api.Models.Characters;
-// "https://github.com/bangumi/server/blob/master/web/res/character.go#L25
+/// <summary>
+/// 角色
+/// </summary>
+/// <remarks>
+/// src: <see href="https://github.com/bangumi/server/blob/master/web/res/character.go#L25">
+/// CharacterV0
+/// </see>
+/// </remarks>
 public sealed class Character : ICharacter
 {
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]
     public uint Id { get; internal set; }
 
-    [JsonInclude, JsonPropertyName("name")]
-    public string Name { get; internal set; }
-
+    /// <summary>
+    /// 角色类型
+    /// </summary>
     [JsonInclude, JsonPropertyName("type")]
     public CharacterType Type { get; internal set; }
 
+    /// <summary>
+    /// 角色名称
+    /// </summary>
+    [JsonInclude, JsonPropertyName("name")]
+    public string Name { get; internal set; }
+
+    /// <summary>
+    /// 是否NSFW
+    /// </summary>
+    [JsonInclude, JsonPropertyName("nsfw")]
+    public bool IsNsfw { get; internal set; }
+
+    // api: 源码非指针，scheme明确nullabla
+    /// <summary>
+    /// 角色图片
+    /// </summary>
     [JsonInclude, JsonPropertyName("images")]
     public PersonImageSet Images { get; internal set; }
 
+    /// <summary>
+    /// 角色简介
+    /// </summary>
     [JsonInclude, JsonPropertyName("summary")]
     public string Summary { get; internal set; }
 
+    /// <summary>
+    /// 是否锁定
+    /// </summary>
     [JsonInclude, JsonPropertyName("locked")]
     public bool IsLocked { get; internal set; }
 
+    /// <summary>
+    /// 角色信息列表
+    /// </summary>
     [JsonInclude, JsonPropertyName("infobox")]
     public InfoBox InfoBox { get; internal set; }
 
-    // https://github.com/bangumi/server/blob/master/web/res/character.go#L44
-    // [1: male, 2: female]
+    /// <summary>
+    /// 性别
+    /// </summary>
     [JsonInclude, JsonPropertyName("gender")]
-    public string? Gender { get; internal set; }
+    public Gender Gender { get; internal set; }
 
-    // byte
+    // src: *uint8
+    /// <summary>
+    /// 角色血型
+    /// </summary>
     [JsonInclude, JsonPropertyName("blood_type")]
     public BloodType? BloodType { get; internal set; }
 
-    // ushort
+    // src: *uint16
+    /// <summary>
+    /// 角色出生年份
+    /// </summary>
     [JsonInclude, JsonPropertyName("birth_year")]
-    [GoSource<ushort?>]
     public int? BirthYear { get; internal set; }
 
-    // byte
+    // src: *uint8
+    /// <summary>
+    /// 角色出生月份
+    /// </summary>
     [JsonInclude, JsonPropertyName("birth_mon")]
-    [GoSource<byte>]
     public int? BirthMonth { get; internal set; }
 
-    // byte
+    // src: *uint8
+    /// <summary>
+    /// 角色出生日
+    /// </summary>
     [JsonInclude, JsonPropertyName("birth_day")]
-    [GoSource<byte>]
     public int? BirthDay { get; internal set; }
 
+    /// <summary>
+    /// 角色数据统计
+    /// </summary>
     [JsonInclude, JsonPropertyName("stat")]
-    public Stat Stat { get; internal set; }
-
-    [JsonInclude, JsonPropertyName("nsfw")]
-    public bool IsNsfw { get; internal set; }
+    public Statistics Statistics { get; internal set; }
 
     [JsonConstructor]
 #pragma warning disable CS8618

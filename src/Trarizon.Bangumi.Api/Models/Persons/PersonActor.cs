@@ -4,11 +4,14 @@ using System.Text.Json.Serialization;
 using Trarizon.Bangumi.Api.Models.Abstractions;
 
 namespace Trarizon.Bangumi.Api.Models.Persons;
-// api: Person
-// src: https://github.com/bangumi/server/blob/master/web/res/subject.go#L282
 /// <summary>
 /// 演员
 /// </summary>
+/// <remarks>
+/// src: <see href="https://github.com/bangumi/server/blob/master/web/res/subject.go#L282">
+/// Actor
+/// </see>
+/// </remarks>
 [DebuggerDisplay("{Name}")]
 public sealed class PersonActor : IPerson
 {
@@ -16,40 +19,28 @@ public sealed class PersonActor : IPerson
     [JsonInclude, JsonPropertyName("id")]
     public uint Id { get; internal set; }
 
-    /// <summary>
-    /// 人物名称
-    /// </summary>
+    /// <inheritdoc cref="Person.Name" />
     [JsonInclude, JsonPropertyName("name")]
     public string Name { get; internal set; }
 
-    /// <summary>
-    /// 人物类型
-    /// </summary>
+    /// <inheritdoc cref="Person.Type" />
     [JsonInclude, JsonPropertyName("type")]
     public PersonType Type { get; internal set; }
 
-    /// <summary>
-    /// 人物履历
-    /// </summary>
+    /// <inheritdoc cref="Person.Careers" />
     [JsonInclude, JsonPropertyName("career")]
     public ImmutableArray<PersonCareer> Careers { get; internal set; }
 
     // api: 源码非指针，scheme 明确nullable
-    /// <summary>
-    /// 人物图片
-    /// </summary>
+    /// <inheritdoc cref="Person.Images" />
     [JsonInclude, JsonPropertyName("images")]
-    public PersonImageSet? Images { get; internal set; }
+    public PersonImageSet Images { get; internal set; }
 
-    /// <summary>
-    /// 人物简介
-    /// </summary>
+    /// <inheritdoc cref="Person.Summary"/>
     [JsonInclude, JsonPropertyName("short_summary")]
     public string ShortSummary { get; internal set; }
 
-    /// <summary>
-    /// 是否锁定
-    /// </summary>
+    /// <inheritdoc cref="Person.IsLocked"/>
     [JsonInclude, JsonPropertyName("locked")]
     public bool IsLocked { get; internal set; }
 

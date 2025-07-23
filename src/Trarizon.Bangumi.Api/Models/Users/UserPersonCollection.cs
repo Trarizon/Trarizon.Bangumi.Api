@@ -3,16 +3,25 @@ using Trarizon.Bangumi.Api.Models.Abstractions;
 using Trarizon.Bangumi.Api.Models.Persons;
 
 namespace Trarizon.Bangumi.Api.Models.Users;
-// UserPersonCollection
-// https://github.com/bangumi/server/blob/master/web/res/collection.go
-public sealed class UserCollectionPerson : IPerson
+/// <summary>
+/// 用户的人物收藏
+/// </summary>
+/// <remarks>
+/// src: <see href="https://github.com/bangumi/server/blob/master/web/res/collection.go#L74">
+/// PersonCollection
+/// </see>.
+/// </remarks>
+public sealed class UserPersonCollection : IPerson
 {
+    /// <inheritdoc cref="Person.Id"/>
     [JsonInclude, JsonPropertyName("id")]
     public uint PersonId { get; internal set; }
 
+    /// <inheritdoc cref="Person.Name"/>
     [JsonInclude, JsonPropertyName("name")]
     public string PersonName { get; internal set; }
 
+    /// <inheritdoc cref="Person.Type"/>
     [JsonInclude, JsonPropertyName("type")]
     public PersonType PersonType { get; internal set; }
 
@@ -20,15 +29,19 @@ public sealed class UserCollectionPerson : IPerson
     //[JsonInclude, JsonPropertyName("career")]
     //public ImmutableArray<PersonCareer> Careers { get; internal set; }
 
+    /// <inheritdoc cref="Person.Images"/>
     [JsonInclude, JsonPropertyName("images")]
     public PersonImageSet Images { get; internal set; }
 
+    /// <summary>
+    /// 收藏创建时间
+    /// </summary>
     [JsonInclude, JsonPropertyName("created_at")]
     public DateTimeOffset CreatedTime { get; internal set; }
 
 #pragma warning disable CS8618
     [JsonConstructor]
-    internal UserCollectionPerson() { }
+    internal UserPersonCollection() { }
 #pragma warning restore CS8618            
 
     uint IPerson.Id => PersonId;

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Net;
+using System.Runtime.CompilerServices;
 using Trarizon.Bangumi.Api.Http.Exceptions;
 
 namespace Trarizon.Bangumi.Api.Http.Responses;
@@ -135,21 +136,172 @@ public static class BangumiApiResultExtensions
     /// <typeparam name="T"></typeparam>
     /// <param name="resultTask"></param>
     /// <returns></returns>
-    public static async Task<T> ThrowIfError<T>(this Task<BangumiApiResult<T>> resultTask)
-    {
-        var result = await resultTask.ConfigureAwait(false);
-        result.ThrowIfError();
-        return result.Value;
-    }
+    public static UnwrapAwaitable<T> Unwrap<T>(this Task<BangumiApiResult<T>> resultTask)
+        => new(resultTask);
 
     /// <summary>
     /// 若失败，将错误数据包装进<see cref="BangumiApiException"/>异常抛出
     /// </summary>
     /// <param name="resultTask"></param>
     /// <returns></returns>
-    public static async Task ThrowIfError(this Task<BangumiApiResult> resultTask)
+    public static UnwrapAwaitable Unwrap(this Task<BangumiApiResult> resultTask)
+        => new(resultTask);
+
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
+    public readonly struct UnwrapAwaitable
     {
-        var result = await resultTask.ConfigureAwait(false);
-        result.ThrowIfError();
+        internal readonly Task<BangumiApiResult> _task;
+
+        internal UnwrapAwaitable(Task<BangumiApiResult> task)
+        {
+            _task = task;
+        }
+
+        public async Task AsTask()
+        {
+            var result = await _task.ConfigureAwait(false);
+            result.ThrowIfError();
+        }
+
+        public Awaiter GetAwaiter() => new(this);
+
+        public ConfiguredUnwrapAwaitable ConfigureAwait(bool continueOnCapturedContext) => new(this, continueOnCapturedContext ? ConfigureAwaitOptions.ContinueOnCapturedContext : ConfigureAwaitOptions.None);
+
+        public readonly struct Awaiter : INotifyCompletion, ICriticalNotifyCompletion
+        {
+            private readonly TaskAwaiter<BangumiApiResult> _awaiter;
+
+            internal Awaiter(UnwrapAwaitable awaitable)
+            {
+                _awaiter = awaitable._task.GetAwaiter();
+            }
+
+            public bool IsCompleted => _awaiter.IsCompleted;
+
+            public void GetResult()
+            {
+                var res = _awaiter.GetResult();
+                res.ThrowIfError();
+            }
+
+            public void OnCompleted(Action continuation) => _awaiter.OnCompleted(continuation);
+            public void UnsafeOnCompleted(Action continuation) => _awaiter.UnsafeOnCompleted(continuation);
+        }
     }
+
+    public readonly struct ConfiguredUnwrapAwaitable
+    {
+        private readonly Task<BangumiApiResult> _task;
+        private readonly ConfigureAwaitOptions _options;
+
+        internal ConfiguredUnwrapAwaitable(UnwrapAwaitable awaitable, ConfigureAwaitOptions options)
+        {
+            _task = awaitable._task;
+            _options = options;
+        }
+
+        public Awaiter GetAwaiter() => new(this);
+
+        public readonly struct Awaiter : INotifyCompletion, ICriticalNotifyCompletion
+        {
+            private readonly ConfiguredTaskAwaitable<BangumiApiResult>.ConfiguredTaskAwaiter _awaiter;
+
+            internal Awaiter(ConfiguredUnwrapAwaitable awaitable)
+            {
+                _awaiter = awaitable._task.ConfigureAwait(awaitable._options).GetAwaiter();
+            }
+
+            public bool IsCompleted => _awaiter.IsCompleted;
+
+            public void GetResult()
+            {
+                var res = _awaiter.GetResult();
+                res.ThrowIfError();
+            }
+
+            public void OnCompleted(Action continuation) => _awaiter.OnCompleted(continuation);
+            public void UnsafeOnCompleted(Action continuation) => _awaiter.UnsafeOnCompleted(continuation);
+        }
+    }
+
+    public readonly struct UnwrapAwaitable<T>
+    {
+        internal readonly Task<BangumiApiResult<T>> _task;
+
+        internal UnwrapAwaitable(Task<BangumiApiResult<T>> task)
+        {
+            _task = task;
+        }
+
+        public async Task AsTask()
+        {
+            var result = await _task.ConfigureAwait(false);
+            result.ThrowIfError();
+        }
+
+        public Awaiter GetAwaiter() => new(this);
+
+        public ConfiguredUnwrapAwaitable<T> ConfigureAwait(bool continueOnCapturedContext) => new(this, continueOnCapturedContext ? ConfigureAwaitOptions.ContinueOnCapturedContext : ConfigureAwaitOptions.None);
+
+        public readonly struct Awaiter : INotifyCompletion, ICriticalNotifyCompletion
+        {
+            private readonly TaskAwaiter<BangumiApiResult<T>> _awaiter;
+
+            internal Awaiter(UnwrapAwaitable<T> awaitable)
+            {
+                _awaiter = awaitable._task.GetAwaiter();
+            }
+
+            public bool IsCompleted => _awaiter.IsCompleted;
+
+            public T GetResult()
+            {
+                var res = _awaiter.GetResult();
+                res.ThrowIfError();
+                return res.Value;
+            }
+
+            public void OnCompleted(Action continuation) => _awaiter.OnCompleted(continuation);
+            public void UnsafeOnCompleted(Action continuation) => _awaiter.UnsafeOnCompleted(continuation);
+        }
+    }
+
+    public readonly struct ConfiguredUnwrapAwaitable<T>
+    {
+        private readonly Task<BangumiApiResult<T>> _task;
+        private readonly ConfigureAwaitOptions _options;
+
+        internal ConfiguredUnwrapAwaitable(UnwrapAwaitable<T> awaitable, ConfigureAwaitOptions options)
+        {
+            _task = awaitable._task;
+            _options = options;
+        }
+
+        public Awaiter GetAwaiter() => new(this);
+
+        public readonly struct Awaiter : INotifyCompletion, ICriticalNotifyCompletion
+        {
+            private readonly ConfiguredTaskAwaitable<BangumiApiResult<T>>.ConfiguredTaskAwaiter _awaiter;
+
+            internal Awaiter(ConfiguredUnwrapAwaitable<T> awaitable)
+            {
+                _awaiter = awaitable._task.ConfigureAwait(awaitable._options).GetAwaiter();
+            }
+
+            public bool IsCompleted => _awaiter.IsCompleted;
+
+            public T GetResult()
+            {
+                var res = _awaiter.GetResult();
+                res.ThrowIfError();
+                return res.Value;
+            }
+
+            public void OnCompleted(Action continuation) => _awaiter.OnCompleted(continuation);
+            public void UnsafeOnCompleted(Action continuation) => _awaiter.UnsafeOnCompleted(continuation);
+        }
+    }
+
+#pragma warning restore CS1591
 }

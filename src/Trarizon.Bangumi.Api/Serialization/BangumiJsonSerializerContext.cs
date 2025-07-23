@@ -20,6 +20,7 @@ namespace Trarizon.Bangumi.Api.Serialization;
 [JsonSerializable(typeof(CalendarDay[]))]
 
 [JsonSerializable(typeof(SearchSubjectsRequestBody))]
+[JsonSerializable(typeof(PagedData<SearchResponsedSubject>))]
 [JsonSerializable(typeof(PagedData<Subject>))]
 
 [JsonSerializable(typeof(Subject))]
@@ -40,7 +41,7 @@ namespace Trarizon.Bangumi.Api.Serialization;
 [JsonSerializable(typeof(ImmutableArray<CharacterRelatedPerson>))]
 
 [JsonSerializable(typeof(SearchPersonsRequestBody))]
-[JsonSerializable(typeof(PagedData<PersonActor>))]
+[JsonSerializable(typeof(PagedData<Person>))]
 [JsonSerializable(typeof(Person))]
 [JsonSerializable(typeof(ImmutableArray<PersonRelatedSubject>))]
 [JsonSerializable(typeof(ImmutableArray<PersonRelatedCharacter>))]
@@ -48,27 +49,28 @@ namespace Trarizon.Bangumi.Api.Serialization;
 [JsonSerializable(typeof(User))]
 [JsonSerializable(typeof(UserSelf))]
 
-[JsonSerializable(typeof(PagedData<UserCollectionSubject>))]
+[JsonSerializable(typeof(PagedData<UserSubjectCollection>))]
 
 [JsonSerializable(typeof(UpdateUserCollectionSubjectRequestBody))]
 
-[JsonSerializable(typeof(PagedData<UserCollectionEpisode>))]
+[JsonSerializable(typeof(PagedData<UserEpisodeCollection>))]
 [JsonSerializable(typeof(UpdateUserCollectionSubjectEpisodesRequestBody))]
 [JsonSerializable(typeof(UpdateUserCollectionEpisodeRequestBody))]
 
-[JsonSerializable(typeof(PagedData<UserCollectionCharacter>))]
-[JsonSerializable(typeof(PagedData<UserCollectionPerson>))]
+[JsonSerializable(typeof(PagedData<UserCharacterCollection>))]
+[JsonSerializable(typeof(PagedData<UserPersonCollection>))]
 
-[JsonSerializable(typeof(PagedData<Revision>))]
-[JsonSerializable(typeof(PersonRevision))]
-[JsonSerializable(typeof(CharacterRevision))]
-[JsonSerializable(typeof(SubjectRevision))]
-[JsonSerializable(typeof(EpisodeRevision))]
+[JsonSerializable(typeof(PagedData<PersonRevision>))]
+[JsonSerializable(typeof(PagedData<CharacterRevision>))]
+[JsonSerializable(typeof(PagedData<SubjectRevision>))]
+[JsonSerializable(typeof(PagedData<EpisodeRevision>))]
 
 [JsonSerializable(typeof(BangumiIndex))]
+[JsonSerializable(typeof(AddIndexRequestBody))]
 [JsonSerializable(typeof(UpdateIndexInfoRequestBody))]
 [JsonSerializable(typeof(AddIndexSubjectRequestBody))]
 [JsonSerializable(typeof(UpdateIndexSubjectRequestBody))]
+[JsonSerializable(typeof(PagedData<IndexSubject>))]
 // Other 
 [JsonSerializable(typeof(bool?))]
 internal partial class BangumiJsonSerializerContext : JsonSerializerContext;

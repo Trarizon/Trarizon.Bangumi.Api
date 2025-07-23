@@ -6,6 +6,12 @@ namespace Trarizon.Bangumi.Api.Models.Subjects;
 /// <summary>
 /// 条目收藏统计
 /// </summary>
+/// <remarks>
+/// src: <see href="https://github.com/bangumi/server/blob/master/web/res/subject.go#L180">
+/// SubjectCollectionStat
+/// </see>
+/// </remarks>
+
 [DebuggerDisplay("{Wish} + {Collect} + {Doing} + {OnHold} + {Dropped}")]
 public struct SubjectCollectionStatistics
 {

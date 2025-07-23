@@ -3,6 +3,11 @@
 /// <summary>
 /// 条目类型
 /// </summary>
+/// <remarks>
+/// src: <see href="https://github.com/bangumi/server/blob/master/internal/model/subject_type.go#L17">
+/// SubjectType uint8
+/// </see>
+/// </remarks>
 public enum SubjectType
 {
     // All = 0

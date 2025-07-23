@@ -1,10 +1,16 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace Trarizon.Bangumi.Api.Models.Subjects;
-// src: https://github.com/bangumi/server/blob/master/web/res/image.go#L47
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
 /// <summary>
 /// 条目相关图片链接
 /// </summary>
+/// <remarks>
+/// src: <see href="https://github.com/bangumi/server/blob/master/web/res/image.go#L47">
+/// SubjectImages
+/// </see>
+/// </remarks>
 public struct SubjectImageSet
 {
     /// <summary>

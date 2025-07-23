@@ -1,9 +1,18 @@
 ﻿using Trarizon.Bangumi.Api.Utilities;
 
 namespace Trarizon.Bangumi.Api.Http.Requests.Entities;
+/// <summary>
+/// 排序
+/// </summary>
 public enum GetSubjectsSortKind
 {
+    /// <summary>
+    /// 日期
+    /// </summary>
     Date,
+    /// <summary>
+    /// 排名
+    /// </summary>
     Rank
 }
 

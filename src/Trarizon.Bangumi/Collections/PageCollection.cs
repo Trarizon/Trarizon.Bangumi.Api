@@ -45,7 +45,7 @@ public sealed class PageCollection<T> : IAsyncEnumerable<T>
 
         cancellationToken = CombineCancellationToken(_cancellationToken, cancellationToken);
 
-        var page = await _pageFetcher(1, 0, cancellationToken).ThrowIfError().ConfigureAwait(false);
+        var page = await _pageFetcher(1, 0, cancellationToken).Unwrap().ConfigureAwait(false);
         var total = page.Total - _offset;
 
         if (_takeCount < 0)
@@ -79,7 +79,7 @@ public sealed class PageCollection<T> : IAsyncEnumerable<T>
 
         while (true) {
             var page = await _pageFetcher(_limit, offset, cancellationToken)
-                .ThrowIfError().ConfigureAwait(false);
+                .Unwrap().ConfigureAwait(false);
             var items = page.Datas;
             if (items.Length == 0)
                 yield break;

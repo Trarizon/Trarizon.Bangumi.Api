@@ -10,7 +10,7 @@ namespace Trarizon.Bangumi.Api.Http.Requests;
 /// IndexBasicInfo
 /// </see>
 /// </remarks>
-public sealed class UpdateIndexInfoRequestBody
+public sealed class AddIndexRequestBody
 {
     /// <inheritdoc cref="BangumiIndex.Title"/>
     /// <remarks>
@@ -19,7 +19,7 @@ public sealed class UpdateIndexInfoRequestBody
     /// 若坚持命名为空字符串，可以直接赋值为<c>""</c>
     /// </remarks>
     [JsonInclude, JsonPropertyName("title")]
-    public string? Title { get; set; }
+    public required string Title { get; set; }
 
     /// <inheritdoc cref="BangumiIndex.Description"/>
     [JsonInclude, JsonPropertyName("description")]
@@ -27,7 +27,13 @@ public sealed class UpdateIndexInfoRequestBody
 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
-    public UpdateIndexInfoRequestBody Clone() => new()
+    public AddIndexRequestBody Clone() => new()
+    {
+        Title = Title,
+        Description = Description,
+    };
+
+    public UpdateIndexInfoRequestBody ToUpdateIndexInfoRequestBody() => new()
     {
         Title = Title,
         Description = Description,

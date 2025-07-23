@@ -8,13 +8,17 @@ using Trarizon.Bangumi.Api.Serialization.Models;
 using Trarizon.Bangumi.Api.Utilities;
 
 namespace Trarizon.Bangumi.Api.Models;
-// src: object[] https://github.com/bangumi/server/blob/master/web/res/subject.go#L36
 /// <summary>
-/// 键值对信息表
+/// 信息列表
 /// </summary>
+/// <remarks>
+/// src: <see href="https://github.com/bangumi/server/blob/master/web/res/subject.go#L36">
+/// V0wiki: []any
+/// </see>
+/// </remarks>
 [JsonConverter(typeof(InfoBoxJsonConverter))]
 [DebuggerDisplay("(Count = {Properties.Length})")]
-public readonly struct InfoBox
+public readonly struct InfoBox : IReadOnlyCollection<InfoProperty>, ICollection<InfoProperty>
 {
     private readonly ImmutableArray<InfoProperty> _properties;
 
@@ -22,6 +26,18 @@ public readonly struct InfoBox
     /// 条目信息列表
     /// </summary>
     public ImmutableArray<InfoProperty> Properties => _properties;
+
+    /// <summary>
+    /// 属性数量
+    /// </summary>
+    public int Count => _properties.Length;
+
+    /// <summary>
+    /// 获取指定索引的属性键值对
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public InfoProperty this[int index] => _properties[index];
 
     /// <summary>
     /// 获取Key为指定值的属性值
@@ -59,9 +75,32 @@ public readonly struct InfoBox
         value = default;
         return false;
     }
+
+    /// <summary>
+    /// 判断是否包含指定Key
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public bool ContainsKey(ReadOnlySpan<char> key) => TryGetValue(key, out _);
+
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
+    public ImmutableArray<InfoProperty>.Enumerator GetEnumerator() => _properties.GetEnumerator();
+
+    bool ICollection<InfoProperty>.IsReadOnly => true;
+
+    IEnumerator<InfoProperty> IEnumerable<InfoProperty>.GetEnumerator() => ((IEnumerable<InfoProperty>)_properties).GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_properties).GetEnumerator();
+    void ICollection<InfoProperty>.Add(InfoProperty item) => Throws.ThrowNotSupport();
+    void ICollection<InfoProperty>.Clear() => Throws.ThrowNotSupport();
+    bool ICollection<InfoProperty>.Contains(InfoProperty item) => _properties.Contains(item);
+    void ICollection<InfoProperty>.CopyTo(InfoProperty[] array, int arrayIndex) => _properties.CopyTo(array, arrayIndex);
+    bool ICollection<InfoProperty>.Remove(InfoProperty item) => Throws.ThrowNotSupport<bool>();
+
+#pragma warning restore CS1591
 }
 
-// api: Item
+// src: https://github.com/bangumi/server/blob/master/internal/pkg/compat/wiki.go#L21
 /// <summary>
 /// 信息键值对
 /// </summary>
@@ -96,6 +135,9 @@ public struct InfoProperty
 /// </summary>
 /// <remarks>
 /// 值的原始形式可能为string或Pair[]，该结构体将其抽象为了统一的Pair列表，可以通过<see cref="IsRawValueString"/>, <see cref="GetRawStringValue"/>, <see cref="GetRawPairsValue"/>获取原始形式
+/// <br/>
+/// src: <see href="https://github.com/bangumi/server/blob/master/internal/pkg/compat/wiki.go#L54">wikiValue: key-value</see> ,
+/// <see href="https://github.com/bangumi/server/blob/master/internal/pkg/compat/wiki.go#L59">wikiValues: key-values</see>
 /// </remarks>
 [JsonConverter(typeof(InfoValueJsonConverter))]
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
@@ -265,7 +307,12 @@ public struct InfoValue : IEquatable<InfoValue>
     [JsonInclude, JsonPropertyName("v")]
     public string Value { get; internal set; }
 
-    internal InfoValue(string? key, string value)
+    /// <summary>
+    /// 构造InfoBox的值
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    public InfoValue(string? key, string value)
     {
         Key = key;
         Value = value;

@@ -3,19 +3,31 @@ using Trarizon.Bangumi.Api.Serialization.Http;
 using Trarizon.Bangumi.Api.Utilities;
 
 namespace Trarizon.Bangumi.Api.Http.Requests.Entities;
+/// <summary>
+/// R18内容筛选条件
+/// </summary>
 [JsonConverter(typeof(NsfwFilterJsonConverter))]
 public enum NsfwFilter : byte
 {
+    /// <summary>
+    /// 不筛选
+    /// </summary>
     All = default,
+    /// <summary>
+    /// 仅R18内容
+    /// </summary>
     NsfwOnly,
+    /// <summary>
+    /// 不含R18内容
+    /// </summary>
     NoNsfw,
 }
 
-public static class NsfwExtensions
+internal static class NsfwExtensions
 {
     extension(NsfwFilter filter)
     {
-        public bool? ToRequestJsonValue() => filter switch
+        internal bool? ToRequestJsonValue() => filter switch
         {
             NsfwFilter.All => null,
             NsfwFilter.NsfwOnly => true,
@@ -23,7 +35,7 @@ public static class NsfwExtensions
             _ => Throws.ThrowUnknownEnumValue<bool?>(filter),
         };
 
-        public static NsfwFilter FromRequestJson(bool? value) => value switch
+        internal static NsfwFilter FromRequestJson(bool? value) => value switch
         {
             null => NsfwFilter.All,
             true => NsfwFilter.NsfwOnly,

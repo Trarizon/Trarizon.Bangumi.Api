@@ -1,9 +1,13 @@
-﻿using Trarizon.Bangumi.Api.Attributes;
-
-namespace Trarizon.Bangumi.Api.Models.Users;
-// https://github.com/bangumi/server/blob/master/internal/collections/domain/collection/type.go#L17
-[GoSource<byte>]
-public enum CollectionType
+﻿namespace Trarizon.Bangumi.Api.Models.Users;
+/// <summary>
+/// 条目收藏类型
+/// </summary>
+/// <remarks>
+/// src: <see href="https://github.com/bangumi/server/blob/master/internal/collections/domain/collection/type.go#L17">
+/// SubjectCollection: uint8
+/// </see>
+/// </remarks>
+public enum SubjectCollectionType
 {
     // All = 0
     /// <summary>
@@ -29,7 +33,14 @@ public enum CollectionType
 }
 
 // https://github.com/bangumi/server/blob/master/internal/collections/domain/collection/type.go#L28
-[GoSource<byte>]
+/// <summary>
+/// 章节收藏类型
+/// </summary>
+/// <remarks>
+/// src: <see href="https://github.com/bangumi/server/blob/master/internal/collections/domain/collection/type.go#L28">
+/// EpisodeCollection: uint8
+/// </see>
+/// </remarks>
 public enum EpisodeCollectionType
 {
     /// <summary>
@@ -53,5 +64,5 @@ public enum EpisodeCollectionType
 
 internal static class CollectionTypeExtensions
 {
-    public static int ToQueryValue(this CollectionType collectionType) => (int)collectionType;
+    public static int ToQueryValue(this SubjectCollectionType collectionType) => (int)collectionType;
 }
