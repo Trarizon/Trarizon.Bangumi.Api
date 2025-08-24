@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using Trarizon.Bangumi.Api.Utilities;
 
-namespace Trarizon.Bangumi.Api.Serialization;
+namespace Trarizon.Bangumi.Api.Serialization.Converters;
 internal sealed class StringEnumerationJsonConverter<T> : JsonConverter<T>
     where T : IStringEnumeration<T>
 {

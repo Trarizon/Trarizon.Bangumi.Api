@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text.Json.Serialization;
-using Trarizon.Bangumi.Api.Serialization.Models;
+using Trarizon.Bangumi.Api.Serialization.Converters.Model;
 
 namespace Trarizon.Bangumi.Api.Models.SubjectModels;
 // src: https://github.com/bangumi/server/blob/master/web/res/subject.go#L205

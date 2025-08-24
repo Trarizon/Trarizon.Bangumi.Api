@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using Trarizon.Bangumi.Api.Utilities;
 
-namespace Trarizon.Bangumi.Api.Serialization;
+namespace Trarizon.Bangumi.Api.Serialization.Converters;
 internal sealed class TimeSpanBySecondsJsonConverter : JsonConverter<TimeSpan>
 {
     public override TimeSpan Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

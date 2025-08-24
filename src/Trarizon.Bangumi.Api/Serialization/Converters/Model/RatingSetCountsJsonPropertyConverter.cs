@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 using Trarizon.Bangumi.Api.Models.SubjectModels;
 using Trarizon.Bangumi.Api.Utilities;
 
-namespace Trarizon.Bangumi.Api.Serialization.Models;
+namespace Trarizon.Bangumi.Api.Serialization.Converters.Model;
 internal sealed class RatingSetCountsJsonPropertyConverter : JsonConverter<RatingCounts>
 {
     public override RatingCounts Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

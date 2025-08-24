@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 using Trarizon.Bangumi.Api.Requests.Models;
 using Trarizon.Bangumi.Api.Utilities;
 
-namespace Trarizon.Bangumi.Api.Serialization.Http;
+namespace Trarizon.Bangumi.Api.Serialization.Converters.Model;
 internal abstract class ComparisonFilterJsonConverter<T> : JsonConverter<ComparisonFilter<T>>
 {
     private readonly string? _format;

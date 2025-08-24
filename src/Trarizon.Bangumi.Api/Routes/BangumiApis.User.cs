@@ -33,7 +33,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<BangumiApiResult<Uri>> GetUserAvatarUrlAsync(this BangumiClient client, string userName, AvatarSize avatarSize, CancellationToken cancellationToken = default)
     {
-        return client.GetRequestUriWhenSuccessStatusCodeAsync(
+        return client.GetHeadersLocationWhenStatusFoundAsync(
             $"{UsersUrl}/{userName}/avatar?type={avatarSize.ToQueryString()}", 
             cancellationToken)!;
     }

@@ -55,5 +55,9 @@ public sealed class BangumiClient : IDisposable
     }
 
     /// <inheritdoc />
-    public void Dispose() => HttpClient.Dispose();
+    public void Dispose()
+    {
+        HttpClient.Dispose();
+        _httpClientHandler.Dispose();
+    }
 }

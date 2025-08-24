@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
-using Trarizon.Bangumi.Api.Serialization;
+using Trarizon.Bangumi.Api.Serialization.Converters;
 
 namespace Trarizon.Bangumi.Api.Models.SubjectModels;
 /// <summary>

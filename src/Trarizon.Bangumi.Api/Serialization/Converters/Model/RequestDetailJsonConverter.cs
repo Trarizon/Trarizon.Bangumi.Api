@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using Trarizon.Bangumi.Api.Responses;
 using Trarizon.Bangumi.Api.Utilities;
 
-namespace Trarizon.Bangumi.Api.Serialization.Http;
+namespace Trarizon.Bangumi.Api.Serialization.Converters.Model;
 internal sealed class RequestDetailJsonConverter : JsonConverter<RequestDetailUnion>
 {
     public override RequestDetailUnion Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

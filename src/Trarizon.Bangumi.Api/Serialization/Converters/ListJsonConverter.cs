@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using Trarizon.Bangumi.Api.Utilities;
 
-namespace Trarizon.Bangumi.Api.Serialization;
+namespace Trarizon.Bangumi.Api.Serialization.Converters;
 internal class ListJsonConverter<T, TConverter> : JsonConverter<List<T>>
     where TConverter : JsonConverter<T>, IConstructable<TConverter>
 {

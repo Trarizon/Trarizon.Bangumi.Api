@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Text.Json.Serialization;
-using Trarizon.Bangumi.Api.Serialization.Models;
 
 namespace Trarizon.Bangumi.Api.Models.SubjectModels;
 /// <summary>

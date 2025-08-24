@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using Trarizon.Bangumi.Api.Requests.Models;
 
-namespace Trarizon.Bangumi.Api.Serialization.Http;
+namespace Trarizon.Bangumi.Api.Serialization.Converters.Model;
 internal sealed class NsfwFilterJsonConverter : JsonConverter<NsfwFilter>
 {
     public override NsfwFilter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

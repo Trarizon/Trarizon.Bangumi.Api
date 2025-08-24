@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 using Trarizon.Bangumi.Api.Models.SubjectModels;
 using Trarizon.Bangumi.Api.Requests.Models;
-using Trarizon.Bangumi.Api.Serialization;
-using Trarizon.Bangumi.Api.Serialization.Http;
+using Trarizon.Bangumi.Api.Serialization.Converters;
+using Trarizon.Bangumi.Api.Serialization.Converters.Model;
 
 namespace Trarizon.Bangumi.Api.Requests;
 /// <summary>

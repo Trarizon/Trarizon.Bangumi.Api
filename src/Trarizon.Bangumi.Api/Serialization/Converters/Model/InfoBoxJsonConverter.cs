@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Trarizon.Bangumi.Api.Models;
 
-namespace Trarizon.Bangumi.Api.Serialization.Models;
+namespace Trarizon.Bangumi.Api.Serialization.Converters.Model;
 internal sealed class InfoBoxJsonConverter : JsonConverter<InfoBox>
 {
     public override InfoBox Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
