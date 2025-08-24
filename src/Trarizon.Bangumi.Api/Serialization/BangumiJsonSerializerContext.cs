@@ -12,7 +12,9 @@ using Trarizon.Bangumi.Api.Requests;
 using Trarizon.Bangumi.Api.Responses;
 
 namespace Trarizon.Bangumi.Api.Serialization;
+#if DEBUG
 [JsonSourceGenerationOptions(WriteIndented = true)]
+#endif
 [JsonSerializable(typeof(RequestError))]
 [JsonSerializable(typeof(RequestDetail))]
 

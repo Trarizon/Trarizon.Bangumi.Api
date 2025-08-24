@@ -1,11 +1,12 @@
 ﻿using Trarizon.Bangumi.Api;
-using Trarizon.Bangumi.Api.Http.Requests;
 using Trarizon.Bangumi.Api.Models.EpisodeModels;
 using Trarizon.Bangumi.Api.Models.PersonModels;
 using Trarizon.Bangumi.Api.Models.SubjectModels;
 using Trarizon.Bangumi.Api.Models.UserModels;
+using Trarizon.Bangumi.Api.Requests;
 using Trarizon.Bangumi.Api.Requests.Models;
 using Trarizon.Bangumi.Api.Responses;
+using Trarizon.Bangumi.Api.Routes;
 using Trarizon.Bangumi.Collections;
 
 namespace Trarizon.Bangumi.Run;
@@ -13,7 +14,7 @@ public static class Examples
 {
 #pragma warning disable BgmExprApi // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
 #pragma warning disable CS0618 // 类型或成员已过时
-    public static async Task Api(IBangumiClient client, CancellationToken cancellationToken)
+    public static async Task Api(BangumiClient client, CancellationToken cancellationToken)
     {
         // 所有API对应方法返回`Task<BangumiApiResult>` 或 `Task<BangumiApiResult<T>>`,
         // 这些返回值都可以使用`Unwrap`方法转换成可直接await或ConfigureAwait的`UnwrapAwaitable`或`UnwrapAwaitable<T>`
@@ -40,7 +41,7 @@ public static class Examples
             }
         };
         var searchPagedSubjects = await client.SearchPagedSubjectsAsync(searchSubjectsRequestBody, cancellationToken: cancellationToken);
-        var subjectsPagedQueries = new GetSubjectsQueries
+        var subjectsPagedQuery = new GetSubjectsQuery
         {
             Category = new(SubjectGameCategory.Game),
             //Category = SubjectCategory.Game(),
@@ -53,7 +54,7 @@ public static class Examples
             Year = 2018,
             Month = 6,
         };
-        var subjectsPaged = await client.GetPagedSubjectsAsync(subjectsPagedQueries, cancellationToken: cancellationToken);
+        var subjectsPaged = await client.GetPagedSubjectsAsync(subjectsPagedQuery, cancellationToken: cancellationToken);
         var subject = await client.GetSubjectAsync(200763u, cancellationToken);
         var subjectImageUrl = await client.GetSubjectImageUrlAsync(200763u, SubjectImageSize.Common, cancellationToken);
         var subjectPersons = await client.GetSubjectRelatedPersonsAsync(200763u, cancellationToken);
@@ -194,12 +195,12 @@ public static class Examples
 #pragma warning restore BgmExprApi
 
     // Trarizon.Bangumi提供了一些扩展
-    public static async Task Ext(IBangumiClient client, CancellationToken cancellationToken)
+    public static async Task Ext(BangumiClient client, CancellationToken cancellationToken)
     {
         // 对于所有返回`Task<BangumiApiResult<PagedData<T>>>`的方法，提供了返回PageCollection<T>的对应方法
         // PageCollection<T>为异步集合，会依次读取每一页，遍历所有结果，可设定单页大小
 
-        var queries = new GetSubjectsQueries() { Category = SubjectType.Game };
+        var queries = new GetSubjectsQuery() { Category = SubjectType.Game };
 
         PagedData<Subject> pagedSubjects = await client.GetPagedSubjectsAsync(queries, cancellationToken: cancellationToken).Unwrap();
         foreach (var subject in pagedSubjects.Datas) {

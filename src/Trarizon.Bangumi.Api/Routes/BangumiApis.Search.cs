@@ -27,7 +27,7 @@ partial class BangumiApis
     /// src: <see href="https://github.com/bangumi/server/blob/master/internal/search/subject/handle.go" />
     /// </remarks>
     [Experimental(ExperimentalApiDiagnosticId)]
-    public static Task<BangumiApiResult<PagedData<SearchResponsedSubject>>> SearchPagedSubjectsAsync(this IBangumiClient client, SearchSubjectsRequestBody? requestBody, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<PagedData<SearchResponsedSubject>>> SearchPagedSubjectsAsync(this BangumiClient client, SearchSubjectsRequestBody? requestBody, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
     {
         var builder = new QueryBuilder(SearchSubjectsUrl);
         builder.CheckAppendQuery("limit", pageLimit);
@@ -42,7 +42,7 @@ partial class BangumiApis
     /// src: <see href="https://github.com/bangumi/server/blob/master/internal/search/character/handle.go" />
     /// </remarks>
     [Experimental(ExperimentalApiDiagnosticId)]
-    public static Task<BangumiApiResult<PagedData<Character>>> SearchPagedCharactersAsync(this IBangumiClient client, SearchCharactersRequestBody? requestBody, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<PagedData<Character>>> SearchPagedCharactersAsync(this BangumiClient client, SearchCharactersRequestBody? requestBody, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
     {
         var builder = new QueryBuilder(SearchCharactersUrl);
         builder.CheckAppendQuery("limit", pageLimit);
@@ -57,7 +57,7 @@ partial class BangumiApis
     /// src: <see href="https://github.com/bangumi/server/blob/master/internal/search/person/handle.go" />
     /// </remarks>
     [Experimental(ExperimentalApiDiagnosticId)]
-    public static Task<BangumiApiResult<PagedData<Person>>> SearchPagedPersonsAsync(this IBangumiClient client, SearchPersonsRequestBody? requestBody, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<PagedData<Person>>> SearchPagedPersonsAsync(this BangumiClient client, SearchPersonsRequestBody? requestBody, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
     {
         var builder = new QueryBuilder(SearchCharactersUrl);
         builder.CheckAppendQuery("limit", pageLimit);

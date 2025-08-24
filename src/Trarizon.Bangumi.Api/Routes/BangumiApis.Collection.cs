@@ -24,7 +24,7 @@ partial class BangumiApis
     /// <param name="pageOffset"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<PagedData<UserSubjectCollection>>> GetPagedUserSubjectCollectionsAsync(this IBangumiClient client, string userName, SubjectType? subjectType = null, SubjectCollectionType? collectionType = null, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<PagedData<UserSubjectCollection>>> GetPagedUserSubjectCollectionsAsync(this BangumiClient client, string userName, SubjectType? subjectType = null, SubjectCollectionType? collectionType = null, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
     {
         var builder = new QueryBuilder($"{UsersUrl}/{userName}/collections");
         builder.CheckAppendQuery("subject_type", subjectType?.ToQueryValue());
@@ -44,7 +44,7 @@ partial class BangumiApis
     /// <param name="subjectId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<UserSubjectCollection>> GetUserSubjectCollectionAsync(this IBangumiClient client, string userName, uint subjectId, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<UserSubjectCollection>> GetUserSubjectCollectionAsync(this BangumiClient client, string userName, uint subjectId, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeAsync(
             $"{UsersUrl}/{userName}/collections/{subjectId}",
@@ -56,7 +56,7 @@ partial class BangumiApis
     /// <br/>
     /// 由于直接修改剧集条目的完成度可能会引起意料之外效果，只能用于修改书籍类条目的完成度。
     /// </summary>
-    public static Task<BangumiApiResult> AddOrUpdateUserSubjectCollectionAsync(this IBangumiClient client, uint subjectId, UpdateUserSubjectCollectionRequestBody? requestBody, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult> AddOrUpdateUserSubjectCollectionAsync(this BangumiClient client, uint subjectId, UpdateUserSubjectCollectionRequestBody? requestBody, CancellationToken cancellationToken = default)
     {
         return client.PostAsJsonEnsureSuccessStatusCodeAsync(
             $"{UserCollectionsUrl}/{subjectId}",
@@ -73,7 +73,7 @@ partial class BangumiApis
     /// <param name="requestBody"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult> UpdateUserSubjectCollectionAsync(this IBangumiClient client, uint subjectId, UpdateUserSubjectCollectionRequestBody? requestBody, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult> UpdateUserSubjectCollectionAsync(this BangumiClient client, uint subjectId, UpdateUserSubjectCollectionRequestBody? requestBody, CancellationToken cancellationToken = default)
     {
         return client.PatchAsJsonEnsureSuccessStatusCodeAsync(
             $"{UserCollectionsUrl}/{subjectId}",
@@ -92,7 +92,7 @@ partial class BangumiApis
     /// <param name="pageOffset"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<PagedData<UserEpisodeCollection>>> GetPagedUserSubjectEpisodeCollectionsAsync(this IBangumiClient client, uint subjectId, EpisodeType? episodeType = null, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<PagedData<UserEpisodeCollection>>> GetPagedUserSubjectEpisodeCollectionsAsync(this BangumiClient client, uint subjectId, EpisodeType? episodeType = null, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
     {
         var builder = new QueryBuilder($"{UserCollectionsUrl}/{subjectId}/episodes");
         builder.CheckAppendQuery("offset", pageOffset);
@@ -113,7 +113,7 @@ partial class BangumiApis
     /// <param name="requestBody"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult> UpdateUserSubjectEpisodeCollectionsAsync(this IBangumiClient client, uint subjectId, UpdateUserSubjectEpisodeCollectionsRequestBody requestBody, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult> UpdateUserSubjectEpisodeCollectionsAsync(this BangumiClient client, uint subjectId, UpdateUserSubjectEpisodeCollectionsRequestBody requestBody, CancellationToken cancellationToken = default)
     {
         return client.PatchAsJsonEnsureSuccessStatusCodeAsync(
             $"{UserCollectionsUrl}/{subjectId}/episodes",
@@ -128,7 +128,7 @@ partial class BangumiApis
     /// <param name="episodeId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<UserEpisodeCollection>> GetUserCollectionEpisodeAsync(this IBangumiClient client, uint episodeId, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<UserEpisodeCollection>> GetUserCollectionEpisodeAsync(this BangumiClient client, uint episodeId, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeAsync(
             $"{UserCollectionsUrl}/-/episodes/{episodeId}",
@@ -143,7 +143,7 @@ partial class BangumiApis
     /// <param name="requestBody"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult> UpdateUserEpisodeCollectionAsync(this IBangumiClient client, uint episodeId, UpdateUserEpisodeCollectionRequestBody requestBody, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult> UpdateUserEpisodeCollectionAsync(this BangumiClient client, uint episodeId, UpdateUserEpisodeCollectionRequestBody requestBody, CancellationToken cancellationToken = default)
     {
         return client.PutAsJsonEnsureSuccessStatusCodeAsync(
             $"{UserCollectionsUrl}/-/episodes/{episodeId}",
@@ -160,7 +160,7 @@ partial class BangumiApis
     /// <param name="pageOffset"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<PagedData<UserCharacterCollection>>> GetPagedUserCharacterCollectionsAsync(this IBangumiClient client, string userName, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<PagedData<UserCharacterCollection>>> GetPagedUserCharacterCollectionsAsync(this BangumiClient client, string userName, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
     {
         var builder = new QueryBuilder($"{UsersUrl}/{userName}/collections/-/characters");
         builder.CheckAppendQuery("offset", pageOffset);
@@ -179,7 +179,7 @@ partial class BangumiApis
     /// <param name="characterId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<UserCharacterCollection>> GetUserCharacterCollectionAsync(this IBangumiClient client, string userName, uint characterId, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<UserCharacterCollection>> GetUserCharacterCollectionAsync(this BangumiClient client, string userName, uint characterId, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeAsync(
             $"{UsersUrl}/{userName}/collections/-/characters/{characterId}",
@@ -195,7 +195,7 @@ partial class BangumiApis
     /// <param name="pageOffset"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<PagedData<UserPersonCollection>>> GetPagedUserPersonCollectionsAsync(this IBangumiClient client, string userName, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<PagedData<UserPersonCollection>>> GetPagedUserPersonCollectionsAsync(this BangumiClient client, string userName, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
     {
         var builder = new QueryBuilder($"{UsersUrl}/{userName}/collections/-/persons");
         builder.CheckAppendQuery("offset", pageOffset);
@@ -214,7 +214,7 @@ partial class BangumiApis
     /// <param name="personId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<UserPersonCollection>> GetUserPersonCollectionAsync(this IBangumiClient client, string userName, uint personId, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<UserPersonCollection>> GetUserPersonCollectionAsync(this BangumiClient client, string userName, uint personId, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeAsync(
             $"{UsersUrl}/{userName}/collections/-/persons/{personId}",

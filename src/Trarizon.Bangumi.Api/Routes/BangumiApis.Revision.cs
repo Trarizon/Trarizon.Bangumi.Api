@@ -13,7 +13,7 @@ partial class BangumiApis
 
     private const string RevisionsUrl = V0Url + "/revisions";
 
-    private static Task<BangumiApiResult<PagedData<TRevision>>> GetPagedRevisionInternalAsync<TRevision>(this IBangumiClient client, string url, string idQueryName, uint id, int? limit, int? offset, JsonTypeInfo<PagedData<TRevision>> jsonTypeInfo, CancellationToken cancellationToken = default)
+    private static Task<BangumiApiResult<PagedData<TRevision>>> GetPagedRevisionInternalAsync<TRevision>(this BangumiClient client, string url, string idQueryName, uint id, int? limit, int? offset, JsonTypeInfo<PagedData<TRevision>> jsonTypeInfo, CancellationToken cancellationToken = default)
         where TRevision : IRevision
     {
         var builder = new QueryBuilder(url);
@@ -32,7 +32,7 @@ partial class BangumiApis
     /// <param name="pageOffset"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<PagedData<PersonRevision>>> GetPagedPersonRevisionsAsync(this IBangumiClient client, uint personId, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<PagedData<PersonRevision>>> GetPagedPersonRevisionsAsync(this BangumiClient client, uint personId, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
     {
         return GetPagedRevisionInternalAsync(client, $"{RevisionsUrl}/person", "person_id", personId, pageLimit, pageOffset,
             Json.Default.PagedDataPersonRevision, cancellationToken);
@@ -45,7 +45,7 @@ partial class BangumiApis
     /// <param name="revisionId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<PersonRevision>> GetPersonRevisionAsync(this IBangumiClient client, uint revisionId, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<PersonRevision>> GetPersonRevisionAsync(this BangumiClient client, uint revisionId, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeAsync(
             $"{RevisionsUrl}/persons/{revisionId}",
@@ -61,7 +61,7 @@ partial class BangumiApis
     /// <param name="pageOffset"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<PagedData<CharacterRevision>>> GetPagedCharacterRevisionsAsync(this IBangumiClient client, uint characterId, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<PagedData<CharacterRevision>>> GetPagedCharacterRevisionsAsync(this BangumiClient client, uint characterId, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
     {
         return GetPagedRevisionInternalAsync(client, $"{RevisionsUrl}/characters", "character_id", characterId, pageLimit, pageOffset,
             Json.Default.PagedDataCharacterRevision, cancellationToken);
@@ -74,7 +74,7 @@ partial class BangumiApis
     /// <param name="revisionId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<CharacterRevision>> GetCharacterRevisionAsync(this IBangumiClient client, uint revisionId, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<CharacterRevision>> GetCharacterRevisionAsync(this BangumiClient client, uint revisionId, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeAsync(
             $"{RevisionsUrl}/characters/{revisionId}",
@@ -90,7 +90,7 @@ partial class BangumiApis
     /// <param name="pageOffset"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<PagedData<SubjectRevision>>> GetPagedSubjectRevisionsAsync(this IBangumiClient client, uint subjectId, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<PagedData<SubjectRevision>>> GetPagedSubjectRevisionsAsync(this BangumiClient client, uint subjectId, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
     {
         return GetPagedRevisionInternalAsync(client, $"{RevisionsUrl}/subjects", "subject_id", subjectId, pageLimit, pageOffset,
             Json.Default.PagedDataSubjectRevision, cancellationToken);
@@ -103,7 +103,7 @@ partial class BangumiApis
     /// <param name="revisionId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<SubjectRevision>> GetSubjectRevisionAsync(this IBangumiClient client, uint revisionId, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<SubjectRevision>> GetSubjectRevisionAsync(this BangumiClient client, uint revisionId, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeAsync(
             $"{RevisionsUrl}/subjects/{revisionId}",
@@ -119,7 +119,7 @@ partial class BangumiApis
     /// <param name="pageOffset"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<PagedData<EpisodeRevision>>> GetPagedEpisodeRevisionsAsync(this IBangumiClient client, uint episodeId, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<PagedData<EpisodeRevision>>> GetPagedEpisodeRevisionsAsync(this BangumiClient client, uint episodeId, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
     {
         return GetPagedRevisionInternalAsync(client, $"{RevisionsUrl}/episodes", "episode_id", episodeId, pageLimit, pageOffset,
             Json.Default.PagedDataEpisodeRevision, cancellationToken);
@@ -132,7 +132,7 @@ partial class BangumiApis
     /// <param name="revisionId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<EpisodeRevision>> GetEpisodeRevisionAsync(this IBangumiClient client, uint revisionId, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<EpisodeRevision>> GetEpisodeRevisionAsync(this BangumiClient client, uint revisionId, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeAsync(
             $"{RevisionsUrl}/episodes/{revisionId}",

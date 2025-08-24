@@ -23,7 +23,7 @@ partial class BangumiApis
     /// <param name="client"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<Calendar>> GetCalendarAsync(this IBangumiClient client, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<Calendar>> GetCalendarAsync(this BangumiClient client, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeAsync(
             CalendarUrl,
@@ -39,7 +39,7 @@ partial class BangumiApis
     /// <param name="pageOffset">页面跳过的数量</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<PagedData<Subject>>> GetPagedSubjectsAsync(this IBangumiClient client, GetSubjectsQuery query, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<PagedData<Subject>>> GetPagedSubjectsAsync(this BangumiClient client, GetSubjectsQuery query, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
     {
         var builder = new QueryBuilder(SubjectsUrl);
         builder.AppendQuery("type", query.Category.SubjectType.ToQueryValue());
@@ -66,7 +66,7 @@ partial class BangumiApis
     /// <param name="subjectId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<Subject>> GetSubjectAsync(this IBangumiClient client, uint subjectId, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<Subject>> GetSubjectAsync(this BangumiClient client, uint subjectId, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeAsync(
             $"{SubjectsUrl}/{subjectId}",
@@ -81,7 +81,7 @@ partial class BangumiApis
     /// <param name="imageSize">图片尺寸</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<Uri>> GetSubjectImageUrlAsync(this IBangumiClient client, uint subjectId, SubjectImageSize imageSize, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<Uri>> GetSubjectImageUrlAsync(this BangumiClient client, uint subjectId, SubjectImageSize imageSize, CancellationToken cancellationToken = default)
     {
         return client.GetRequestUriWhenSuccessStatusCodeAsync(
             $"{SubjectsUrl}/{subjectId}/image?type={imageSize.ToUrlQueryString()}",
@@ -95,7 +95,7 @@ partial class BangumiApis
     /// <param name="subjectId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<ImmutableArray<SubjectRelatedPerson>>> GetSubjectRelatedPersonsAsync(this IBangumiClient client, uint subjectId, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<ImmutableArray<SubjectRelatedPerson>>> GetSubjectRelatedPersonsAsync(this BangumiClient client, uint subjectId, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeAsync(
             $"{SubjectsUrl}/{subjectId}/persons",
@@ -109,7 +109,7 @@ partial class BangumiApis
     /// <param name="subjectId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<ImmutableArray<SubjectRelatedCharacter>>> GetSubjectRelatedCharactersAsync(this IBangumiClient client, uint subjectId, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<ImmutableArray<SubjectRelatedCharacter>>> GetSubjectRelatedCharactersAsync(this BangumiClient client, uint subjectId, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeAsync(
             $"{SubjectsUrl}/{subjectId}/characters",
@@ -123,7 +123,7 @@ partial class BangumiApis
     /// <param name="subjectId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<ImmutableArray<SubjectRelatedSubject>>> GetSubjectRelatedSubjectsAsync(this IBangumiClient client, uint subjectId, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<ImmutableArray<SubjectRelatedSubject>>> GetSubjectRelatedSubjectsAsync(this BangumiClient client, uint subjectId, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeAsync(
             $"{SubjectsUrl}/{subjectId}/subjects",

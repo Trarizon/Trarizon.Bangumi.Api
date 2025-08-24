@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization.Metadata;
 using Trarizon.Bangumi.Api.Responses;
@@ -26,9 +27,8 @@ public static partial class BangumiApis
 
     private static async ValueTask<BangumiApiResult<Uri?>> GetRequestUriWhenSuccessStatusCodeAsync(this HttpResponseMessage resp, CancellationToken cancellationToken)
     {
-        // api: 显示302成功，实际200成功
-        if (resp.IsSuccessStatusCode)
-            return new(resp, resp.RequestMessage?.RequestUri);
+        if (resp.StatusCode is HttpStatusCode.Found)
+            return new(resp, resp.Headers.Location);
         else
             return new(resp, (await resp.Content.ReadFromJsonAsync(BangumiJsonSerializerContext.Default.RequestError, cancellationToken).ConfigureAwait(false))!);
     }
@@ -52,61 +52,61 @@ public static partial class BangumiApis
             return new(resp, (await resp.Content.ReadFromJsonAsync(BangumiJsonSerializerContext.Default.RequestError, cancellationToken).ConfigureAwait(false))!);
     }
 
-    private static async Task<BangumiApiResult<Uri?>> GetRequestUriWhenSuccessStatusCodeAsync(this IBangumiClient client, string uri, CancellationToken cancellationToken)
+    private static async Task<BangumiApiResult<Uri?>> GetRequestUriWhenSuccessStatusCodeAsync(this BangumiClient client, string uri, CancellationToken cancellationToken)
     {
         var resp = await client.HttpClient.GetAsync(uri, cancellationToken).ConfigureAwait(false);
         return await resp.GetRequestUriWhenSuccessStatusCodeAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    private static async Task<BangumiApiResult<T>> GetFromJsonWhenSuccessStatusCodeAsync<T>(this IBangumiClient client, string uri, JsonTypeInfo<T> jsonTypeInfo, CancellationToken cancellationToken)
+    private static async Task<BangumiApiResult<T>> GetFromJsonWhenSuccessStatusCodeAsync<T>(this BangumiClient client, string uri, JsonTypeInfo<T> jsonTypeInfo, CancellationToken cancellationToken)
     {
         var resp = await client.HttpClient.GetAsync(uri, cancellationToken).ConfigureAwait(false);
         return await resp.ReadFromJsonWhenSuccessStatusCodeAsync(jsonTypeInfo, cancellationToken).ConfigureAwait(false);
     }
 
-    private static async Task<BangumiApiResult<T>> PostFromJsonWhenSuccessStatusCodeAsync<T>(this IBangumiClient client, string uri, JsonTypeInfo<T> jsonTypeInfo, CancellationToken cancellationToken)
+    private static async Task<BangumiApiResult<T>> PostFromJsonWhenSuccessStatusCodeAsync<T>(this BangumiClient client, string uri, JsonTypeInfo<T> jsonTypeInfo, CancellationToken cancellationToken)
     {
         var resp = await client.HttpClient.PostAsync(uri, null, cancellationToken).ConfigureAwait(false);
         return await resp.ReadFromJsonWhenSuccessStatusCodeAsync(jsonTypeInfo, cancellationToken).ConfigureAwait(false);
     }
 
-    private static async Task<BangumiApiResult<TResponse>> PostAsJsonAndFromJsonWhenSuccessStatusCodeAsync<TRequest, TResponse>(this IBangumiClient client, string uri, TRequest requestBody, JsonTypeInfo<TRequest> requestJsonTypeInfo, JsonTypeInfo<TResponse> responseJsonTypeInfo, CancellationToken cancellationToken) where TResponse : class
+    private static async Task<BangumiApiResult<TResponse>> PostAsJsonAndFromJsonWhenSuccessStatusCodeAsync<TRequest, TResponse>(this BangumiClient client, string uri, TRequest requestBody, JsonTypeInfo<TRequest> requestJsonTypeInfo, JsonTypeInfo<TResponse> responseJsonTypeInfo, CancellationToken cancellationToken) where TResponse : class
     {
         var resp = await client.HttpClient.PostAsync(uri, CreateJsonContent(requestBody, requestJsonTypeInfo), cancellationToken).ConfigureAwait(false);
         return await resp.ReadFromJsonWhenSuccessStatusCodeAsync(responseJsonTypeInfo, cancellationToken).ConfigureAwait(false);
     }
 
-    private static async Task<BangumiApiResult> PostAsJsonEnsureSuccessStatusCodeAsync<TRequest>(this IBangumiClient client, string uri, TRequest requestBody, JsonTypeInfo<TRequest> requestJsonTypeInfo, CancellationToken cancellationToken)
+    private static async Task<BangumiApiResult> PostAsJsonEnsureSuccessStatusCodeAsync<TRequest>(this BangumiClient client, string uri, TRequest requestBody, JsonTypeInfo<TRequest> requestJsonTypeInfo, CancellationToken cancellationToken)
     {
         var resp = await client.HttpClient.PostAsync(uri, CreateJsonContent(requestBody, requestJsonTypeInfo), cancellationToken).ConfigureAwait(false);
         return await resp.GetResultCheckSuccessStatusCodeAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    private static async Task<BangumiApiResult> PostEnsureSuccessStatusCodeAsync(this IBangumiClient client, string uri, CancellationToken cancellationToken)
+    private static async Task<BangumiApiResult> PostEnsureSuccessStatusCodeAsync(this BangumiClient client, string uri, CancellationToken cancellationToken)
     {
         var resp = await client.HttpClient.PostAsync(uri, null, cancellationToken).ConfigureAwait(false);
         return await resp.GetResultCheckSuccessStatusCodeAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    private static async Task<BangumiApiResult> PatchAsJsonEnsureSuccessStatusCodeAsync<TRequest>(this IBangumiClient client, string uri, TRequest requestBody, JsonTypeInfo<TRequest> requestJsonTypeInfo, CancellationToken cancellationToken)
+    private static async Task<BangumiApiResult> PatchAsJsonEnsureSuccessStatusCodeAsync<TRequest>(this BangumiClient client, string uri, TRequest requestBody, JsonTypeInfo<TRequest> requestJsonTypeInfo, CancellationToken cancellationToken)
     {
         var resp = await client.HttpClient.PatchAsync(uri, CreateJsonContent(requestBody, requestJsonTypeInfo), cancellationToken).ConfigureAwait(false);
         return await resp.GetResultCheckSuccessStatusCodeAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    private static async Task<BangumiApiResult<TResponse>> PutAsJsonAndFromJsonWhenSuccessStatusCodeAsync<TRequest, TResponse>(this IBangumiClient client, string uri, TRequest requestBody, JsonTypeInfo<TRequest> requestJsonTypeInfo, JsonTypeInfo<TResponse> responseJsonTypeInfo, CancellationToken cancellationToken)
+    private static async Task<BangumiApiResult<TResponse>> PutAsJsonAndFromJsonWhenSuccessStatusCodeAsync<TRequest, TResponse>(this BangumiClient client, string uri, TRequest requestBody, JsonTypeInfo<TRequest> requestJsonTypeInfo, JsonTypeInfo<TResponse> responseJsonTypeInfo, CancellationToken cancellationToken)
     {
         var resp = await client.HttpClient.PutAsync(uri, CreateJsonContent(requestBody, requestJsonTypeInfo), cancellationToken).ConfigureAwait(false);
         return await resp.ReadFromJsonWhenSuccessStatusCodeAsync(responseJsonTypeInfo, cancellationToken).ConfigureAwait(false);
     }
 
-    private static async Task<BangumiApiResult> PutAsJsonEnsureSuccessStatusCodeAsync<TRequest>(this IBangumiClient client, string uri, TRequest requestBody, JsonTypeInfo<TRequest> requestJsonTypeInfo, CancellationToken cancellationToken)
+    private static async Task<BangumiApiResult> PutAsJsonEnsureSuccessStatusCodeAsync<TRequest>(this BangumiClient client, string uri, TRequest requestBody, JsonTypeInfo<TRequest> requestJsonTypeInfo, CancellationToken cancellationToken)
     {
         var resp = await client.HttpClient.PutAsync(uri, CreateJsonContent(requestBody, requestJsonTypeInfo), cancellationToken).ConfigureAwait(false);
         return await resp.GetResultCheckSuccessStatusCodeAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    private static async Task<BangumiApiResult> DeleteEnsureSuccessStatusCodeAsync(this IBangumiClient client, string uri, CancellationToken cancellationToken)
+    private static async Task<BangumiApiResult> DeleteEnsureSuccessStatusCodeAsync(this BangumiClient client, string uri, CancellationToken cancellationToken)
     {
         var resp = await client.HttpClient.DeleteAsync(uri, cancellationToken).ConfigureAwait(false);
         return await resp.GetResultCheckSuccessStatusCodeAsync(cancellationToken).ConfigureAwait(false);

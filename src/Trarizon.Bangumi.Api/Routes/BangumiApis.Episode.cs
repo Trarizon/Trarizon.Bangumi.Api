@@ -1,5 +1,4 @@
-﻿using Trarizon.Bangumi.Api.Http;
-using Trarizon.Bangumi.Api.Models.EpisodeModels;
+﻿using Trarizon.Bangumi.Api.Models.EpisodeModels;
 using Trarizon.Bangumi.Api.Responses;
 using Trarizon.Bangumi.Api.Utilities;
 using Json = Trarizon.Bangumi.Api.Serialization.BangumiJsonSerializerContext;
@@ -21,7 +20,7 @@ partial class BangumiApis
     /// <param name="pageOffset"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<PagedData<Episode>>> GetPagedEpisodesAsync(this IBangumiClient client, uint subjectId, EpisodeType? episodeType = null, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<PagedData<Episode>>> GetPagedEpisodesAsync(this BangumiClient client, uint subjectId, EpisodeType? episodeType = null, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
     {
         var builder = new QueryBuilder(EpisodesUrl);
         builder.AppendQuery("subject_id", subjectId);
@@ -42,7 +41,7 @@ partial class BangumiApis
     /// <param name="episodeId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<Episode>> GetEpisodeAsync(this IBangumiClient client, uint episodeId, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<Episode>> GetEpisodeAsync(this BangumiClient client, uint episodeId, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeAsync(
             $"{EpisodesUrl}/{episodeId}",

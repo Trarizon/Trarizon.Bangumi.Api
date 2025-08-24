@@ -4,20 +4,11 @@ namespace Trarizon.Bangumi.Api;
 /// <summary>
 /// Bangumi API客户端
 /// </summary>
-public interface IBangumiClient
-{
-    /// <summary>
-    /// 使用的HttpClient
-    /// </summary>
-    HttpClient HttpClient { get; }
-}
-
-/// <summary>
-/// Bangumi API客户端实现
-/// </summary>
-public sealed class BangumiClient : IBangumiClient, IDisposable
+public sealed class BangumiClient : IDisposable
 {
     private const string ApiServerBaseAddress = "https://api.bgm.tv";
+
+    private readonly HttpClientHandler _httpClientHandler;
 
     /// <inheritdoc />
     public HttpClient HttpClient { get; }
@@ -29,7 +20,11 @@ public sealed class BangumiClient : IBangumiClient, IDisposable
     /// <param name="accessToken">为null或空时，不设置AccessToken</param>
     public BangumiClient(string userAgent, string? accessToken = null)
     {
-        HttpClient = new HttpClient
+        _httpClientHandler = new HttpClientHandler
+        {
+            AllowAutoRedirect = false
+        };
+        HttpClient = new HttpClient(_httpClientHandler)
         {
             BaseAddress = new Uri(ApiServerBaseAddress),
         };
@@ -44,7 +39,11 @@ public sealed class BangumiClient : IBangumiClient, IDisposable
     /// <param name="options"></param>
     public BangumiClient(BangumiClientOptions options)
     {
-        HttpClient = new HttpClient
+        _httpClientHandler = new HttpClientHandler
+        {
+            AllowAutoRedirect = false
+        };
+        HttpClient = new HttpClient(_httpClientHandler)
         {
             BaseAddress = new Uri(options.BaseAddress ?? ApiServerBaseAddress),
         };

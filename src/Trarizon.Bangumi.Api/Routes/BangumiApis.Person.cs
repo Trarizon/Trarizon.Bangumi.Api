@@ -18,7 +18,7 @@ partial class BangumiApis
     /// <param name="personId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<Person>> GetPersonAsync(this IBangumiClient client, uint personId, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<Person>> GetPersonAsync(this BangumiClient client, uint personId, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeAsync($"{PersonsUrl}/{personId}",
             Json.Default.Person, cancellationToken);
@@ -32,7 +32,7 @@ partial class BangumiApis
     /// <param name="imageSize"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<Uri>> GetPersonImageUrlAsync(this IBangumiClient client, uint personId, PersonImageSize imageSize, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<Uri>> GetPersonImageUrlAsync(this BangumiClient client, uint personId, PersonImageSize imageSize, CancellationToken cancellationToken = default)
     {
         return client.GetRequestUriWhenSuccessStatusCodeAsync(
             $"{PersonsUrl}/{personId}/image?type={imageSize.ToUrlQueryString()}", cancellationToken)!;
@@ -45,7 +45,7 @@ partial class BangumiApis
     /// <param name="personId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<ImmutableArray<PersonRelatedSubject>>> GetPersonRelatedSubjectsAsync(this IBangumiClient client, uint personId, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<ImmutableArray<PersonRelatedSubject>>> GetPersonRelatedSubjectsAsync(this BangumiClient client, uint personId, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeAsync(
             $"{PersonsUrl}/{personId}/subjects",
@@ -59,7 +59,7 @@ partial class BangumiApis
     /// <param name="personId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<ImmutableArray<PersonRelatedCharacter>>> GetPersonRelatedCharactersAsync(this IBangumiClient client, uint personId, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult<ImmutableArray<PersonRelatedCharacter>>> GetPersonRelatedCharactersAsync(this BangumiClient client, uint personId, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeAsync(
             $"{PersonsUrl}/{personId}/characters",
@@ -73,7 +73,7 @@ partial class BangumiApis
     /// <param name="personId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult> CollectPersonAsync(this IBangumiClient client, uint personId, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult> CollectPersonAsync(this BangumiClient client, uint personId, CancellationToken cancellationToken = default)
     {
         return client.PostEnsureSuccessStatusCodeAsync(
             $"{PersonsUrl}/{personId}/collect", cancellationToken);
@@ -88,7 +88,7 @@ partial class BangumiApis
     /// <returns></returns>
     [Obsolete("Hide as route not implemented yet")]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public static Task<BangumiApiResult> UncollectPersonAsync(this IBangumiClient client, uint personId, CancellationToken cancellationToken = default)
+    public static Task<BangumiApiResult> UncollectPersonAsync(this BangumiClient client, uint personId, CancellationToken cancellationToken = default)
     {
         return client.DeleteEnsureSuccessStatusCodeAsync(
             $"{PersonsUrl}/{personId}/collect", cancellationToken);
