@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Trarizon.Bangumi.Api.Models.Subjects;
+using Trarizon.Bangumi.Api.Models.SubjectModels;
 
 namespace Trarizon.Bangumi.Api.Serialization.Models;
 internal sealed class CalendarJsonConverter : JsonConverter<Calendar>

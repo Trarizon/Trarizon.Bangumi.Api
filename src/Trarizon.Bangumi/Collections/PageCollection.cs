@@ -1,4 +1,4 @@
-﻿using Trarizon.Bangumi.Api.Http.Responses;
+﻿using Trarizon.Bangumi.Api.Responses;
 
 namespace Trarizon.Bangumi.Collections;
 public sealed class PageCollection<T> : IAsyncEnumerable<T>

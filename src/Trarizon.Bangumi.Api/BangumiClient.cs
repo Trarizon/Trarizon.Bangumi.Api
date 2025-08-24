@@ -1,5 +1,4 @@
 ﻿using System.Net.Http.Headers;
-using Trarizon.Bangumi.Api.Http;
 
 namespace Trarizon.Bangumi.Api;
 /// <summary>

@@ -1,12 +1,11 @@
 ﻿using Trarizon.Bangumi.Api;
 using Trarizon.Bangumi.Api.Http.Requests;
-using Trarizon.Bangumi.Api.Http.Requests.Entities;
-using Trarizon.Bangumi.Api.Http.Responses;
-using Trarizon.Bangumi.Api.Models;
-using Trarizon.Bangumi.Api.Models.Episodes;
-using Trarizon.Bangumi.Api.Models.Persons;
-using Trarizon.Bangumi.Api.Models.Subjects;
-using Trarizon.Bangumi.Api.Models.Users;
+using Trarizon.Bangumi.Api.Models.EpisodeModels;
+using Trarizon.Bangumi.Api.Models.PersonModels;
+using Trarizon.Bangumi.Api.Models.SubjectModels;
+using Trarizon.Bangumi.Api.Models.UserModels;
+using Trarizon.Bangumi.Api.Requests.Models;
+using Trarizon.Bangumi.Api.Responses;
 using Trarizon.Bangumi.Collections;
 
 namespace Trarizon.Bangumi.Run;

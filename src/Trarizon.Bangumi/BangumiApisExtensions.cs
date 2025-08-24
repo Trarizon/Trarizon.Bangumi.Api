@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Trarizon.Bangumi.Api;
-using Trarizon.Bangumi.Api.Http.Requests;
-using Trarizon.Bangumi.Api.Models.Characters;
-using Trarizon.Bangumi.Api.Models.Episodes;
-using Trarizon.Bangumi.Api.Models.Indices;
-using Trarizon.Bangumi.Api.Models.Persons;
-using Trarizon.Bangumi.Api.Models.Revisions;
-using Trarizon.Bangumi.Api.Models.Subjects;
-using Trarizon.Bangumi.Api.Models.Users;
+using Trarizon.Bangumi.Api.Models.CharacterModels;
+using Trarizon.Bangumi.Api.Models.EpisodeModels;
+using Trarizon.Bangumi.Api.Models.IndexModels;
+using Trarizon.Bangumi.Api.Models.PersonModels;
+using Trarizon.Bangumi.Api.Models.RevisionModels;
+using Trarizon.Bangumi.Api.Models.SubjectModels;
+using Trarizon.Bangumi.Api.Models.UserModels;
+using Trarizon.Bangumi.Api.Requests;
 using Trarizon.Bangumi.Collections;
 
 namespace Trarizon.Bangumi;
@@ -31,7 +31,7 @@ public static class BangumiApisExtensions
     /// <param name="limit">每次迭代的单页最大数量</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static PageCollection<Subject> GetSubjects(this IBangumiClient client, GetSubjectsQueries queries, int? limit = null)
+    public static PageCollection<Subject> GetSubjects(this IBangumiClient client, GetSubjectsQuery queries, int? limit = null)
     {
         queries = queries.Clone();
         return new PageCollection<Subject>(limit, (lmt, ofs, token) => client.GetPagedSubjectsAsync(queries, lmt, ofs, token));

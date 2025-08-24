@@ -1,15 +1,15 @@
 ﻿using System.Collections.Immutable;
 using System.Text.Json.Serialization;
-using Trarizon.Bangumi.Api.Http.Requests;
-using Trarizon.Bangumi.Api.Http.Responses;
 using Trarizon.Bangumi.Api.Models;
-using Trarizon.Bangumi.Api.Models.Characters;
-using Trarizon.Bangumi.Api.Models.Episodes;
-using Trarizon.Bangumi.Api.Models.Indices;
-using Trarizon.Bangumi.Api.Models.Persons;
-using Trarizon.Bangumi.Api.Models.Revisions;
-using Trarizon.Bangumi.Api.Models.Subjects;
-using Trarizon.Bangumi.Api.Models.Users;
+using Trarizon.Bangumi.Api.Models.CharacterModels;
+using Trarizon.Bangumi.Api.Models.EpisodeModels;
+using Trarizon.Bangumi.Api.Models.IndexModels;
+using Trarizon.Bangumi.Api.Models.PersonModels;
+using Trarizon.Bangumi.Api.Models.RevisionModels;
+using Trarizon.Bangumi.Api.Models.SubjectModels;
+using Trarizon.Bangumi.Api.Models.UserModels;
+using Trarizon.Bangumi.Api.Requests;
+using Trarizon.Bangumi.Api.Responses;
 
 namespace Trarizon.Bangumi.Api.Serialization;
 [JsonSourceGenerationOptions(WriteIndented = true)]

@@ -6,8 +6,8 @@ using Trarizon.Bangumi.Api;
 using Trarizon.Bangumi.Api.Http.Requests;
 using Trarizon.Bangumi.Api.Http.Responses;
 using Trarizon.Bangumi.Api.Models;
-using Trarizon.Bangumi.Api.Models.Episodes;
-using Trarizon.Bangumi.Api.Models.Subjects;
+using Trarizon.Bangumi.Api.Models.EpisodeModels;
+using Trarizon.Bangumi.Api.Models.SubjectModels;
 using Trarizon.Bangumi.Api.Serialization;
 
 #pragma warning disable BgmExprApi // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。

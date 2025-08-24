@@ -59,7 +59,7 @@ internal static class EnumExtensions
             DayOfWeek.Wednesday => "水曜日",
             DayOfWeek.Thursday => "木曜日",
             DayOfWeek.Friday => "金曜日",
-            DayOfWeek.Saturday => "土曜日土曜日",
+            DayOfWeek.Saturday => "土曜日",
             _ => Throws.ThrowUnknownEnumValue<string>(dayOfWeek),
         };
     }

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using Trarizon.Bangumi.Api.Http.Requests.Entities;
+using Trarizon.Bangumi.Api.Requests.Models;
 
 namespace Trarizon.Bangumi.Api.Serialization.Http;
 internal sealed class NsfwFilterJsonConverter : JsonConverter<NsfwFilter>
