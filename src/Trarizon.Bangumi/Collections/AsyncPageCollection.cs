@@ -1,9 +1,9 @@
 ﻿using Trarizon.Bangumi.Api.Responses;
 
 namespace Trarizon.Bangumi.Collections;
-public sealed class PageCollection<T> : IAsyncEnumerable<T>
+public sealed class AsyncPageCollection<T> : IAsyncEnumerable<T>
 {
-    private static readonly PageCollection<T> Empty = new(default, default, takeCount: 0, default!, pageFetcher: default!);
+    private static readonly AsyncPageCollection<T> Empty = new(default, default, takeCount: 0, default!, pageFetcher: default!);
 
     private readonly Func<int?, int, CancellationToken, Task<BangumiApiResult<PagedData<T>>>> _pageFetcher;
     private readonly int? _limit;
@@ -11,7 +11,7 @@ public sealed class PageCollection<T> : IAsyncEnumerable<T>
     private readonly int _takeCount; // -1 for infinite
     private readonly PageCollectionOptions _options;
 
-    internal PageCollection(int? limit, Func<int?, int, CancellationToken, Task<BangumiApiResult<PagedData<T>>>> pageFetcher)
+    internal AsyncPageCollection(int? limit, Func<int?, int, CancellationToken, Task<BangumiApiResult<PagedData<T>>>> pageFetcher)
     {
         _pageFetcher = pageFetcher;
         _limit = limit;
@@ -20,7 +20,7 @@ public sealed class PageCollection<T> : IAsyncEnumerable<T>
         _options = PageCollectionOptions.Default;
     }
 
-    private PageCollection(int? limit, int offset, int takeCount, PageCollectionOptions options, Func<int?, int, CancellationToken, Task<BangumiApiResult<PagedData<T>>>> pageFetcher)
+    private AsyncPageCollection(int? limit, int offset, int takeCount, PageCollectionOptions options, Func<int?, int, CancellationToken, Task<BangumiApiResult<PagedData<T>>>> pageFetcher)
     {
         _pageFetcher = pageFetcher;
         _limit = limit;
@@ -34,8 +34,8 @@ public sealed class PageCollection<T> : IAsyncEnumerable<T>
     /// </summary>
     /// <param name="limit"></param>
     /// <returns>A new collection with given page limit</returns>
-    public PageCollection<T> WithPageLimit(int? limit)
-        => new PageCollection<T>(limit, _offset, _takeCount, _options, _pageFetcher);
+    public AsyncPageCollection<T> WithPageLimit(int? limit)
+        => new AsyncPageCollection<T>(limit, _offset, _takeCount, _options, _pageFetcher);
 
     public Task<BangumiApiResult<PagedData<T>>> GetPageAsync(int? limit = null, int rawOffset = 0, CancellationToken cancellationToken = default)
     {
@@ -58,7 +58,7 @@ public sealed class PageCollection<T> : IAsyncEnumerable<T>
         return long.Min(total, _takeCount);
     }
 
-    public PageCollection<T> Take(int count)
+    public AsyncPageCollection<T> Take(int count)
     {
         if (count >= _takeCount) {
             return this;
@@ -66,17 +66,17 @@ public sealed class PageCollection<T> : IAsyncEnumerable<T>
         if (count <= 0) {
             return Empty;
         }
-        return new PageCollection<T>(_limit, _offset, count, _options, _pageFetcher);
+        return new AsyncPageCollection<T>(_limit, _offset, count, _options, _pageFetcher);
     }
 
-    public PageCollection<T> Skip(int count)
+    public AsyncPageCollection<T> Skip(int count)
     {
         if (count >= _takeCount) {
             return Empty;
         }
         if (count <= 0)
             return this;
-        return new PageCollection<T>(_limit, _offset + count, _takeCount - count, _options, _pageFetcher);
+        return new AsyncPageCollection<T>(_limit, _offset + count, _takeCount - count, _options, _pageFetcher);
     }
 
     public async IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)

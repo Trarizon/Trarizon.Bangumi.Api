@@ -14,7 +14,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\Trarizon.Bangumi.Api\Trarizon.Bangumi.Api.csproj" />
-      <ProjectReference Include="..\..\src\Trarizon.Bangumi\Trarizon.Bangumi.csproj" />
     </ItemGroup>
 
     <ItemGroup>

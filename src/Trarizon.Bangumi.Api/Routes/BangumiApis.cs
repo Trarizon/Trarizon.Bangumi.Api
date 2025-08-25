@@ -16,7 +16,7 @@ namespace Trarizon.Bangumi.Api.Routes;
 /// </remarks>
 public static partial class BangumiApis
 {
-    private const string ExperimentalApiDiagnosticId = "BgmExprApi";
+    internal const string ExperimentalApiDiagnosticId = "BgmExprApi";
 
     private const string V0Url = "/v0";
 
@@ -24,6 +24,8 @@ public static partial class BangumiApis
 
     private static JsonContent CreateJsonContent<T>(T value, JsonTypeInfo<T> jsonTypeInfo)
         => JsonContent.Create(value, jsonTypeInfo, _jsonHeaderValue);
+
+    // Resp
 
     private static async ValueTask<BangumiApiResult<Uri?>> GetHeadersLocationWhenSuccessAsync(this HttpResponseMessage resp, HttpStatusCode successStatusCode, CancellationToken cancellationToken)
     {
@@ -49,6 +51,8 @@ public static partial class BangumiApis
             return new(resp, (await resp.Content.ReadFromJsonAsync(BangumiJsonSerializerContext.Default.RequestError, cancellationToken).ConfigureAwait(false))!);
     }
 
+    // Client
+
     private static async Task<BangumiApiResult<Uri?>> GetHeadersLocationWhenStatusFoundAsync(this BangumiClient client, string uri, CancellationToken cancellationToken)
     {
         using var resp = await client.HttpClient.GetAsync(uri, cancellationToken).ConfigureAwait(false);
@@ -58,12 +62,6 @@ public static partial class BangumiApis
     private static async Task<BangumiApiResult<T>> GetFromJsonWhenSuccessStatusCodeAsync<T>(this BangumiClient client, string uri, JsonTypeInfo<T> jsonTypeInfo, CancellationToken cancellationToken)
     {
         using var resp = await client.HttpClient.GetAsync(uri, cancellationToken).ConfigureAwait(false);
-        return await resp.ReadResultFromJsonAsync(jsonTypeInfo, cancellationToken).ConfigureAwait(false);
-    }
-
-    private static async Task<BangumiApiResult<T>> PostFromJsonWhenSuccessStatusCodeAsync<T>(this BangumiClient client, string uri, JsonTypeInfo<T> jsonTypeInfo, CancellationToken cancellationToken)
-    {
-        using var resp = await client.HttpClient.PostAsync(uri, null, cancellationToken).ConfigureAwait(false);
         return await resp.ReadResultFromJsonAsync(jsonTypeInfo, cancellationToken).ConfigureAwait(false);
     }
 

@@ -7,7 +7,8 @@ using Trarizon.Bangumi.Api.Requests;
 using Trarizon.Bangumi.Api.Requests.Models;
 using Trarizon.Bangumi.Api.Responses;
 using Trarizon.Bangumi.Api.Routes;
-using Trarizon.Bangumi.Collections;
+using Trarizon.Bangumi.Api.Toolkit;
+using Trarizon.Bangumi.Api.Toolkit.Collections;
 
 namespace Trarizon.Bangumi.Run;
 public static class Examples
@@ -207,13 +208,12 @@ public static class Examples
             Console.WriteLine(subject.Name);
         }
 
-        PageCollection<Subject> subjects = client.GetSubjects(queries);
+        AsyncPageCollection<Subject> subjects = client.GetSubjects(queries);
+        // 搜索结果可能有很多数据，这种情况不推荐遍历所有数据，请自行break或使用Linq筛选
         await foreach (var subject in subjects) {
             Console.WriteLine(subject.Name);
         }
-        // 可以通过GetPageAsync()获取单独一页
-        var page = await subjects.GetPageAsync(cancellationToken: cancellationToken).Unwrap();
-        // 提供了CountAsync()，LongCountAsync()，Take()，Skip()等AsyncLinq优化
+        // 提供了CountAsync()，LongCountAsync()，Take()，Skip()类Linq方法
         await foreach (var subject in subjects.Take(10)) {
             Console.WriteLine(subject.Name);
         }
