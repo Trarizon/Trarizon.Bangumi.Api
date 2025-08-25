@@ -51,61 +51,61 @@ public static partial class BangumiApis
 
     private static async Task<BangumiApiResult<Uri?>> GetHeadersLocationWhenStatusFoundAsync(this BangumiClient client, string uri, CancellationToken cancellationToken)
     {
-        var resp = await client.HttpClient.GetAsync(uri, cancellationToken).ConfigureAwait(false);
+        using var resp = await client.HttpClient.GetAsync(uri, cancellationToken).ConfigureAwait(false);
         return await resp.GetHeadersLocationWhenSuccessAsync(HttpStatusCode.Found, cancellationToken).ConfigureAwait(false);
     }
 
     private static async Task<BangumiApiResult<T>> GetFromJsonWhenSuccessStatusCodeAsync<T>(this BangumiClient client, string uri, JsonTypeInfo<T> jsonTypeInfo, CancellationToken cancellationToken)
     {
-        var resp = await client.HttpClient.GetAsync(uri, cancellationToken).ConfigureAwait(false);
+        using var resp = await client.HttpClient.GetAsync(uri, cancellationToken).ConfigureAwait(false);
         return await resp.ReadResultFromJsonAsync(jsonTypeInfo, cancellationToken).ConfigureAwait(false);
     }
 
     private static async Task<BangumiApiResult<T>> PostFromJsonWhenSuccessStatusCodeAsync<T>(this BangumiClient client, string uri, JsonTypeInfo<T> jsonTypeInfo, CancellationToken cancellationToken)
     {
-        var resp = await client.HttpClient.PostAsync(uri, null, cancellationToken).ConfigureAwait(false);
+        using var resp = await client.HttpClient.PostAsync(uri, null, cancellationToken).ConfigureAwait(false);
         return await resp.ReadResultFromJsonAsync(jsonTypeInfo, cancellationToken).ConfigureAwait(false);
     }
 
     private static async Task<BangumiApiResult<TResponse>> PostAsJsonAndFromJsonWhenSuccessStatusCodeAsync<TRequest, TResponse>(this BangumiClient client, string uri, TRequest requestBody, JsonTypeInfo<TRequest> requestJsonTypeInfo, JsonTypeInfo<TResponse> responseJsonTypeInfo, CancellationToken cancellationToken) where TResponse : class
     {
-        var resp = await client.HttpClient.PostAsync(uri, CreateJsonContent(requestBody, requestJsonTypeInfo), cancellationToken).ConfigureAwait(false);
+        using var resp = await client.HttpClient.PostAsync(uri, CreateJsonContent(requestBody, requestJsonTypeInfo), cancellationToken).ConfigureAwait(false);
         return await resp.ReadResultFromJsonAsync(responseJsonTypeInfo, cancellationToken).ConfigureAwait(false);
     }
 
     private static async Task<BangumiApiResult> PostAsJsonEnsureSuccessStatusCodeAsync<TRequest>(this BangumiClient client, string uri, TRequest requestBody, JsonTypeInfo<TRequest> requestJsonTypeInfo, CancellationToken cancellationToken)
     {
-        var resp = await client.HttpClient.PostAsync(uri, CreateJsonContent(requestBody, requestJsonTypeInfo), cancellationToken).ConfigureAwait(false);
+        using var resp = await client.HttpClient.PostAsync(uri, CreateJsonContent(requestBody, requestJsonTypeInfo), cancellationToken).ConfigureAwait(false);
         return await resp.ReadVoidResultFromJsonAsync(cancellationToken).ConfigureAwait(false);
     }
 
     private static async Task<BangumiApiResult> PostEnsureSuccessStatusCodeAsync(this BangumiClient client, string uri, CancellationToken cancellationToken)
     {
-        var resp = await client.HttpClient.PostAsync(uri, null, cancellationToken).ConfigureAwait(false);
+        using var resp = await client.HttpClient.PostAsync(uri, null, cancellationToken).ConfigureAwait(false);
         return await resp.ReadVoidResultFromJsonAsync(cancellationToken).ConfigureAwait(false);
     }
 
     private static async Task<BangumiApiResult> PatchAsJsonEnsureSuccessStatusCodeAsync<TRequest>(this BangumiClient client, string uri, TRequest requestBody, JsonTypeInfo<TRequest> requestJsonTypeInfo, CancellationToken cancellationToken)
     {
-        var resp = await client.HttpClient.PatchAsync(uri, CreateJsonContent(requestBody, requestJsonTypeInfo), cancellationToken).ConfigureAwait(false);
+        using var resp = await client.HttpClient.PatchAsync(uri, CreateJsonContent(requestBody, requestJsonTypeInfo), cancellationToken).ConfigureAwait(false);
         return await resp.ReadVoidResultFromJsonAsync(cancellationToken).ConfigureAwait(false);
     }
 
     private static async Task<BangumiApiResult<TResponse>> PutAsJsonAndFromJsonWhenSuccessStatusCodeAsync<TRequest, TResponse>(this BangumiClient client, string uri, TRequest requestBody, JsonTypeInfo<TRequest> requestJsonTypeInfo, JsonTypeInfo<TResponse> responseJsonTypeInfo, CancellationToken cancellationToken)
     {
-        var resp = await client.HttpClient.PutAsync(uri, CreateJsonContent(requestBody, requestJsonTypeInfo), cancellationToken).ConfigureAwait(false);
+        using var resp = await client.HttpClient.PutAsync(uri, CreateJsonContent(requestBody, requestJsonTypeInfo), cancellationToken).ConfigureAwait(false);
         return await resp.ReadResultFromJsonAsync(responseJsonTypeInfo, cancellationToken).ConfigureAwait(false);
     }
 
     private static async Task<BangumiApiResult> PutAsJsonEnsureSuccessStatusCodeAsync<TRequest>(this BangumiClient client, string uri, TRequest requestBody, JsonTypeInfo<TRequest> requestJsonTypeInfo, CancellationToken cancellationToken)
     {
-        var resp = await client.HttpClient.PutAsync(uri, CreateJsonContent(requestBody, requestJsonTypeInfo), cancellationToken).ConfigureAwait(false);
+        using var resp = await client.HttpClient.PutAsync(uri, CreateJsonContent(requestBody, requestJsonTypeInfo), cancellationToken).ConfigureAwait(false);
         return await resp.ReadVoidResultFromJsonAsync(cancellationToken).ConfigureAwait(false);
     }
 
     private static async Task<BangumiApiResult> DeleteEnsureSuccessStatusCodeAsync(this BangumiClient client, string uri, CancellationToken cancellationToken)
     {
-        var resp = await client.HttpClient.DeleteAsync(uri, cancellationToken).ConfigureAwait(false);
+        using var resp = await client.HttpClient.DeleteAsync(uri, cancellationToken).ConfigureAwait(false);
         return await resp.ReadVoidResultFromJsonAsync(cancellationToken).ConfigureAwait(false);
     }
 }
