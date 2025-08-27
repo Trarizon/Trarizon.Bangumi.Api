@@ -11,13 +11,13 @@ public sealed class AsyncPageCollection<T> : IAsyncEnumerable<T>
     // 简单起见删除了GetPageAsync(lmt, ofs)方法
     private static readonly AsyncPageCollection<T> Empty = new(default, default, takeCount: 0, default!, pageFetcher: default!);
 
-    private readonly Func<int?, int, CancellationToken, Task<BangumiApiResult<PagedData<T>>>> _pageFetcher;
+    private readonly Func<int?, int, CancellationToken, Task<PagedData<T>>> _pageFetcher;
     private readonly int? _limit;
     private readonly int _offset;
     private readonly int _takeCount; // -1 for infinite
     private readonly AsyncPageCollectionOptions _options;
 
-    internal AsyncPageCollection(int? limit, AsyncPageCollectionOptions options, Func<int?, int, CancellationToken, Task<BangumiApiResult<PagedData<T>>>> pageFetcher)
+    internal AsyncPageCollection(int? limit, AsyncPageCollectionOptions options, Func<int?, int, CancellationToken, Task<PagedData<T>>> pageFetcher)
     {
         _pageFetcher = pageFetcher;
         _limit = limit;
@@ -26,7 +26,7 @@ public sealed class AsyncPageCollection<T> : IAsyncEnumerable<T>
         _options = options;
     }
 
-    private AsyncPageCollection(int? limit, int offset, int takeCount, AsyncPageCollectionOptions options, Func<int?, int, CancellationToken, Task<BangumiApiResult<PagedData<T>>>> pageFetcher)
+    private AsyncPageCollection(int? limit, int offset, int takeCount, AsyncPageCollectionOptions options, Func<int?, int, CancellationToken, Task<PagedData<T>>> pageFetcher)
     {
         _pageFetcher = pageFetcher;
         _limit = limit;
@@ -56,7 +56,7 @@ public sealed class AsyncPageCollection<T> : IAsyncEnumerable<T>
 
         async Task<int> Core(CancellationToken cancellationToken)
         {
-            var page = await _pageFetcher(1, 0, cancellationToken).Unwrap().ConfigureAwait(false);
+            var page = await _pageFetcher(1, 0, cancellationToken).ConfigureAwait(false);
             var total = page.Total - _offset;
 
             if (_takeCount < 0)
@@ -78,7 +78,7 @@ public sealed class AsyncPageCollection<T> : IAsyncEnumerable<T>
 
         async Task<long> Core(CancellationToken cancellationToken)
         {
-            var page = await _pageFetcher(1, 0, cancellationToken).Unwrap().ConfigureAwait(false);
+            var page = await _pageFetcher(1, 0, cancellationToken).ConfigureAwait(false);
             var total = page.Total - _offset;
 
             if (_takeCount < 0)
@@ -129,8 +129,7 @@ public sealed class AsyncPageCollection<T> : IAsyncEnumerable<T>
         int offset = _offset;
 
         while (true) {
-            var page = await _pageFetcher(_limit, offset, cancellationToken)
-                .Unwrap().ConfigureAwait(false);
+            var page = await _pageFetcher(_limit, offset, cancellationToken).ConfigureAwait(false);
             var delayTask = Task.Delay(_options.RequestInterval, cancellationToken);
 
             var items = page.Datas;

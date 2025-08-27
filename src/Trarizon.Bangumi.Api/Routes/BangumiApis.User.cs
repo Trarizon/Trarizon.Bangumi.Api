@@ -1,5 +1,4 @@
 ﻿using Trarizon.Bangumi.Api.Models.UserModels;
-using Trarizon.Bangumi.Api.Responses;
 using Json = Trarizon.Bangumi.Api.Serialization.BangumiJsonSerializerContext;
 
 namespace Trarizon.Bangumi.Api.Routes;
@@ -17,9 +16,9 @@ partial class BangumiApis
     /// <param name="userName"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<User>> GetUserAsync(this BangumiClient client, string userName, CancellationToken cancellationToken = default)
+    public static Task<User> GetUserAsync(this IBangumiClient client, string userName, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeAsync(
+        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
             $"{UsersUrl}/{userName}", Json.Default.User, cancellationToken);
     }
 
@@ -31,9 +30,9 @@ partial class BangumiApis
     /// <param name="avatarSize"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<Uri>> GetUserAvatarUrlAsync(this BangumiClient client, string userName, AvatarSize avatarSize, CancellationToken cancellationToken = default)
+    public static Task<Uri> GetUserAvatarUrlAsync(this IBangumiClient client, string userName, AvatarSize avatarSize, CancellationToken cancellationToken = default)
     {
-        return client.GetHeadersLocationWhenStatusFoundAsync(
+        return client.GetHeadersLocationWhenStatusFoundOrThrowAsync(
             $"{UsersUrl}/{userName}/avatar?type={avatarSize.ToQueryString()}", 
             cancellationToken)!;
     }
@@ -44,9 +43,9 @@ partial class BangumiApis
     /// <param name="client"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<UserSelf>> GetSelfAsync(this BangumiClient client, CancellationToken cancellationToken = default)
+    public static Task<UserSelf> GetSelfAsync(this IBangumiClient client, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeAsync(
+        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
             MeUrl,
             Json.Default.UserSelf, cancellationToken);
     }

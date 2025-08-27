@@ -30,6 +30,9 @@ internal static class Throws
     public static T ThrowUnknownEnumValue<T>(Enum value)
         => throw new InvalidOperationException("Unknown enum value.");
 
+    public static T ThrowUnknownEnumCastValue<T>(object obj) where T : struct, Enum
+        => throw new InvalidOperationException($"Cannot cast '{obj}' to enum {typeof(T)}.");
+
     [DoesNotReturn]
     public static void ThrowUnexpectedJsonToken()
         => throw new InvalidOperationException("Unexpected json token type while reading.");

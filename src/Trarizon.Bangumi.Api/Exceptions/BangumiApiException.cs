@@ -8,19 +8,14 @@ namespace Trarizon.Bangumi.Api.Exceptions;
 /// <summary>
 /// Bangumi API未返回成功值的异常
 /// </summary>
-/// <param name="resp"></param>
+/// <param name="httpStatusCode"></param>
 /// <param name="error"></param>
-public sealed class BangumiApiException(HttpResponseMessage resp, RequestError error) : Exception
+public sealed class BangumiApiException(HttpStatusCode httpStatusCode, RequestError error) : Exception
 {
-    /// <summary>
-    /// 响应消息
-    /// </summary>
-    public HttpResponseMessage ResponseMessage => resp;
-
     /// <summary>
     /// Http状态码
     /// </summary>
-    public HttpStatusCode? StatusCode => resp.StatusCode;
+    public HttpStatusCode? HttpStatusCode => httpStatusCode;
 
     /// <summary>
     /// Bangumi API返回的错误信息
@@ -32,7 +27,7 @@ public sealed class BangumiApiException(HttpResponseMessage resp, RequestError e
     {
         get {
             DefaultInterpolatedStringHandler builder = $"Api responsed with Error '{error.Title}': {error.Description}";
-            var code = resp.StatusCode;
+            var code = httpStatusCode;
             if (code is { } c) {
                 builder.AppendLiteral("\nStatusCode: ");
                 builder.AppendFormatted((int)c);
@@ -47,13 +42,13 @@ public sealed class BangumiApiException(HttpResponseMessage resp, RequestError e
     internal static void Throw(BangumiApiResult result)
     {
         Debug.Assert(result.IsError);
-        throw new BangumiApiException(result.ResponseMessage, result.Error);
+        throw new BangumiApiException(result.StatusCode, result.Error);
     }
 
     [DoesNotReturn]
     internal static void Throw<T>(BangumiApiResult<T> result)
     {
         Debug.Assert(result.IsError);
-        throw new BangumiApiException(result.ResponseMessage, result.Error);
+        throw new BangumiApiException(result.StatusCode, result.Error);
     }
 }

@@ -20,7 +20,7 @@ partial class BangumiApis
     /// <param name="pageOffset"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<PagedData<Episode>>> GetPagedEpisodesAsync(this BangumiClient client, uint subjectId, EpisodeType? episodeType = null, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
+    public static Task<PagedData<Episode>> GetPagedEpisodesAsync(this IBangumiClient client, uint subjectId, EpisodeType? episodeType = null, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
     {
         var builder = new QueryBuilder(EpisodesUrl);
         builder.AppendQuery("subject_id", subjectId);
@@ -28,7 +28,7 @@ partial class BangumiApis
         builder.CheckAppendQuery("limit", pageLimit);
         builder.CheckAppendQuery("offset", pageOffset);
 
-        return client.GetFromJsonWhenSuccessStatusCodeAsync(
+        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
             builder.Build(),
             Json.Default.PagedDataEpisode,
             cancellationToken);
@@ -41,9 +41,9 @@ partial class BangumiApis
     /// <param name="episodeId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<Episode>> GetEpisodeAsync(this BangumiClient client, uint episodeId, CancellationToken cancellationToken = default)
+    public static Task<Episode> GetEpisodeAsync(this IBangumiClient client, uint episodeId, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeAsync(
+        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
             $"{EpisodesUrl}/{episodeId}",
             Json.Default.Episode, cancellationToken);
     }

@@ -20,9 +20,9 @@ partial class BangumiApis
     /// <param name="requestBody"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<BangumiIndex>> CreateIndexAsync(this BangumiClient client, AddIndexRequestBody requestBody, CancellationToken cancellationToken = default)
+    public static Task<BangumiIndex> CreateIndexAsync(this IBangumiClient client, AddIndexRequestBody requestBody, CancellationToken cancellationToken = default)
     {
-        return client.PostAsJsonAndFromJsonWhenSuccessStatusCodeAsync(
+        return client.PostAsJsonAndFromJsonWhenSuccessStatusCodeOrThrowAsync(
             IndicesUrl,
             requestBody, Json.Default.AddIndexRequestBody,
             Json.Default.BangumiIndex, cancellationToken);
@@ -35,9 +35,9 @@ partial class BangumiApis
     /// <param name="indexId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<BangumiIndex>> GetIndexAsync(this BangumiClient client, uint indexId, CancellationToken cancellationToken = default)
+    public static Task<BangumiIndex> GetIndexAsync(this IBangumiClient client, uint indexId, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeAsync(
+        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
             $"{IndicesUrl}/{indexId}", Json.Default.BangumiIndex, cancellationToken);
     }
 
@@ -49,9 +49,9 @@ partial class BangumiApis
     /// <param name="requestBody"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult> UpdateIndexInfoAsync(this BangumiClient client, uint indexId, UpdateIndexInfoRequestBody requestBody, CancellationToken cancellationToken = default)
+    public static Task UpdateIndexInfoAsync(this IBangumiClient client, uint indexId, UpdateIndexInfoRequestBody requestBody, CancellationToken cancellationToken = default)
     {
-        return client.PutAsJsonEnsureSuccessStatusCodeAsync(
+        return client.PutAsJsonEnsureSuccessStatusCodeOrThrowAsync(
             $"{IndicesUrl}/{indexId}",
             requestBody, Json.Default.UpdateIndexInfoRequestBody,
             cancellationToken);
@@ -67,14 +67,14 @@ partial class BangumiApis
     /// <param name="pageOffset"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<PagedData<IndexSubject>>> GetPagedIndexSubjectsAsync(this BangumiClient client, uint indexId, SubjectType? subjectType = null, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
+    public static Task<PagedData<IndexSubject>> GetPagedIndexSubjectsAsync(this IBangumiClient client, uint indexId, SubjectType? subjectType = null, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
     {
         var builder = new QueryBuilder($"{IndicesUrl}/{indexId}/subjects");
         builder.CheckAppendQuery("type", subjectType?.ToQueryValue());
         builder.CheckAppendQuery("limit", pageLimit);
         builder.CheckAppendQuery("offset", pageOffset);
 
-        return client.GetFromJsonWhenSuccessStatusCodeAsync(builder.Build(),
+        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(builder.Build(),
             Json.Default.PagedDataIndexSubject, cancellationToken);
     }
 
@@ -86,9 +86,9 @@ partial class BangumiApis
     /// <param name="requestBody"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<IndexSubject>> AddSubjectToIndexAsync(this BangumiClient client, uint indexId, AddIndexSubjectRequestBody requestBody, CancellationToken cancellationToken = default)
+    public static Task<IndexSubject> AddSubjectToIndexAsync(this IBangumiClient client, uint indexId, AddIndexSubjectRequestBody requestBody, CancellationToken cancellationToken = default)
     {
-        return client.PostAsJsonAndFromJsonWhenSuccessStatusCodeAsync(
+        return client.PostAsJsonAndFromJsonWhenSuccessStatusCodeOrThrowAsync(
             $"{IndicesUrl}/{indexId}/subjects",
             requestBody, Json.Default.AddIndexSubjectRequestBody,
             Json.Default.IndexSubject, cancellationToken);
@@ -103,9 +103,9 @@ partial class BangumiApis
     /// <param name="requestBody"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult<IndexSubject>> UpdateIndexSubjectAsync(this BangumiClient client, uint indexId, uint subjectId, UpdateIndexSubjectRequestBody requestBody, CancellationToken cancellationToken = default)
+    public static Task<IndexSubject> UpdateIndexSubjectAsync(this IBangumiClient client, uint indexId, uint subjectId, UpdateIndexSubjectRequestBody requestBody, CancellationToken cancellationToken = default)
     {
-        return client.PutAsJsonAndFromJsonWhenSuccessStatusCodeAsync(
+        return client.PutAsJsonAndFromJsonWhenSuccessStatusCodeOrThrowAsync(
             $"{IndicesUrl}/{indexId}/subjects/{subjectId}",
             requestBody, Json.Default.UpdateIndexSubjectRequestBody,
             Json.Default.IndexSubject, cancellationToken);
@@ -119,9 +119,9 @@ partial class BangumiApis
     /// <param name="subjectId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult> RemoveSubjectFromIndexAsync(this BangumiClient client, uint indexId, uint subjectId, CancellationToken cancellationToken = default)
+    public static Task RemoveSubjectFromIndexAsync(this IBangumiClient client, uint indexId, uint subjectId, CancellationToken cancellationToken = default)
     {
-        return client.DeleteEnsureSuccessStatusCodeAsync(
+        return client.DeleteEnsureSuccessStatusCodeOrThrowAsync(
             $"{IndicesUrl}/{indexId}/subjects/{subjectId}",
             cancellationToken);
     }
@@ -133,9 +133,9 @@ partial class BangumiApis
     /// <param name="indexId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult> CollectIndexAsync(this BangumiClient client, uint indexId, CancellationToken cancellationToken = default)
+    public static Task CollectIndexAsync(this IBangumiClient client, uint indexId, CancellationToken cancellationToken = default)
     {
-        return client.PostEnsureSuccessStatusCodeAsync(
+        return client.PostEnsureSuccessStatusCodeOrThrowAsync(
             $"{IndicesUrl}/{indexId}/collect",
             cancellationToken);
     }
@@ -147,9 +147,9 @@ partial class BangumiApis
     /// <param name="indexId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static Task<BangumiApiResult> UncollectIndexAsync(this BangumiClient client, uint indexId, CancellationToken cancellationToken = default)
+    public static Task UncollectIndexAsync(this IBangumiClient client, uint indexId, CancellationToken cancellationToken = default)
     {
-        return client.DeleteEnsureSuccessStatusCodeAsync(
+        return client.DeleteEnsureSuccessStatusCodeOrThrowAsync(
             $"{IndicesUrl}/{indexId}/collect",
             cancellationToken);
     }

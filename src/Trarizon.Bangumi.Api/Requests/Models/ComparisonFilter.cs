@@ -164,6 +164,14 @@ public static class ComparisonFilter
         /// 从UTF8字符串解析
         /// </summary>
         /// <param name="utf8"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public static bool TryParse(ReadOnlySpan<byte> utf8, out ComparisonFilter<T> filter) => TryParse(utf8, null, out filter);
+
+        /// <summary>
+        /// 从UTF8字符串解析
+        /// </summary>
+        /// <param name="utf8"></param>
         /// <param name="provider"></param>
         /// <returns></returns>
         public static ComparisonFilter<T> Parse(ReadOnlySpan<byte> utf8, IFormatProvider? provider)
@@ -173,6 +181,13 @@ public static class ComparisonFilter
             }
             return filter;
         }
+
+        /// <summary>
+        /// 从UTF8字符串解析
+        /// </summary>
+        /// <param name="utf8"></param>
+        /// <returns></returns>
+        public static ComparisonFilter<T> Parse(ReadOnlySpan<byte> utf8) => ComparisonFilter<T>.Parse(utf8, null);
     }
 
     /// <summary>
@@ -220,6 +235,14 @@ public static class ComparisonFilter
         /// 从字符串解析
         /// </summary>
         /// <param name="text"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public static bool TryParse(ReadOnlySpan<char> text, out ComparisonFilter<T> filter) => TryParse(text, null, out filter);
+
+        /// <summary>
+        /// 从字符串解析
+        /// </summary>
+        /// <param name="text"></param>
         /// <param name="provider"></param>
         /// <returns></returns>
         public static ComparisonFilter<T> Parse(ReadOnlySpan<char> text, IFormatProvider? provider)
@@ -229,5 +252,12 @@ public static class ComparisonFilter
             }
             return filter;
         }
+
+        /// <summary>
+        /// 从字符串解析
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static ComparisonFilter<T> Parse(ReadOnlySpan<char> text) => ComparisonFilter<T>.Parse(text, null);
     }
 }
