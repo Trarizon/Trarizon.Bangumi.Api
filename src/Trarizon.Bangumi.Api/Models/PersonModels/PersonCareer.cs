@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using Trarizon.Bangumi.Api.Serialization.Converters;
+using Trarizon.Bangumi.Api.Serialization.Converters.Model;
 using Trarizon.Bangumi.Api.Utilities;
 
 namespace Trarizon.Bangumi.Api.Models.PersonModels;
@@ -12,65 +12,65 @@ namespace Trarizon.Bangumi.Api.Models.PersonModels;
 /// Careers
 /// </see>
 /// </remarks>
-[JsonConverter(typeof(StringEnumerationJsonConverter<PersonCareer>))]
-public readonly struct PersonCareer : IStringEnumeration<PersonCareer>, IEquatable<PersonCareer>, IEquatable<string>
+[JsonConverter(typeof(PersonCareerJsonConverter))]
+public enum PersonCareer
 {
     /// <summary>
     /// 制作人员
     /// </summary>
-    public static PersonCareer Producer => new("producer");
+    Producer,
     /// <summary>
     /// 漫画家
     /// </summary>
-    public static PersonCareer Mangaka => new("mangaka");
+    Mangaka,
     /// <summary>
     /// 音乐人
     /// </summary>
-    public static PersonCareer Artist => new("artist");
+    Artist,
     /// <summary>
     /// 声优
     /// </summary>
-    public static PersonCareer Seiyu => new("seiyu");
+    Seiyu,
     /// <summary>
     /// 作家
     /// </summary>
-    public static PersonCareer Writer => new("writer");
+    Writer,
     /// <summary>
     /// 插画家
     /// </summary>
-    public static PersonCareer Illustrator => new("illustrator");
+    Illustrator,
     /// <summary>
     /// 演员
     /// </summary>
-    public static PersonCareer Actor => new("actor");
+    Actor,
+}
 
-    private readonly string _name;
-
-    /// <summary>
-    /// 字符串值
-    /// </summary>
-    public string? StringValue => _name;
-
-    private PersonCareer(string name)
+internal static class PersonCareerExtensions
+{
+    extension(PersonCareer career)
     {
-        _name = name;
+        internal static PersonCareer FromJsonStringValue(string str) => str switch
+        {
+            "producer" => PersonCareer.Producer,
+            "mangaka" => PersonCareer.Mangaka,
+            "artist" => PersonCareer.Artist,
+            "seiyu" => PersonCareer.Seiyu,
+            "writer" => PersonCareer.Writer,
+            "illustrator" => PersonCareer.Illustrator,
+            "actor" => PersonCareer.Actor,
+            _ => Throws.ThrowUnknownEnumCastValue<PersonCareer>(str),
+        };
+
+        internal string ToJsonStringValue() => career switch
+        {
+            PersonCareer.Producer => "producer",
+            PersonCareer.Mangaka => "mangaka",
+            PersonCareer.Artist => "artist",
+            PersonCareer.Seiyu => "seiyu",
+            PersonCareer.Writer => "writer",
+            PersonCareer.Illustrator => "illustrator",
+            PersonCareer.Actor => "actor",
+            _ => Throws.ThrowUnknownEnumValue<string>(career),
+        };
     }
-
-    static PersonCareer IStringEnumeration<PersonCareer>.Create(string? value) => new(value!);
-
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
-
-    public static implicit operator string(PersonCareer value) => value._name;
-
-    public override string ToString() => _name;
-
-    public bool Equals(PersonCareer other) => _name.Equals(other._name);
-    public bool Equals(string? other) => _name.Equals(other);
-    public override bool Equals(object? obj) => obj is PersonCareer career && Equals(career);
-    public static bool operator ==(PersonCareer left, PersonCareer right) => left._name == right._name;
-    public static bool operator !=(PersonCareer left, PersonCareer right) => left._name != right._name;
-    
-    public override int GetHashCode() => _name.GetHashCode();
-
-#pragma warning restore CS1591
 }
