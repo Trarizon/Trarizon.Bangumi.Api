@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
-using Trarizon.Bangumi.Api.Serialization.Converters;
-using Trarizon.Bangumi.Api.Utilities;
+using Trarizon.Bangumi.Api.Internal.Attributes;
+using Trarizon.Bangumi.Api.Serialization.Converters.Model;
 
 namespace Trarizon.Bangumi.Api.Models.PersonModels;
 /// <summary>
@@ -9,28 +9,16 @@ namespace Trarizon.Bangumi.Api.Models.PersonModels;
 /// <remarks>
 /// src <see href="https://github.com/bangumi/server/blob/master/web/res/character.go#L44" />
 /// </remarks>
-[JsonConverter(typeof(StringEnumerationJsonConverter<Gender>))]
-public readonly struct Gender : IStringEnumeration<Gender>
+[JsonConverter(typeof(GenderJsonConverter))]
+[JsonStringEnum]
+public enum Gender
 {
-    /// <summary>
-    /// 未知
-    /// </summary>
-    public static Gender Unknown => default;
     /// <summary>
     /// 男性
     /// </summary>
-    public static Gender Male => new("male");
+    Male,
     /// <summary>
     /// 女性
     /// </summary>
-    public static Gender Female => new("female");
-
-    private readonly string _value;
-
-    internal Gender(string value) => _value = value;
-
-    /// <inheritdoc/>
-    public string? StringValue => _value;
-
-    static Gender IStringEnumeration<Gender>.Create(string? value) => new(value!);
+    Female
 }

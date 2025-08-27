@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using Trarizon.Bangumi.Api.Utilities;
+using Trarizon.Bangumi.Api.Internal.Attributes;
 
 namespace Trarizon.Bangumi.Api.Models.SubjectModels;
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
@@ -7,6 +7,7 @@ namespace Trarizon.Bangumi.Api.Models.SubjectModels;
 /// <summary>
 /// 条目图片尺寸
 /// </summary>
+[QueryStringEnum("SubjectImage")]
 public enum SubjectImageSize
 {
     Small,
@@ -15,6 +16,7 @@ public enum SubjectImageSize
     Medium,
     Common
 }
+
 /// <summary>
 /// 条目相关图片链接
 /// </summary>
@@ -54,17 +56,4 @@ public struct SubjectImageSet
     /// </summary>
     [JsonInclude, JsonPropertyName("grid")]
     public string Grid { get; internal set; }
-}
-
-internal static class SubjectImageExtensions
-{
-    internal static string ToUrlQueryString(this SubjectImageSize size) => size switch
-    {
-        SubjectImageSize.Small => "small",
-        SubjectImageSize.Grid => "grid",
-        SubjectImageSize.Large => "large",
-        SubjectImageSize.Medium => "medium",
-        SubjectImageSize.Common => "common",
-        _ => Throws.ThrowUnknownEnumValue<string>(size),
-    };
 }

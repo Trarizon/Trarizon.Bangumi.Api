@@ -27,6 +27,9 @@ public sealed class BangumiClient : IBangumiClient, IDisposable
 
     private readonly HttpClientHandler _httpClientHandler;
 
+    /// <summary>
+    /// HttpClient
+    /// </summary>
     public HttpClient HttpClient { get; }
 
     /// <summary>

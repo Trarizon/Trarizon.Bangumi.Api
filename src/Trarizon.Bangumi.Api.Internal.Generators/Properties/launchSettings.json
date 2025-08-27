@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Gen (Api)": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\Trarizon.Bangumi.Api\\Trarizon.Bangumi.Api.csproj"
+    }
+  }
+}

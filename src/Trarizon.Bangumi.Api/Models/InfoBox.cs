@@ -139,7 +139,7 @@ public struct InfoProperty
 /// src: <see href="https://github.com/bangumi/server/blob/master/internal/pkg/compat/wiki.go#L54">wikiValue: key-value</see> ,
 /// <see href="https://github.com/bangumi/server/blob/master/internal/pkg/compat/wiki.go#L59">wikiValues: key-values</see>
 /// </remarks>
-[JsonConverter(typeof(InfoValueJsonConverter))]
+[JsonConverter(typeof(InfoValuesJsonConverter))]
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 public readonly struct InfoValues : ICollection<InfoValue>, IReadOnlyCollection<InfoValue>
 {

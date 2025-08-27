@@ -55,7 +55,7 @@ partial class BangumiApis
     public static Task<Uri> GetPersonImageUrlAsync(this IBangumiClient client, uint personId, PersonImageSize imageSize, CancellationToken cancellationToken = default)
     {
         return client.GetHeadersLocationWhenStatusFoundOrThrowAsync(
-            $"{PersonsUrl}/{personId}/image?type={imageSize.ToUrlQueryString()}", cancellationToken)!;
+            $"{PersonsUrl}/{personId}/image?type={imageSize.ToQueryString()}", cancellationToken)!;
     }
 
     /// <summary>

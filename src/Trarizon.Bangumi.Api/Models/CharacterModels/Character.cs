@@ -64,7 +64,7 @@ public sealed class Character : ICharacter
     /// 性别
     /// </summary>
     [JsonInclude, JsonPropertyName("gender")]
-    public Gender Gender { get; internal set; }
+    public Gender? Gender { get; internal set; }
 
     // src: *uint8
     /// <summary>

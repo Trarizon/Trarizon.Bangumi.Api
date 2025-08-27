@@ -7,7 +7,7 @@ internal class ListJsonConverter<T, TConverter> : JsonConverter<List<T>>
     where TConverter : JsonConverter<T>, IConstructable<TConverter>
 {
     private readonly TConverter _converter = TConverter.Construct();
-
+  
     public override List<T>? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         Throws.ThrowIfUnexpectedJsonToken(reader.TokenType, JsonTokenType.StartArray);

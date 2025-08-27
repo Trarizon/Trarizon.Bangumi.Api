@@ -3,6 +3,7 @@
 // CalendarSubject 同时有Episode和EpisodeCount值
 using Trarizon.Bangumi.Api;
 using Trarizon.Bangumi.Api.Exceptions;
+using Trarizon.Bangumi.Api.Models.PersonModels;
 using Trarizon.Bangumi.Api.Models.UserModels;
 using Trarizon.Bangumi.Api.Routes;
 

@@ -37,9 +37,16 @@ public sealed class SubjectRelatedCharacter : ICharacter
     /// <summary>
     /// 角色在条目中的身份
     /// </summary>
-    // src: [主角, 配角, 客串, ""]
-    // https://github.com/bangumi/server/blob/master/web/res/character.go#L49
-    // https://github.com/bangumi/server/blob/master/web/handler/subject/related_characters.go#L166
+    /// <remarks>
+    /// 文档返回string但是源码中只有4个值[主角, 配角, 客串, ""]，此处暂且保留string
+    /// <br/>
+    /// src: <see href="https://github.com/bangumi/server/blob/master/web/res/character.go#L49">
+    /// map1
+    /// </see>
+    /// <see href="https://github.com/bangumi/server/blob/master/web/handler/subject/related_characters.go#L166">
+    /// map2
+    /// </see>
+    /// </remarks>
     [JsonInclude, JsonPropertyName("relation")]
     public string Relation { get; internal set; }
 

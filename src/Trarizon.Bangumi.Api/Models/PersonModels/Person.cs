@@ -63,8 +63,11 @@ public sealed class Person : IPerson
     /// <summary>
     /// 人物性别
     /// </summary>
+    /// <remarks>
+    /// 源码上看来只有[male, female, null]三个值 <see href="https://github.com/bangumi/server/blob/master/web/res/character.go#L44" />
+    /// </remarks>
     [JsonInclude, JsonPropertyName("gender")]
-    public Gender Gender { get; internal set; }
+    public Gender? Gender { get; internal set; }
 
     // src: *uint8
     /// <summary>

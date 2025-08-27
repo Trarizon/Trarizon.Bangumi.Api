@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using Trarizon.Bangumi.Api.Internal.Attributes;
 using Trarizon.Bangumi.Api.Serialization.Converters.Model;
 using Trarizon.Bangumi.Api.Utilities;
 
@@ -13,6 +14,7 @@ namespace Trarizon.Bangumi.Api.Models.PersonModels;
 /// </see>
 /// </remarks>
 [JsonConverter(typeof(PersonCareerJsonConverter))]
+[JsonStringEnum]
 public enum PersonCareer
 {
     /// <summary>
@@ -43,34 +45,4 @@ public enum PersonCareer
     /// 演员
     /// </summary>
     Actor,
-}
-
-internal static class PersonCareerExtensions
-{
-    extension(PersonCareer career)
-    {
-        internal static PersonCareer FromJsonStringValue(string str) => str switch
-        {
-            "producer" => PersonCareer.Producer,
-            "mangaka" => PersonCareer.Mangaka,
-            "artist" => PersonCareer.Artist,
-            "seiyu" => PersonCareer.Seiyu,
-            "writer" => PersonCareer.Writer,
-            "illustrator" => PersonCareer.Illustrator,
-            "actor" => PersonCareer.Actor,
-            _ => Throws.ThrowUnknownEnumCastValue<PersonCareer>(str),
-        };
-
-        internal string ToJsonStringValue() => career switch
-        {
-            PersonCareer.Producer => "producer",
-            PersonCareer.Mangaka => "mangaka",
-            PersonCareer.Artist => "artist",
-            PersonCareer.Seiyu => "seiyu",
-            PersonCareer.Writer => "writer",
-            PersonCareer.Illustrator => "illustrator",
-            PersonCareer.Actor => "actor",
-            _ => Throws.ThrowUnknownEnumValue<string>(career),
-        };
-    }
 }

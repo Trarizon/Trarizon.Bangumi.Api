@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
+using Trarizon.Bangumi.Api.Internal.Attributes;
 using Trarizon.Bangumi.Api.Models.SubjectModels;
-using Trarizon.Bangumi.Api.Utilities;
 
 namespace Trarizon.Bangumi.Api.Models.UserModels;
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
@@ -8,6 +8,7 @@ namespace Trarizon.Bangumi.Api.Models.UserModels;
 /// <summary>
 /// 用户头像尺寸
 /// </summary>
+[QueryStringEnum("Avatar")]
 public enum AvatarSize
 {
     Small = SubjectImageSize.Small,
@@ -33,15 +34,4 @@ public struct Avatar
 
     [JsonInclude, JsonPropertyName("small")]
     public string Small { get; internal set; }
-}
-
-internal static class AvatarExtensions
-{
-    internal static string ToQueryString(this AvatarSize size) => size switch
-    {
-        AvatarSize.Small => "small",
-        AvatarSize.Large => "large",
-        AvatarSize.Medium => "medium",
-        _ => Throws.ThrowUnknownEnumValue<string>(size),
-    };
 }

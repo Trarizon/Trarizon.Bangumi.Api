@@ -1,9 +1,10 @@
-﻿using Trarizon.Bangumi.Api.Utilities;
+﻿using Trarizon.Bangumi.Api.Internal.Attributes;
 
 namespace Trarizon.Bangumi.Api.Requests.Models;
 /// <summary>
 /// 排序
 /// </summary>
+[QueryStringEnum]
 public enum GetSubjectsSortKind
 {
     /// <summary>
@@ -14,14 +15,4 @@ public enum GetSubjectsSortKind
     /// 排名
     /// </summary>
     Rank
-}
-
-internal static class SubjectsSortKindExtensions
-{
-    public static string ToQueryString(this GetSubjectsSortKind subjectsSortKind) => subjectsSortKind switch
-    {
-        GetSubjectsSortKind.Date => "date",
-        GetSubjectsSortKind.Rank => "sort",
-        _ => Throws.ThrowUnknownEnumValue<string>(subjectsSortKind),
-    };
 }

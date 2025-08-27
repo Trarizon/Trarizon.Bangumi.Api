@@ -27,7 +27,7 @@ internal static class NsfwExtensions
 {
     extension(NsfwFilter filter)
     {
-        internal bool? ToRequestJsonValue() => filter switch
+        internal bool? ToJsonValue() => filter switch
         {
             NsfwFilter.All => null,
             NsfwFilter.NsfwOnly => true,
@@ -35,7 +35,7 @@ internal static class NsfwExtensions
             _ => Throws.ThrowUnknownEnumValue<bool?>(filter),
         };
 
-        internal static NsfwFilter FromRequestJson(bool? value) => value switch
+        internal static NsfwFilter FromJsonValue(bool? value) => value switch
         {
             null => NsfwFilter.All,
             true => NsfwFilter.NsfwOnly,

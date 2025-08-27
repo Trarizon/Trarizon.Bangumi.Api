@@ -5,7 +5,7 @@ using Trarizon.Bangumi.Api.Models;
 using Trarizon.Bangumi.Api.Utilities;
 
 namespace Trarizon.Bangumi.Api.Serialization.Converters.Model;
-internal sealed class InfoValueJsonConverter : JsonConverter<InfoValues>
+internal sealed class InfoValuesJsonConverter : JsonConverter<InfoValues>
 {
     public override InfoValues Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
