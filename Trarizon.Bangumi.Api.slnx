@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/解决方案项/">
+    <File Path="LICENSE" />
     <File Path="README.md" />
   </Folder>
   <Project Path="src/Trarizon.Bangumi.Api.Internal.Generators/Trarizon.Bangumi.Api.Internal.Generators.csproj" Id="6be51625-bc05-40d4-9dd8-84106ad316bd" />
