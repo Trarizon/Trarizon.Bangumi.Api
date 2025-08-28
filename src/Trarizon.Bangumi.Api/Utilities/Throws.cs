@@ -15,6 +15,9 @@ internal static class Throws
         => throw new NotSupportedException();
 
     [DoesNotReturn]
+    public static void ThrowArgumentOutOfRange(string? paramName) => throw new ArgumentOutOfRangeException(paramName);
+
+    [DoesNotReturn]
     public static void ThrowInvalidOperation(string? message = null)
         => throw new InvalidOperationException(message);
 

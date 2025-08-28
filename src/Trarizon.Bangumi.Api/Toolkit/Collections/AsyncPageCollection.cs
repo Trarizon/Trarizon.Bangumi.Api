@@ -1,4 +1,7 @@
-﻿using Trarizon.Bangumi.Api.Responses;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
+using Trarizon.Bangumi.Api.Responses;
+using Trarizon.Bangumi.Api.Utilities;
 
 namespace Trarizon.Bangumi.Api.Toolkit.Collections;
 /// <summary>
@@ -116,6 +119,102 @@ public sealed class AsyncPageCollection<T> : IAsyncEnumerable<T>
         if (count <= 0)
             return this;
         return new AsyncPageCollection<T>(_limit, _offset + count, _takeCount - count, _options, _pageFetcher);
+    }
+
+    /// <summary>
+    /// 获取指定索引的数据
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public Task<T> ElementAtAsync(int index, CancellationToken cancellationToken = default)
+        => ElementAtOrDefaultAsyncInternal(index, throwIfNotFound: true, cancellationToken)!;
+
+    /// <summary>
+    /// 获取指定索引的数据
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public Task<T> ElementAtAsync(Index index, CancellationToken cancellationToken = default)
+    {
+        if (index.IsFromEnd) 
+            return ElementAtFromEndOrDefaultAsyncInternal(index.Value, throwIfNotFound: true, cancellationToken)!;
+        else 
+            return ElementAtAsync(index.Value, cancellationToken);
+    }
+
+    /// <summary>
+    /// 获取指定索引的数据
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public Task<T?> ElementAtOrDefaultAsync(int index, CancellationToken cancellationToken = default)
+        => ElementAtOrDefaultAsyncInternal(index, throwIfNotFound: false, cancellationToken);
+
+    /// <summary>
+    /// 获取指定索引的数据
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public Task<T?> ElementAtOrDefaultAsync(Index index, CancellationToken cancellationToken = default)
+    {
+        if (index.IsFromEnd) 
+            return ElementAtFromEndOrDefaultAsyncInternal(index.Value, throwIfNotFound: false, cancellationToken);
+        else 
+            return ElementAtOrDefaultAsync(index.Value, cancellationToken);
+    }
+
+    private Task<T?> ElementAtOrDefaultAsyncInternal(int index, bool throwIfNotFound, CancellationToken cancellationToken)
+    {
+        if (index < 0) {
+            if (throwIfNotFound)
+                Throws.ThrowArgumentOutOfRange(nameof(index));
+            return Task.FromResult<T?>(default);
+        }
+
+        return Core(index, throwIfNotFound, cancellationToken);
+
+        async Task<T?> Core(int index, bool throwIfNotFound, CancellationToken cancellationToken)
+        {
+            var page = await _pageFetcher(1, index, cancellationToken).ConfigureAwait(false);
+            if (page.Datas.Length == 0) {
+                if (throwIfNotFound)
+                    Throws.ThrowArgumentOutOfRange(nameof(index));
+                return default;
+            }
+            else {
+                return page.Datas[0];
+            }
+        }
+    }
+
+    private Task<T?> ElementAtFromEndOrDefaultAsyncInternal(int indexFromEnd, bool throwIfNotFound, CancellationToken cancellationToken)
+    {
+        if (indexFromEnd <= 0) {
+            if (throwIfNotFound)
+                Throws.ThrowArgumentOutOfRange(nameof(indexFromEnd));
+            return Task.FromResult<T?>(default);
+        }
+
+        return Core(indexFromEnd, throwIfNotFound, cancellationToken);
+
+        async Task<T?> Core(int indexFromEnd, bool throwIfNotFound, CancellationToken cancellationToken)
+        {
+            var count = await CountAsync(cancellationToken).ConfigureAwait(false);
+
+            var page = await _pageFetcher(1, count - indexFromEnd, cancellationToken).ConfigureAwait(false);
+            if (page.Datas.Length == 0) {
+                if (throwIfNotFound)
+                    Throws.ThrowArgumentOutOfRange(nameof(indexFromEnd));
+                return default;
+            }
+            else {
+                return page.Datas[0];
+            }
+        }
     }
 
     /// <summary></summary>
