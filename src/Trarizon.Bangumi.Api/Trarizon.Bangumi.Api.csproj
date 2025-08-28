@@ -27,6 +27,7 @@
         <FileVersion>$(AssemblyVersion)</FileVersion>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <Version>$(AssemblyVersion)</Version>
     </PropertyGroup>
 
     <ItemGroup>

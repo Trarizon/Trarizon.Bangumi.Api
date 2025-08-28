@@ -148,7 +148,7 @@ public static class Examples
         var colSubjectEpsPaged = await client.GetPagedUserSubjectEpisodeCollectionsAsync(363957, EpisodeType.Normal, cancellationToken: cancellationToken);
         var updateColSubjectEpRequestBody = new UpdateUserSubjectEpisodeCollectionsRequestBody
         {
-            Episodes = [1, 2, 3, 4, 5, 6],
+            EpisodeIds = [1, 2, 3, 4, 5, 6],
             Type = EpisodeCollectionType.Collect,
         };
         await client.UpdateUserSubjectEpisodeCollectionsAsync(363957, updateColSubjectEpRequestBody, cancellationToken);
