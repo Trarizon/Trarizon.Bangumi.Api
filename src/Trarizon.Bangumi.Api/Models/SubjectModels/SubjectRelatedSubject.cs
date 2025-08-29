@@ -12,7 +12,7 @@ namespace Trarizon.Bangumi.Api.Models.SubjectModels;
 /// </see>
 /// </remarks>
 [DebuggerDisplay("[{Relation}] {Name}")]
-public sealed class SubjectRelatedSubject : ISubject
+public sealed class SubjectRelatedSubject : ISubject, ISubjectBasicInfo
 {
     /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]

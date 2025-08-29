@@ -8,7 +8,7 @@ namespace Trarizon.Bangumi.Api.Models.SubjectModels;
 /// 每日放送中的条目信息
 /// </summary>
 [DebuggerDisplay("{Name}")]
-public sealed class CalendarSubject : ISubject
+public sealed class CalendarSubject : ISubject, ISubjectBasicInfo
 {
     /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]

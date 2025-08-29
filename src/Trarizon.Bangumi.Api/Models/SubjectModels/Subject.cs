@@ -13,7 +13,7 @@ namespace Trarizon.Bangumi.Api.Models.SubjectModels;
 /// </see>
 /// </remarks>
 [DebuggerDisplay("{Name}")]
-public sealed class Subject : ISubject
+public sealed class Subject : ISubject, ISubjectBasicInfo
 {
     /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]
@@ -67,7 +67,7 @@ public sealed class Subject : ISubject
     /// </summary>
     [JsonInclude, JsonPropertyName("date")]
     public string? Date { get; internal set; }
-    
+
     /// <summary>
     /// 平台(TV, Web, 欧美剧, DLC...)
     /// </summary>

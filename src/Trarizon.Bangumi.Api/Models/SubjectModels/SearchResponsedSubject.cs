@@ -11,7 +11,7 @@ namespace Trarizon.Bangumi.Api.Models.SubjectModels;
 /// ResponseSubject
 /// </see>
 /// </remarks>
-public sealed class SearchResponsedSubject : ISubject
+public sealed class SearchResponsedSubject : ISubject, ISubjectBasicInfo
 {
     /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]

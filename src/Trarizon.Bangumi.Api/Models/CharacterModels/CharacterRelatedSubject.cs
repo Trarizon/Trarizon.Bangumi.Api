@@ -11,7 +11,7 @@ namespace Trarizon.Bangumi.Api.Models.CharacterModels;
 /// CharacterRelatedSubject
 /// </see>
 /// </remarks>
-public sealed class CharacterRelatedSubject : ISubject
+public sealed class CharacterRelatedSubject : ISubject, ISubjectBasicInfo
 {
     /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]

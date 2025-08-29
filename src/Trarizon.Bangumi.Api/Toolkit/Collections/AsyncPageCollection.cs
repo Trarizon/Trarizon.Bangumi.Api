@@ -1,7 +1,5 @@
 ﻿using System.Diagnostics;
-using System.Threading.Tasks;
 using Trarizon.Bangumi.Api.Responses;
-using Trarizon.Bangumi.Api.Utilities;
 
 namespace Trarizon.Bangumi.Api.Toolkit.Collections;
 /// <summary>
@@ -31,6 +29,7 @@ public sealed partial class AsyncPageCollection<T> : IAsyncEnumerable<T>
 
     private AsyncPageCollection(int? limit, int offset, int takeCount, AsyncPageCollectionOptions options, Func<int?, int, CancellationToken, Task<PagedData<T>>> pageFetcher)
     {
+        Debug.Assert(_takeCount >= 0);
         _pageFetcher = pageFetcher;
         _limit = limit;
         _offset = offset;
@@ -51,10 +50,12 @@ public sealed partial class AsyncPageCollection<T> : IAsyncEnumerable<T>
     /// <returns></returns>
     public async IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
     {
+        Debug.Assert(_takeCount >= 0);
         if (_takeCount == 0)
             yield break;
 
         int offset = _offset;
+        int endOffset = _offset + _takeCount;
 
         while (true) {
             var page = await _pageFetcher(_limit, offset, cancellationToken).ConfigureAwait(false);
@@ -64,23 +65,15 @@ public sealed partial class AsyncPageCollection<T> : IAsyncEnumerable<T>
             if (items.Length == 0)
                 yield break;
 
-            if (_takeCount >= 0) {
-                var expectedRest = _takeCount + _offset - offset;
-                if (expectedRest < items.Length) {
-                    for (int i = 0; i < expectedRest; i++) {
-                        cancellationToken.ThrowIfCancellationRequested();
-                        var data = items[i];
-                        yield return data;
-                    }
-                    yield break;
-                }
-            }
-
-            foreach (var data in page.Datas) {
+            int chunkCount = int.Min(items.Length, endOffset - offset);
+            for (int i = 0; i < chunkCount; i++) {
                 cancellationToken.ThrowIfCancellationRequested();
+                var data = items[i];
                 yield return data;
             }
-            offset += page.Datas.Length;
+            offset += chunkCount;
+            if (offset >= endOffset)
+                yield break;
 
             await delayTask.ConfigureAwait(false);
         }

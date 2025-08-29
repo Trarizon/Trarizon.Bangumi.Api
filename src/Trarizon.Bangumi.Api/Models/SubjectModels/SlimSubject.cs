@@ -11,7 +11,7 @@ namespace Trarizon.Bangumi.Api.Models.SubjectModels;
 /// SlimSubjectV0
 /// </see>
 /// </remarks>
-public sealed class SlimSubject : ISubject
+public sealed class SlimSubject : ISubject, ISubjectBasicInfo
 {
     /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]

@@ -11,7 +11,7 @@ namespace Trarizon.Bangumi.Api.Models.IndexModels;
 /// IndexSubjectV0
 /// </see>
 /// </remarks>
-public sealed class IndexSubject : ISubject
+public sealed class IndexSubject : ISubject, ISubjectBasicInfo
 {
     /// <summary>
     /// 条目添加时间
