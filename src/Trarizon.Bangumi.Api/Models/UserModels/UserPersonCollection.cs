@@ -11,7 +11,7 @@ namespace Trarizon.Bangumi.Api.Models.UserModels;
 /// PersonCollection
 /// </see>.
 /// </remarks>
-public sealed class UserPersonCollection : IPerson
+public sealed class UserPersonCollection
 {
     /// <inheritdoc cref="Person.Id"/>
     [JsonInclude, JsonPropertyName("id")]
@@ -42,7 +42,5 @@ public sealed class UserPersonCollection : IPerson
 #pragma warning disable CS8618
     [JsonConstructor]
     internal UserPersonCollection() { }
-#pragma warning restore CS8618            
-
-    uint IPerson.Id => PersonId;
+#pragma warning restore CS8618
 }

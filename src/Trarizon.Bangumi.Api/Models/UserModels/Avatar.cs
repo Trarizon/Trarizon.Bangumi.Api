@@ -8,12 +8,24 @@ namespace Trarizon.Bangumi.Api.Models.UserModels;
 /// <summary>
 /// 用户头像尺寸
 /// </summary>
+/// <remarks>
+/// 注释的尺寸是看网址猜的，不保证真的准确
+/// </remarks>
 [QueryStringEnum("Avatar")]
 public enum AvatarSize
 {
-    Small = SubjectImageSize.Small,
+    /// <summary>
+    /// 200x
+    /// </summary>
     Large = SubjectImageSize.Large,
+    /// <summary>
+    /// 100x
+    /// </summary>
     Medium = SubjectImageSize.Medium,
+    /// <summary>
+    /// 原图尺寸
+    /// </summary>
+    Small = SubjectImageSize.Small,
 }
 
 /// <summary>
@@ -26,12 +38,15 @@ public enum AvatarSize
 /// </remarks>
 public struct Avatar
 {
+    /// <inheritdoc cref="AvatarSize.Large"/>
     [JsonInclude, JsonPropertyName("large")]
     public string Large { get; internal set; }
 
+    /// <inheritdoc cref="AvatarSize.Medium"/>
     [JsonInclude, JsonPropertyName("medium")]
     public string Medium { get; internal set; }
 
+    /// <inheritdoc cref="AvatarSize.Small"/>
     [JsonInclude, JsonPropertyName("small")]
     public string Small { get; internal set; }
 }

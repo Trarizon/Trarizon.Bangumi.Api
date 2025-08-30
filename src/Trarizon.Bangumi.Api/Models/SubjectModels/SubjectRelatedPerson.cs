@@ -14,25 +14,25 @@ namespace Trarizon.Bangumi.Api.Models.SubjectModels;
 /// </see>
 /// </remarks>
 [DebuggerDisplay("[{Relation}] {Name}")]
-public sealed class SubjectRelatedPerson : IPerson
+public sealed class SubjectRelatedPerson : IPerson, IPersonImagesProvider, IPersonCareersProvider
 {
     /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]
     public uint Id { get; internal set; }
 
-    /// <inheritdoc cref="Person.Name" />
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("name")]
     public string Name { get; internal set; }
 
-    /// <inheritdoc cref="Person.Type" />
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("type")]
     public PersonType Type { get; internal set; }
 
-    /// <inheritdoc cref="Person.Careers" />
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("career")]
     public ImmutableArray<PersonCareer> Careers { get; internal set; }
 
-    /// <inheritdoc cref="Person.Images" />
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("images")]
     public PersonImageSet Images { get; internal set; } // 源码非指针，scheme 明确nullable
 

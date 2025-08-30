@@ -12,23 +12,23 @@ namespace Trarizon.Bangumi.Api.Models.RevisionModels;
 /// </remarks>
 public sealed class CharacterRevision : IRevision
 {
-    /// <inheritdoc cref="SubjectRevision.Id"/>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]
     public uint Id { get; internal set; }
 
-    /// <inheritdoc cref="SubjectRevision.Type"/>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("type")]
     public RevisionType Type { get; internal set; }
 
-    /// <inheritdoc cref="SubjectRevision.Creator"/>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("creator")]
     public Creator Creator { get; internal set; }
 
-    /// <inheritdoc cref="SubjectRevision.Summary"/>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("summary")]
     public string Summary { get; internal set; }
 
-    /// <inheritdoc cref="SubjectRevision.CreatedTime"/>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("created_at")]
     public DateTimeOffset CreatedTime { get; set; }
 

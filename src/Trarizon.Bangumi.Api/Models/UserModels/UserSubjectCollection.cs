@@ -12,7 +12,7 @@ namespace Trarizon.Bangumi.Api.Models.UserModels;
 /// </summary>
 public sealed class UserSubjectCollection
 {
-    /// <inheritdoc cref="ISubject.Id" />
+    /// <inheritdoc cref="ISubjectIdentity.Id" />
     [JsonInclude, JsonPropertyName("subject_id")]
     public uint SubjectId { get; internal set; }
 

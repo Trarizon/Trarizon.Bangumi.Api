@@ -7,14 +7,32 @@ namespace Trarizon.Bangumi.Api.Models.SubjectModels;
 /// <summary>
 /// 条目图片尺寸
 /// </summary>
+/// <remarks>
+/// 注释的尺寸是看网址猜的，不保证真的准确
+/// </remarks>
 [QueryStringEnum("SubjectImage")]
 public enum SubjectImageSize
 {
-    Small,
-    Grid,
+    /// <summary>
+    /// 原图尺寸
+    /// </summary>
     Large,
+    /// <summary>
+    /// 800x
+    /// </summary>
     Medium,
-    Common
+    /// <summary>
+    /// 400x
+    /// </summary>
+    Common,
+    /// <summary>
+    /// 200x
+    /// </summary>
+    Small,
+    /// <summary>
+    /// 100x
+    /// </summary>
+    Grid,
 }
 
 /// <summary>
@@ -27,33 +45,23 @@ public enum SubjectImageSize
 /// </remarks>
 public struct SubjectImageSet
 {
-    /// <summary>
-    /// 原图尺寸
-    /// </summary>
+    /// <inheritdoc cref="SubjectImageSize.Large"/>
     [JsonInclude, JsonPropertyName("large")]
     public string Large { get; internal set; }
 
-    /// <summary>
-    /// 400x
-    /// </summary>
+    /// <inheritdoc cref="SubjectImageSize.Common"/>
     [JsonInclude, JsonPropertyName("common")]
     public string Common { get; internal set; }
 
-    /// <summary>
-    /// 800x
-    /// </summary>
+    /// <inheritdoc cref="SubjectImageSize.Medium"/>
     [JsonInclude, JsonPropertyName("medium")]
     public string Medium { get; internal set; }
 
-    /// <summary>
-    /// 200x
-    /// </summary>
+    /// <inheritdoc cref="SubjectImageSize.Small"/>
     [JsonInclude, JsonPropertyName("small")]
     public string Small { get; internal set; }
 
-    /// <summary>
-    /// 100x
-    /// </summary>
+    /// <inheritdoc cref="SubjectImageSize.Grid"/>
     [JsonInclude, JsonPropertyName("grid")]
     public string Grid { get; internal set; }
 }

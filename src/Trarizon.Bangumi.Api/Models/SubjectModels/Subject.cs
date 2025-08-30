@@ -13,27 +13,21 @@ namespace Trarizon.Bangumi.Api.Models.SubjectModels;
 /// </see>
 /// </remarks>
 [DebuggerDisplay("{Name}")]
-public sealed class Subject : ISubject, ISubjectBasicInfo
+public sealed class Subject : ISubject, ISubjectImagesProvider
 {
     /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]
     public uint Id { get; internal set; }
 
-    /// <summary>
-    /// 条目类型
-    /// </summary>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("type")]
     public SubjectType Type { get; internal set; }
 
-    /// <summary>
-    /// 条目名称
-    /// </summary>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("name")]
     public string Name { get; internal set; }
 
-    /// <summary>
-    /// 条目中文名称
-    /// </summary>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("name_cn")]
     public string ChineseName { get; internal set; }
 
@@ -74,9 +68,7 @@ public sealed class Subject : ISubject, ISubjectBasicInfo
     [JsonInclude, JsonPropertyName("platform")]
     public string? Platform { get; internal set; }
 
-    /// <summary>
-    /// 条目图片
-    /// </summary>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("images")]
     public SubjectImageSet Images { get; internal set; }
 

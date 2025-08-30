@@ -11,34 +11,26 @@ namespace Trarizon.Bangumi.Api.Models.PersonModels;
 /// PersonV0
 /// </see>
 /// </remarks>
-public sealed class Person : IPerson
+public sealed class Person : IPerson, IPersonImagesProvider,IPersonCareersProvider
 {
     /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]
     public uint Id { get; internal set; }
 
-    /// <summary>
-    /// 人物类型
-    /// </summary>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("type")]
     public PersonType Type { get; internal set; }
 
-    /// <summary>
-    /// 人物名称
-    /// </summary>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("name")]
     public string Name { get; internal set; }
 
-    /// <summary>
-    /// 人物职业
-    /// </summary>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("career")]
     public ImmutableArray<PersonCareer> Careers { get; internal set; }
 
     // api: 源码非指针，scheme明确nullable
-    /// <summary>
-    /// 人物图片
-    /// </summary>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("images")]
     public PersonImageSet Images { get; internal set; }
 

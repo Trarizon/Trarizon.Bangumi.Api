@@ -11,21 +11,17 @@ namespace Trarizon.Bangumi.Api.Models.CharacterModels;
 /// CharacterV0
 /// </see>
 /// </remarks>
-public sealed class Character : ICharacter
+public sealed class Character : ICharacter, ICharacterImagesProvider
 {
     /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]
     public uint Id { get; internal set; }
 
-    /// <summary>
-    /// 角色类型
-    /// </summary>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("type")]
     public CharacterType Type { get; internal set; }
 
-    /// <summary>
-    /// 角色名称
-    /// </summary>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("name")]
     public string Name { get; internal set; }
 
@@ -36,9 +32,7 @@ public sealed class Character : ICharacter
     public bool IsNsfw { get; internal set; }
 
     // api: 源码非指针，scheme明确nullabla
-    /// <summary>
-    /// 角色图片
-    /// </summary>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("images")]
     public PersonImageSet Images { get; internal set; }
 

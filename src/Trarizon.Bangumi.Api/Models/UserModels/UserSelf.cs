@@ -10,25 +10,25 @@ namespace Trarizon.Bangumi.Api.Models.UserModels;
 /// CurrentUser
 /// </see>
 /// </remarks>
-public sealed class UserSelf : IUser
+public sealed class UserSelf : IUser, IUserAvatarProvider
 {
     /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]
     public uint Id { get; internal set; }
 
-    /// <inheritdoc cref="User.UserName" />
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("username")]
     public string UserName { get; internal set; }
 
-    /// <inheritdoc cref="User.NickName" />
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("nickname")]
     public string NickName { get; internal set; }
 
-    /// <inheritdoc cref="User.UserGroup" />
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("user_group")]
     public UserGroup UserGroup { get; internal set; }
 
-    /// <inheritdoc cref="User.Avatar" />
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("avatar")]
     public Avatar Avatar { get; internal set; }
 

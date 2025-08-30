@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
+using Trarizon.Bangumi.Api.Models.SubjectModels;
 
-namespace Trarizon.Bangumi.Api.Models.SubjectModels;
+namespace Trarizon.Bangumi.Api.Requests.Models;
 /// <summary>
 /// 条目分类
 /// </summary>

@@ -8,13 +8,28 @@ namespace Trarizon.Bangumi.Api.Models.PersonModels;
 /// <summary>
 /// 人物图片尺寸
 /// </summary>
+/// <remarks>
+/// 注释的尺寸是看网址猜的，不保证真的准确
+/// </remarks>
 [QueryStringEnum("PersonImage")]
 public enum PersonImageSize
 {
-    Small = SubjectImageSize.Small,
-    Grid = SubjectImageSize.Grid,
-    Large = SubjectImageSize.Large,
-    Medium = SubjectImageSize.Medium,
+    /// <summary>
+    /// 原图尺寸
+    /// </summary>
+    Large,
+    /// <summary>
+    /// 400x
+    /// </summary>
+    Medium,
+    /// <summary>
+    /// 100x
+    /// </summary>
+    Small,
+    /// <summary>
+    /// 75x75
+    /// </summary>
+    Grid,
 }
 
 /// <summary>
@@ -27,15 +42,19 @@ public enum PersonImageSize
 /// </remarks>
 public struct PersonImageSet
 {
+    /// <inheritdoc cref="PersonImageSize.Large"/>
     [JsonInclude, JsonPropertyName("large")]
     public string Large { get; internal set; }
 
+    /// <inheritdoc cref="PersonImageSize.Medium"/>
     [JsonInclude, JsonPropertyName("medium")]
     public string Medium { get; internal set; }
 
+    /// <inheritdoc cref="PersonImageSize.Small"/>
     [JsonInclude, JsonPropertyName("small")]
     public string Small { get; internal set; }
 
+    /// <inheritdoc cref="PersonImageSize.Grid"/>
     [JsonInclude, JsonPropertyName("grid")]
     public string Grid { get; internal set; }
 }

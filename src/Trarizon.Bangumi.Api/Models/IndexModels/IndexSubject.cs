@@ -11,7 +11,7 @@ namespace Trarizon.Bangumi.Api.Models.IndexModels;
 /// IndexSubjectV0
 /// </see>
 /// </remarks>
-public sealed class IndexSubject : ISubject, ISubjectBasicInfo
+public sealed class IndexSubject : ISubject, ISubjectImagesProvider
 {
     /// <summary>
     /// 条目添加时间
@@ -23,7 +23,7 @@ public sealed class IndexSubject : ISubject, ISubjectBasicInfo
     [JsonInclude, JsonPropertyName("date")]
     public string? Date { get; internal set; }
 
-    /// <inheritdoc cref="Subject.Images"/>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("images")]
     public SubjectImageSet Images { get; internal set; }
 
@@ -31,11 +31,11 @@ public sealed class IndexSubject : ISubject, ISubjectBasicInfo
     [JsonInclude, JsonPropertyName("id")]
     public uint Id { get; internal set; }
 
-    /// <inheritdoc cref="Subject.Name" />
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("name")]
     public string Name { get; internal set; }
 
-    /// <inheritdoc cref="Subject.ChineseName" />
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("name_cn")]
     public string ChineseName { get; internal set; }
 
@@ -49,7 +49,7 @@ public sealed class IndexSubject : ISubject, ISubjectBasicInfo
     [JsonInclude, JsonPropertyName("infobox")]
     public InfoBox InfoBox { get; internal set; }
 
-    /// <inheritdoc cref="Subject.Type"/>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("type")]
     public SubjectType Type { get; internal set; }
 

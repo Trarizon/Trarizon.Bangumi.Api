@@ -13,7 +13,7 @@ namespace Trarizon.Bangumi.Api.Routes;
 partial class BangumiApis
 {
     // routes: https://github.com/bangumi/server/blob/master/web/handler/subject/subject.go#L54
-    // https://github.com/bangumi/server/tree/master/web/handler/subject
+    //         https://github.com/bangumi/server/tree/master/web/handler/subject
 
     private const string CalendarUrl = "/calendar";
     private const string SubjectsUrl = V0Url + "/subjects";

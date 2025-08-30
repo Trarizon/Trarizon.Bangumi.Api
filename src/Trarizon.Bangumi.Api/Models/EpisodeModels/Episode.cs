@@ -14,9 +14,11 @@ namespace Trarizon.Bangumi.Api.Models.EpisodeModels;
 /// </see>
 /// </remarks>
 [DebuggerDisplay("[{Ep}] {Name}")]
-public sealed class Episode : IEpisode
+public sealed class Episode
 {
-    /// <inheritdoc />
+    /// <summary>
+    /// 章节ID
+    /// </summary>
     [JsonInclude, JsonPropertyName("id")]
     public uint Id { get; internal set; }
 
@@ -85,7 +87,7 @@ public sealed class Episode : IEpisode
     /// 评论数量
     /// </summary>
     [JsonInclude, JsonPropertyName("comment")]
-    public int CommentCount { get; internal set; } 
+    public int CommentCount { get; internal set; }
 
     /// <summary>
     /// 简介

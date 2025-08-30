@@ -11,21 +11,21 @@ namespace Trarizon.Bangumi.Api.Models.SubjectModels;
 /// SlimSubjectV0
 /// </see>
 /// </remarks>
-public sealed class SlimSubject : ISubject, ISubjectBasicInfo
+public sealed class SlimSubject : ISubject, ISubjectImagesProvider
 {
     /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]
     public uint Id { get; internal set; }
 
-    /// <inheritdoc cref="Subject.Type" />
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("type")]
     public SubjectType Type { get; internal set; }
 
-    /// <inheritdoc cref="Subject.Name" />
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("name")]
     public string Name { get; internal set; }
 
-    /// <inheritdoc cref="Subject.ChineseName" />
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("name_cn")]
     public string ChineseName { get; internal set; }
 
@@ -40,7 +40,7 @@ public sealed class SlimSubject : ISubject, ISubjectBasicInfo
     [JsonInclude, JsonPropertyName("date")]
     public string? Date { get; internal set; }
 
-    /// <inheritdoc cref="Subject.Images"/>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("images")]
     public SubjectImageSet Images { get; internal set; }
 

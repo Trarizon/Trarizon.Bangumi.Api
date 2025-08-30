@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using Trarizon.Bangumi.Api.Models.Abstractions;
 
 namespace Trarizon.Bangumi.Api.Models.RevisionModels;
 /// <summary>
@@ -9,13 +10,13 @@ namespace Trarizon.Bangumi.Api.Models.RevisionModels;
 /// Creator
 /// </see>
 /// </remarks>
-public sealed class Creator
+public sealed class Creator : IUserNamed
 {
-    /// <inheritdoc cref="UserModels.User.UserName"/>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("username")]
     public string UserName { get; internal set; }
 
-    /// <inheritdoc cref="UserModels.User.NickName"/>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("nickname")]
     public string NickName { get; internal set; }
 

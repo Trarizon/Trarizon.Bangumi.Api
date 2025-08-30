@@ -16,32 +16,24 @@ public sealed class SubjectRevision : IRevision
     [JsonInclude, JsonPropertyName("id")]
     public uint Id { get; internal set; }
 
-    /// <summary>
-    /// 编辑记录类型
-    /// </summary>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("type")]
     public RevisionType Type { get; internal set; }
 
-    /// <summary>
-    /// 编辑记录创建者
-    /// </summary>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("creator")]
     public Creator Creator { get; internal set; }
 
-    /// <summary>
-    /// 编辑记录摘要
-    /// </summary>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("summary")]
     public string Summary { get; internal set; }
 
-    /// <summary>
-    /// 编辑记录创建时间
-    /// </summary>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("created_at")]
     public DateTimeOffset CreatedTime { get; set; }
 
     /// <summary>
-    /// 编辑历史详细数据
+    /// 编辑记录详细数据
     /// </summary>
     [JsonInclude, JsonPropertyName("data")]
     public SubjectRevisionData? Data { get; internal set; }

@@ -15,22 +15,22 @@ namespace Trarizon.Bangumi.Api.Models.SubjectModels;
 /// </see>
 /// </remarks>
 [DebuggerDisplay("[{Relation}] {Name}")]
-public sealed class SubjectRelatedCharacter : ICharacter
+public sealed class SubjectRelatedCharacter : ICharacter, ICharacterImagesProvider
 {
     /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]
     public uint Id { get; internal set; }
 
-    /// <inheritdoc cref="Character.Name" />
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("name")]
     public string Name { get; internal set; }
 
-    /// <inheritdoc cref="Character.Type" />
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("type")]
     public CharacterType Type { get; internal set; }
 
     // api: 源码非指针，scheme 明确nullable
-    /// <inheritdoc cref="Character.Images" />
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("images")]
     public PersonImageSet Images { get; internal set; }
 

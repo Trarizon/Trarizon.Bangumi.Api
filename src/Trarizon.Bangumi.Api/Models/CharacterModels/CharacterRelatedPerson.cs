@@ -12,26 +12,26 @@ namespace Trarizon.Bangumi.Api.Models.CharacterModels;
 /// CharacterRelatedPerson
 /// </see>
 /// </remarks>
-public sealed class CharacterRelatedPerson : IPerson
+public sealed class CharacterRelatedPerson : IPerson, IPersonImagesProvider
 {
     /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]
     public uint Id { get; internal set; }
 
-    /// <inheritdoc cref="Person.Name" />
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("name")]
     public string Name { get; internal set; }
 
-    /// <inheritdoc cref="Person.Type" />
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("type")]
     public PersonType Type { get; internal set; }
 
     // api: 源码非指针，scheme 明确nullable
-    /// <inheritdoc cref="Person.Images" />
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("images")]
     public PersonImageSet Images { get; internal set; }
 
-    /// <inheritdoc cref="ISubject.Id"/>
+    /// <inheritdoc cref="ISubjectIdentity.Id"/>
     [JsonInclude, JsonPropertyName("subject_id")]
     public uint SubjectId { get; internal set; }
 

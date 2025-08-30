@@ -11,21 +11,21 @@ namespace Trarizon.Bangumi.Api.Models.SubjectModels;
 /// ResponseSubject
 /// </see>
 /// </remarks>
-public sealed class SearchResponsedSubject : ISubject, ISubjectBasicInfo
+public sealed class SearchResponsedSubject : ISubject, ISubjectImagesProvider
 {
     /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]
     public uint Id { get; internal set; }
 
-    /// <inheritdoc cref="Subject.Type"/>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("type")]
     public SubjectType Type { get; internal set; }
 
-    /// <inheritdoc cref="Subject.Name"/>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("name")]
     public string Name { get; internal set; }
 
-    /// <inheritdoc cref="Subject.ChineseName"/>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("name_cn")]
     public string ChineseName { get; internal set; }
 
@@ -54,13 +54,11 @@ public sealed class SearchResponsedSubject : ISubject, ISubjectBasicInfo
     [JsonInclude, JsonPropertyName("platform")]
     public string? Platform { get; internal set; }
 
-    /// <inheritdoc cref="Subject.Images"/>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("images")]
     public SubjectImageSet Images { get; internal set; }
 
-    /// <summary>
-    /// 条目默认图片
-    /// </summary>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("image")]
     public string ImageUrl { get; internal set; }
 
