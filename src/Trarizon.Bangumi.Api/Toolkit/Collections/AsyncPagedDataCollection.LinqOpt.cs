@@ -2,7 +2,7 @@
 using Trarizon.Bangumi.Api.Utilities;
 
 namespace Trarizon.Bangumi.Api.Toolkit.Collections;
-partial class AsyncPageCollection<T>
+partial class AsyncPagedDataCollection<T>
 {
     /// <summary>
     /// 获取数据的总数
@@ -53,7 +53,7 @@ partial class AsyncPageCollection<T>
     /// </summary>
     /// <param name="count"></param>
     /// <returns></returns>
-    public AsyncPageCollection<T> Take(int count)
+    public AsyncPagedDataCollection<T> Take(int count)
     {
         if (count >= _takeCount) {
             return this;
@@ -61,7 +61,7 @@ partial class AsyncPageCollection<T>
         if (count <= 0) {
             return Empty;
         }
-        return new AsyncPageCollection<T>(_limit, _offset, count, _options, _pageFetcher);
+        return new AsyncPagedDataCollection<T>(_limit, _offset, count, _options, _pageFetcher);
     }
 
     /// <summary>
@@ -69,14 +69,14 @@ partial class AsyncPageCollection<T>
     /// </summary>
     /// <param name="count"></param>
     /// <returns></returns>
-    public AsyncPageCollection<T> Skip(int count)
+    public AsyncPagedDataCollection<T> Skip(int count)
     {
         if (count >= _takeCount) {
             return Empty;
         }
         if (count <= 0)
             return this;
-        return new AsyncPageCollection<T>(_limit, _offset + count, _takeCount - count, _options, _pageFetcher);
+        return new AsyncPagedDataCollection<T>(_limit, _offset + count, _takeCount - count, _options, _pageFetcher);
     }
 
     /// <summary>

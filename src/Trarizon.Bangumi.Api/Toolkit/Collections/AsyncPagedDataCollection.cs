@@ -6,19 +6,19 @@ namespace Trarizon.Bangumi.Api.Toolkit.Collections;
 /// 按照指定分页参数异步获取数据的集合
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public sealed partial class AsyncPageCollection<T> : IAsyncEnumerable<T>
+public sealed partial class AsyncPagedDataCollection<T> : IAsyncEnumerable<T>
 {
     // Note: 如果为外部提供了调用_pageFetcher的方法，那么我们是不能使用Empty作为空集合实例的
     // 简单起见删除了GetPageAsync(lmt, ofs)方法
-    private static readonly AsyncPageCollection<T> Empty = new(default, default, takeCount: 0, default!, pageFetcher: default!);
+    private static readonly AsyncPagedDataCollection<T> Empty = new(default, default, takeCount: 0, default!, pageFetcher: default!);
 
-    private readonly Func<int?, int, CancellationToken, Task<PagedData<T>>> _pageFetcher;
+    private readonly PageFetchCallback<T> _pageFetcher;
     private readonly int? _limit;
     private readonly int _offset;
     private readonly int _takeCount; // -1 for infinite
     private readonly AsyncPageCollectionOptions _options;
 
-    internal AsyncPageCollection(int? limit, AsyncPageCollectionOptions options, Func<int?, int, CancellationToken, Task<PagedData<T>>> pageFetcher)
+    internal AsyncPagedDataCollection(int? limit, AsyncPageCollectionOptions options, PageFetchCallback<T> pageFetcher)
     {
         _pageFetcher = pageFetcher;
         _limit = limit;
@@ -27,7 +27,7 @@ public sealed partial class AsyncPageCollection<T> : IAsyncEnumerable<T>
         _options = options;
     }
 
-    private AsyncPageCollection(int? limit, int offset, int takeCount, AsyncPageCollectionOptions options, Func<int?, int, CancellationToken, Task<PagedData<T>>> pageFetcher)
+    private AsyncPagedDataCollection(int? limit, int offset, int takeCount, AsyncPageCollectionOptions options, PageFetchCallback<T> pageFetcher)
     {
         Debug.Assert(_takeCount >= 0);
         _pageFetcher = pageFetcher;
@@ -42,8 +42,8 @@ public sealed partial class AsyncPageCollection<T> : IAsyncEnumerable<T>
     /// </summary>
     /// <param name="limit"></param>
     /// <returns></returns>
-    public AsyncPageCollection<T> WithPageLimit(int? limit)
-        => new AsyncPageCollection<T>(limit, _offset, _takeCount, _options, _pageFetcher);
+    public AsyncPagedDataCollection<T> WithPageLimit(int? limit)
+        => new AsyncPagedDataCollection<T>(limit, _offset, _takeCount, _options, _pageFetcher);
 
     /// <summary></summary>
     /// <param name="cancellationToken"></param>
@@ -57,7 +57,17 @@ public sealed partial class AsyncPageCollection<T> : IAsyncEnumerable<T>
         int offset = _offset;
 
         while (true) {
-            var page = await _pageFetcher(_limit, offset, cancellationToken).ConfigureAwait(false);
+            int retryCount = 0;
+            PagedData<T> page;
+        ConnectRetry:
+            try {
+                page = await _pageFetcher(_limit, offset, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception ex) when (ex is not OperationCanceledException && retryCount < _options.MaxRetryCount) {
+                retryCount++;
+                await Task.Delay(_options.RetryInterval ?? _options.RequestInterval, cancellationToken).ConfigureAwait(false);
+                goto ConnectRetry;
+            }
             var delayTask = Task.Delay(_options.RequestInterval, cancellationToken);
 
             var items = page.Datas;

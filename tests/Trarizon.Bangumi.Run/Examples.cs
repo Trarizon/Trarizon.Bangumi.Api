@@ -225,7 +225,7 @@ public static class Examples
         // 所有GetPagedXXXAsync有对应的GetXXX方法，返回AsyncPagedCollection<XXX>
         // 该集合实现了IAsyncEnumerable<XXX>，提供了异步遍历所有搜索结果的功能。
 
-        AsyncPageCollection<Subject> subjects = client.GetSubjects(queries);
+        AsyncPagedDataCollection<Subject> subjects = client.GetSubjects(queries);
         // 搜索结果可能有很多数据，这种情况不推荐遍历所有数据，请自行break或使用Linq筛选
         await foreach (var subject in subjects) {
             Console.WriteLine(subject.Name);
