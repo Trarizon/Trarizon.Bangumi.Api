@@ -55,7 +55,6 @@ public sealed partial class AsyncPageCollection<T> : IAsyncEnumerable<T>
             yield break;
 
         int offset = _offset;
-        int endOffset = _offset + _takeCount;
 
         while (true) {
             var page = await _pageFetcher(_limit, offset, cancellationToken).ConfigureAwait(false);
@@ -65,14 +64,30 @@ public sealed partial class AsyncPageCollection<T> : IAsyncEnumerable<T>
             if (items.Length == 0)
                 yield break;
 
-            int chunkCount = int.Min(items.Length, endOffset - offset);
-            for (int i = 0; i < chunkCount; i++) {
-                cancellationToken.ThrowIfCancellationRequested();
-                var data = items[i];
-                yield return data;
+            // Finite
+            if (_takeCount >= 0) {
+                var endOffset = _offset + _takeCount;
+                int chunkCount = int.Min(items.Length, endOffset - offset);
+                for (int i = 0; i < chunkCount; i++) {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    var data = items[i];
+                    yield return data;
+                }
+                offset += chunkCount;
+                if (offset >= endOffset)
+                    yield break;
             }
-            offset += chunkCount;
-            if (offset >= endOffset)
+            // Infinite
+            else {
+                foreach (var item in items) {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    yield return item;
+                }
+                offset += items.Length;
+            }
+
+            // No more data, we can sure the next fetch result is empty.
+            if (items.Length < _limit)
                 yield break;
 
             await delayTask.ConfigureAwait(false);

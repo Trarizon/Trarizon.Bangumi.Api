@@ -21,12 +21,14 @@ var client = new BangumiClient(UserAgent, accessToken);
 try {
     var me = await client.GetSelfAsync();
 
-    var col= await client.GetPagedUserSubjectCollectionsAsync(me.UserName,
-        collectionType: SubjectCollectionType.Doing);
+    var col = await client.SearchPagedSubjectsAsync(new()
+    {
+        Keyword = "Summer Pockets",
+    }, 10, 0);
 
     col.Datas.Select(s =>
     {
-        Console.WriteLine(s.Subject.Name);
+        Console.WriteLine(s.Name);
         return default(ValueTuple);
     }).ToList();
 }
