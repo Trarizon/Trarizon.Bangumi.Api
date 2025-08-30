@@ -118,31 +118,30 @@ partial class AsyncPagedDataCollection<T>
     private Task<T?> ElementAtOrDefaultAsyncInternal(Index index, bool throwIfNotFound, CancellationToken cancellationToken)
     {
         if (_takeCount == 0) {
-            if (throwIfNotFound)
-                Throws.ThrowArgumentOutOfRange(nameof(index));
-            return Task.FromResult<T?>(default);
+            goto Error;
         }
 
         if (index.IsFromEnd) {
             var indexFromEnd = index.Value;
-            if (indexFromEnd <= 0 || indexFromEnd > _takeCount) {
-                if (throwIfNotFound)
-                    Throws.ThrowArgumentOutOfRange(nameof(index));
-                return Task.FromResult<T?>(default);
-            }
-
+            if (indexFromEnd <= 0)
+                goto Error;
+            if (_takeCount >= 0 && indexFromEnd > _takeCount)
+                goto Error;
         }
         else {
             var indexValue = index.Value;
-            if (indexValue < 0 || indexValue >= _takeCount) {
-                if (throwIfNotFound)
-                    Throws.ThrowArgumentOutOfRange(nameof(index));
-                return Task.FromResult<T?>(default);
-            }
+            if (indexValue < 0)
+                goto Error;
+            if (_takeCount >= 0 && indexValue >= _takeCount)
+                goto Error;
         }
 
         return Core(index, throwIfNotFound, cancellationToken);
 
+    Error:
+        if (throwIfNotFound)
+            Throws.ThrowArgumentOutOfRange(nameof(index));
+        return Task.FromResult<T?>(default);
 
         async Task<T?> Core(Index index, bool throwIfNotFound, CancellationToken cancellationToken)
         {
@@ -155,7 +154,8 @@ partial class AsyncPagedDataCollection<T>
                 indexValue = index.Value;
             }
 
-            Debug.Assert(indexValue >= 0 && indexValue < _takeCount);
+            Debug.Assert(indexValue >= 0);
+            Debug.Assert(_takeCount < 0 || indexValue < _takeCount);
 
             var page = await _pageFetcher(1, indexValue + _offset, cancellationToken).ConfigureAwait(false);
             if (page.Datas.Length == 0) {
