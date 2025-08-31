@@ -6,7 +6,7 @@ public sealed class AsyncPageCollectionOptions
 {
     internal static AsyncPageCollectionOptions Default { get; } = new()
     {
-        RequestInterval = TimeSpan.FromMilliseconds(500),
+        RequestInterval = TimeSpan.FromMilliseconds(250),
         MaxRetryCount = 3,
     };
 

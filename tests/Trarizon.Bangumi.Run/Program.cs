@@ -20,10 +20,11 @@ var accessToken = File.ReadAllText("access_token.priv");
 var client = new BangumiClient(UserAgent, accessToken);
 
 try {
-    var me = await client.GetEpisodes(512190)
-        .ElementAtAsync(7).ConfigureAwait(false);
+    var persons = client.GetUserSubjectCollections("trarizon", collectionType: SubjectCollectionType.Collect)
+        .Skip(13)
+        .Take(63);
 
-    Console.WriteLine(me);
+    await Console.Out.WriteLineAsync((await persons.LastAsync()).Subject.Name);
 }
 catch (BangumiApiException e) {
     Console.WriteLine("Exception");

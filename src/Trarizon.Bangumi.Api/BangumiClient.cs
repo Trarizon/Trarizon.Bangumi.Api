@@ -83,6 +83,9 @@ public sealed class BangumiClient : IBangumiClient, IDisposable
     /// <inheritdoc/>
     public Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken = default)
     {
+#if DEBUG
+        Console.WriteLine($"Client requesting on {DateTime.Now} : {request.RequestUri}");
+#endif
         return HttpClient.SendAsync(request, cancellationToken);
     }
 
