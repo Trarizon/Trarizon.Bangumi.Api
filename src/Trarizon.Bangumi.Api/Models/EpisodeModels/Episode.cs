@@ -14,11 +14,9 @@ namespace Trarizon.Bangumi.Api.Models.EpisodeModels;
 /// </see>
 /// </remarks>
 [DebuggerDisplay("[{Ep}] {Name}")]
-public sealed class Episode
+public sealed class Episode : IEpisodeIdentity
 {
-    /// <summary>
-    /// 章节ID
-    /// </summary>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]
     public uint Id { get; internal set; }
 

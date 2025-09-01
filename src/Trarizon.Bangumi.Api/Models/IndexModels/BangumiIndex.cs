@@ -13,11 +13,9 @@ namespace Trarizon.Bangumi.Api.Models.IndexModels;
 /// Index
 /// </see>
 /// </remarks>
-public sealed class BangumiIndex
+public sealed class BangumiIndex : IIndexIdentity
 {
-    /// <summary>
-    /// 目录ID
-    /// </summary>
+    /// <inheritdoc />
     [JsonInclude, JsonPropertyName("id")]
     public uint Id { get; internal set; }
 
