@@ -5,97 +5,46 @@ using Trarizon.Bangumi.Api.Responses;
 
 namespace Trarizon.Bangumi.Api.Toolkit.Collections;
 /// <summary>
-/// 按照指定分页参数异步获取数据的集合
+/// 按照指定分页参数异步获取页面的集合
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public sealed partial class AsyncPagedDataCollection<T> : IAsyncEnumerable<T>
+public sealed class AsyncPageCollection<T> : IAsyncEnumerable<PagedData<T>>
 {
-    // Note: 如果为外部提供了调用_pageFetcher的方法，那么我们是不能使用Empty作为空集合实例的
-    // 简单起见删除了GetPageAsync(lmt, ofs)方法
-    private static readonly AsyncPagedDataCollection<T> Empty = new(default, default, takeCount: 0, default!, pageFetcher: default!);
-
-    /// <remarks>
-    /// Do not directly invoke this, use <see cref="FetchPageWithRetryAsync(int?, int, bool, CancellationToken)"/> instead
-    /// </remarks>
     private readonly PageFetchCallback<T> _pageFetcher;
     private readonly int? _limit;
     private readonly int _offset;
-    /// <summary>
-    /// If -1, means infinite
-    /// </summary>
-    private readonly int _takeCount; // -1 for infinite
     private readonly AsyncPageCollectionOptions _options;
 
-    internal AsyncPagedDataCollection(int? limit, AsyncPageCollectionOptions options, PageFetchCallback<T> pageFetcher)
+    internal AsyncPageCollection(int? limit, AsyncPageCollectionOptions options, PageFetchCallback<T> pageFetcher)
     {
-        _pageFetcher = pageFetcher;
+        _options = options;
         _limit = limit;
         _offset = 0;
-        _takeCount = -1;
-        _options = options;
-    }
-
-    internal AsyncPagedDataCollection(int? limit, int offset, int takeCount, AsyncPageCollectionOptions options, PageFetchCallback<T> pageFetcher)
-    {
-        Debug.Assert(_takeCount >= -1);
         _pageFetcher = pageFetcher;
-        _limit = limit;
-        _offset = offset;
-        _takeCount = takeCount;
-        _options = options;
     }
-
-    /// <summary>
-    /// 重新设置单页数量显示，返回新的集合
-    /// </summary>
-    /// <param name="limit"></param>
-    /// <returns></returns>
-    public AsyncPagedDataCollection<T> WithPageLimit(int? limit)
-        => new AsyncPagedDataCollection<T>(limit, _offset, _takeCount, _options, _pageFetcher);
 
     /// <summary></summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public async IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
+    public async IAsyncEnumerator<PagedData<T>> GetAsyncEnumerator(CancellationToken cancellationToken = default)
     {
-        Debug.Assert(_takeCount >= -1);
-        if (_takeCount == 0)
-            yield break;
-
+        int? limit = _limit;
         int offset = _offset;
-
         while (true) {
-            bool isFirst = offset == _offset;
-            PagedData<T>? page = await FetchPageWithRetryAsync(_limit, offset, isFirst, cancellationToken).ConfigureAwait(false);
+            var page = await FetchPageWithRetryAsync(limit, offset, true, cancellationToken).ConfigureAwait(false);
             if (page?.Datas is null or [])
                 yield break;
 
             var delayTask = Task.Delay(_options.RequestInterval, cancellationToken);
+            limit ??= page.Limit;
+            
+            yield return page;
 
-            var items = page.Datas;
-            // Finite
-            if (_takeCount >= 0) {
-                var endOffset = _offset + _takeCount;
-                int chunkCount = int.Min(items.Length, endOffset - offset);
-                for (int i = 0; i < chunkCount; i++) {
-                    cancellationToken.ThrowIfCancellationRequested();
-                    yield return items[i];
-                }
-                offset += chunkCount;
-                if (offset >= endOffset)
-                    yield break;
-            }
-            // Infinite
-            else {
-                foreach (var item in items) {
-                    cancellationToken.ThrowIfCancellationRequested();
-                    yield return item;
-                }
-                offset += items.Length;
-            }
+            Debug.Assert(_limit is null || _limit >= page.Datas.Length);
+            offset += page.Datas.Length;
 
             // No more data, we can sure the next fetch result is empty.
-            if (items.Length < _limit)
+            if (page.Datas.Length < _limit)
                 yield break;
 
             await delayTask.ConfigureAwait(false);
