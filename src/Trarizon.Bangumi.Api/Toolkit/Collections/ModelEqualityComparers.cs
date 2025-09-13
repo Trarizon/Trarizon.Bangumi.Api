@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Trarizon.Bangumi.Api.Models.Abstractions;
+using Trarizon.Bangumi.Api.Responses.Models.Abstractions;
 
 namespace Trarizon.Bangumi.Api.Toolkit.Collections;
 /// <summary>

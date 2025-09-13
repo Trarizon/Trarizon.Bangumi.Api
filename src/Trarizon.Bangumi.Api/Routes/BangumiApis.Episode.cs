@@ -1,5 +1,5 @@
-﻿using Trarizon.Bangumi.Api.Models.EpisodeModels;
-using Trarizon.Bangumi.Api.Responses;
+﻿using Trarizon.Bangumi.Api.Responses;
+using Trarizon.Bangumi.Api.Responses.Models;
 using Trarizon.Bangumi.Api.Utilities;
 using Json = Trarizon.Bangumi.Api.Serialization.BangumiJsonSerializerContext;
 

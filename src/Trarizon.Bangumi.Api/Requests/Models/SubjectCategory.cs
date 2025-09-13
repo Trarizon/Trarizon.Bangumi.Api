@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using Trarizon.Bangumi.Api.Models.SubjectModels;
+using Trarizon.Bangumi.Api.Responses.Models;
 
 namespace Trarizon.Bangumi.Api.Requests.Models;
 /// <summary>

@@ -1,4 +1,4 @@
-﻿using Trarizon.Bangumi.Api.Models.UserModels;
+﻿using Trarizon.Bangumi.Api.Responses.Models.Users;
 using Json = Trarizon.Bangumi.Api.Serialization.BangumiJsonSerializerContext;
 
 namespace Trarizon.Bangumi.Api.Routes;

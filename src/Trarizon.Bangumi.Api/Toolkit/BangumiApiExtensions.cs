@@ -1,12 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Trarizon.Bangumi.Api.Models.CharacterModels;
-using Trarizon.Bangumi.Api.Models.EpisodeModels;
-using Trarizon.Bangumi.Api.Models.IndexModels;
-using Trarizon.Bangumi.Api.Models.PersonModels;
-using Trarizon.Bangumi.Api.Models.RevisionModels;
-using Trarizon.Bangumi.Api.Models.SubjectModels;
-using Trarizon.Bangumi.Api.Models.UserModels;
 using Trarizon.Bangumi.Api.Requests;
+using Trarizon.Bangumi.Api.Responses.Models;
+using Trarizon.Bangumi.Api.Responses.Models.Collections;
+using Trarizon.Bangumi.Api.Responses.Models.Revisions;
 using Trarizon.Bangumi.Api.Routes;
 using Trarizon.Bangumi.Api.Toolkit.Collections;
 

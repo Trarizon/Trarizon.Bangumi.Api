@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Trarizon.Bangumi.Api.Models.SubjectModels;
+using Trarizon.Bangumi.Api.Responses.Models;
 using Trarizon.Bangumi.Api.Utilities;
 
 namespace Trarizon.Bangumi.Api.Serialization.Converters.Model;
-internal sealed class RatingSetCountsJsonPropertyConverter : JsonConverter<RatingCounts>
+internal sealed class RatingSetCountsJsonPropertyConverter : JsonConverter<SubjectRatingCounts>
 {
-    public override RatingCounts Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override SubjectRatingCounts Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         Debug.Assert(reader.TokenType is JsonTokenType.StartObject);
         Span<byte> propName = stackalloc byte[1];
@@ -35,10 +35,10 @@ internal sealed class RatingSetCountsJsonPropertyConverter : JsonConverter<Ratin
                     break;
             }
         }
-        return new RatingCounts(result);
+        return new SubjectRatingCounts(result);
     }
 
-    public override void Write(Utf8JsonWriter writer, RatingCounts value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, SubjectRatingCounts value, JsonSerializerOptions options)
     {
         var array = value._counts;
         Debug.Assert(array.Length == 10);

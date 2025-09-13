@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using Trarizon.Bangumi.Api.Models.PersonModels;
 using Trarizon.Bangumi.Api.Requests.Models;
+using Trarizon.Bangumi.Api.Responses.Models;
 
 namespace Trarizon.Bangumi.Api.Serialization.Converters.Model;
 internal sealed class GenderJsonConverter : JsonConverter<Gender>

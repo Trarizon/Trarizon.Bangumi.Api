@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using Trarizon.Bangumi.Api.Models.UserModels;
+using Trarizon.Bangumi.Api.Responses.Models.Collections;
 
 namespace Trarizon.Bangumi.Api.Requests;
 // 

@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Trarizon.Bangumi.Api.Models;
+using Trarizon.Bangumi.Api.Responses.Models;
 using Trarizon.Bangumi.Api.Utilities;
 
 namespace Trarizon.Bangumi.Api.Serialization.Converters.Model;

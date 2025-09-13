@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization.Metadata;
-using Trarizon.Bangumi.Api.Models.Abstractions;
-using Trarizon.Bangumi.Api.Models.RevisionModels;
 using Trarizon.Bangumi.Api.Responses;
+using Trarizon.Bangumi.Api.Responses.Models.Abstractions;
+using Trarizon.Bangumi.Api.Responses.Models.Revisions;
 using Trarizon.Bangumi.Api.Utilities;
 using Json = Trarizon.Bangumi.Api.Serialization.BangumiJsonSerializerContext;
 
