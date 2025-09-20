@@ -8,7 +8,7 @@ namespace Trarizon.Bangumi.Api.Toolkit.Collections;
 /// 按照指定分页参数异步获取页面的集合
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public sealed class AsyncPageCollection<T> : IAsyncEnumerable<PagedData<T>>
+public sealed partial class AsyncPageCollection<T> : IAsyncEnumerable<PagedData<T>>
 {
     private readonly PageFetchCallback<T> _pageFetcher;
     private readonly int? _limit;
@@ -37,7 +37,7 @@ public sealed class AsyncPageCollection<T> : IAsyncEnumerable<PagedData<T>>
 
             var delayTask = Task.Delay(_options.RequestInterval, cancellationToken);
             limit ??= page.Limit;
-            
+
             yield return page;
 
             Debug.Assert(_limit is null || _limit >= page.Datas.Length);
