@@ -5,7 +5,7 @@ namespace Trarizon.Bangumi.Api.Requests.Models;
 /// 排序
 /// </summary>
 [QueryStringEnum]
-public enum GetSubjectsSortKind
+public enum SubjectsSortKind
 {
     /// <summary>
     /// 日期

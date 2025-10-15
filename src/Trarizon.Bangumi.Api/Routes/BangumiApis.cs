@@ -18,9 +18,6 @@ public static partial class BangumiApis
 {
     internal const string ExperimentalApiDiagnosticId = "BgmExprApi";
 
-    private const string V0Url = "/v0";
-    private const string SearchUrl = V0Url + "/search";
-
     private static readonly MediaTypeHeaderValue _jsonHeaderValue = new("application/json");
 
     private static JsonContent CreateJsonContent<T>(T value, JsonTypeInfo<T> jsonTypeInfo)

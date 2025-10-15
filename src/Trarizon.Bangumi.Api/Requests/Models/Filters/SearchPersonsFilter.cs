@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Trarizon.Bangumi.Api.Responses.Models;
 
-namespace Trarizon.Bangumi.Api.Requests;
+namespace Trarizon.Bangumi.Api.Requests.Models.Filters;
 /// <summary>
 /// 人物搜索过滤器
 /// </summary>

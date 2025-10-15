@@ -2,28 +2,26 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using Trarizon.Bangumi.Api.Requests;
+using Trarizon.Bangumi.Api.Requests.Payloads;
 using Trarizon.Bangumi.Api.Responses;
 using Trarizon.Bangumi.Api.Responses.Models;
 using Trarizon.Bangumi.Api.Utilities;
 using Json = Trarizon.Bangumi.Api.Serialization.BangumiJsonSerializerContext;
+using ApiRoutes = Trarizon.Bangumi.Api.Routes.BangumiApiRoutes;
 
 namespace Trarizon.Bangumi.Api.Routes;
+
+    // src: https://github.com/bangumi/server/tree/master/web/handler/person
 partial class BangumiApis
 {
-    // src: https://github.com/bangumi/server/tree/master/web/handler/person
-
-    private const string PersonsUrl = V0Url + "/persons";
-    private const string SearchPersonsUrl = SearchUrl + "/persons";
-
     /// <remarks>
     /// src: <see href="https://github.com/bangumi/server/blob/master/internal/search/person/handle.go" />
     /// </remarks>
     [Experimental(ExperimentalApiDiagnosticId)]
-    public static Task<PagedData<Person>> SearchPagedPersonsAsync(this IBangumiClient client, SearchPersonsRequestBody? requestBody, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
+    public static Task<PagedData<Person>> SearchPagedPersonsAsync(this IBangumiClient client, SearchPersonsRequestBody? requestBody, Pagination pagination = default, CancellationToken cancellationToken = default)
     {
-        var builder = new QueryBuilder(SearchPersonsUrl);
-        builder.CheckAppendQuery("limit", pageLimit);
-        builder.CheckAppendQuery("offset", pageOffset);
+        var builder = new QueryBuilder(ApiRoutes.SearchPersonsUrl);
+        builder.AppendPagination(pagination);
 
         return client.PostAsJsonAndFromJsonWhenSuccessStatusCodeOrThrowAsync(
             builder.Build(),
@@ -40,7 +38,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<Person> GetPersonAsync(this IBangumiClient client, uint personId, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync($"{PersonsUrl}/{personId}",
+        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync($"{ApiRoutes.PersonsUrl}/{personId}",
             Json.Default.Person, cancellationToken);
     }
 
@@ -55,7 +53,7 @@ partial class BangumiApis
     public static Task<Uri> GetPersonImageUrlAsync(this IBangumiClient client, uint personId, PersonImageSize imageSize, CancellationToken cancellationToken = default)
     {
         return client.GetHeadersLocationWhenStatusFoundOrThrowAsync(
-            $"{PersonsUrl}/{personId}/image?type={imageSize.ToQueryString()}", cancellationToken)!;
+            $"{ApiRoutes.PersonsUrl}/{personId}/image?type={imageSize.ToQueryString()}", cancellationToken)!;
     }
 
     /// <summary>
@@ -68,7 +66,7 @@ partial class BangumiApis
     public static Task<ImmutableArray<PersonRelatedSubject>> GetPersonRelatedSubjectsAsync(this IBangumiClient client, uint personId, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
-            $"{PersonsUrl}/{personId}/subjects",
+            $"{ApiRoutes.PersonsUrl}/{personId}/subjects",
             Json.Default.ImmutableArrayPersonRelatedSubject, cancellationToken);
     }
 
@@ -82,7 +80,7 @@ partial class BangumiApis
     public static Task<ImmutableArray<PersonRelatedCharacter>> GetPersonRelatedCharactersAsync(this IBangumiClient client, uint personId, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
-            $"{PersonsUrl}/{personId}/characters",
+            $"{ApiRoutes.PersonsUrl}/{personId}/characters",
             Json.Default.ImmutableArrayPersonRelatedCharacter, cancellationToken);
     }
 
@@ -96,7 +94,7 @@ partial class BangumiApis
     public static Task CollectPersonAsync(this IBangumiClient client, uint personId, CancellationToken cancellationToken = default)
     {
         return client.PostEnsureSuccessStatusCodeOrThrowAsync(
-            $"{PersonsUrl}/{personId}/collect", cancellationToken);
+            $"{ApiRoutes.PersonsUrl}/{personId}/collect", cancellationToken);
     }
 
     /// <summary>
@@ -111,6 +109,6 @@ partial class BangumiApis
     public static Task UncollectPersonAsync(this IBangumiClient client, uint personId, CancellationToken cancellationToken = default)
     {
         return client.DeleteEnsureSuccessStatusCodeOrThrowAsync(
-            $"{PersonsUrl}/{personId}/collect", cancellationToken);
+            $"{ApiRoutes.PersonsUrl}/{personId}/collect", cancellationToken);
     }
 }

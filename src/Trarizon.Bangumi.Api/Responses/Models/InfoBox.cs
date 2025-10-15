@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
@@ -134,7 +135,7 @@ public struct InfoProperty
 /// 信息的值，Union(string, InfoPairValue[])
 /// </summary>
 /// <remarks>
-/// 值的原始形式可能为string或Pair[]，该结构体将其抽象为了统一的Pair列表，可以通过<see cref="IsRawValueString"/>, <see cref="GetRawStringValue"/>, <see cref="GetRawPairsValue"/>获取原始形式
+/// 值的原始形式可能为string或Pair[]，该结构体将其抽象为了统一的Pair列表，可以通过<see cref="TryGetRawStringValue(out string)"/>, <see cref="TryGetRawPairsValue(out ImmutableArray{InfoValue})"/>获取原始形式
 /// <br/>
 /// src: <see href="https://github.com/bangumi/server/blob/master/internal/pkg/compat/wiki.go#L54">wikiValue: key-value</see> ,
 /// <see href="https://github.com/bangumi/server/blob/master/internal/pkg/compat/wiki.go#L59">wikiValues: key-values</see>
@@ -172,7 +173,7 @@ public readonly struct InfoValues : ICollection<InfoValue>, IReadOnlyCollection<
     /// </summary>
     public string Value => _obj is string str ? str : Unsafe.As<InfoValue[]>(_obj)[0].Value;
 
-    private string DebuggerDisplay => IsRawValueString() ? $"\"{GetRawStringValue()}\"" : $"(Count = {Count})";
+    private string DebuggerDisplay => TryGetRawStringValue(out var str) ? $"\"{str}\"" : $"(Count = {Count})";
 
     internal InfoValues(string value)
     {
@@ -184,23 +185,59 @@ public readonly struct InfoValues : ICollection<InfoValue>, IReadOnlyCollection<
         _obj = ImmutableCollectionsMarshal.AsArray(pairs) ?? [];
     }
 
+    #region Raw values
+
+    /// <summary>
+    /// 判断原始值是否为字符串，若是则获取原式字符串值
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public bool TryGetRawStringValue([MaybeNullWhen(false)] out string value)
+    {
+        if (_obj is string str) {
+            value = str;
+            return true;
+        }
+        value = null;
+        return false;
+    }
+
+    /// <summary>
+    /// 判断原始值是否为集合，若是则获取原始集合值
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public bool TryGetRawPairsValue(out ImmutableArray<InfoValue> value)
+    {
+        if (_obj is InfoValue[] pairs) {
+            value = ImmutableCollectionsMarshal.AsImmutableArray(pairs);
+            return true;
+        }
+        value = default;
+        return false;
+    }
+
     /// <summary>
     /// 判断原始值是否为字符串
     /// </summary>
     /// <returns></returns>
-    public bool IsRawValueString() => _obj is string;
+    internal bool IsRawValueString() => _obj is string;
 
     /// <summary>
     /// 原始值为字符串时返回字符串值，否则抛出cast异常
     /// </summary>
     /// <returns></returns>
-    public string GetRawStringValue() => (string)_obj;
+    internal string GetRawStringValue() => (string)_obj;
 
     /// <summary>
     /// 原始值为集合时返回集合值，否则抛出cast异常
     /// </summary>
     /// <returns></returns>
-    public ImmutableArray<InfoValue> GetRawPairsValue() => ImmutableCollectionsMarshal.AsImmutableArray((InfoValue[])_obj);
+    internal ImmutableArray<InfoValue> GetRawPairsValue() => ImmutableCollectionsMarshal.AsImmutableArray((InfoValue[])_obj);
+
+    #endregion
+
+    #region Collection and enumeration
 
 #pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
 
@@ -287,6 +324,8 @@ public readonly struct InfoValues : ICollection<InfoValue>, IReadOnlyCollection<
     }
 
 #pragma warning restore CS1591
+
+    #endregion
 }
 
 /// <summary>
@@ -312,7 +351,7 @@ public struct InfoValue : IEquatable<InfoValue>
     /// </summary>
     /// <param name="key"></param>
     /// <param name="value"></param>
-    public InfoValue(string? key, string value)
+    internal InfoValue(string? key, string value)
     {
         Key = key;
         Value = value;

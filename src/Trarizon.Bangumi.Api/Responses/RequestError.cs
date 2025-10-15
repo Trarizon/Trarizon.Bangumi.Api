@@ -16,7 +16,7 @@ public sealed class RequestError
     /// 详细信息
     /// </summary>
     [JsonInclude, JsonPropertyName("details")]
-    public RequestDetailUnion Details { get; internal set; }
+    public RequestDetailsData Details { get; internal set; }
     
     //public string RequestId { get; internal set; }
     

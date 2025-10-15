@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using Trarizon.Bangumi.Api.Requests;
 using Trarizon.Bangumi.Api.Requests.Models;
 using Trarizon.Bangumi.Api.Responses.Models;
 
@@ -9,7 +10,7 @@ internal sealed class GenderJsonConverter : JsonConverter<Gender>
     public override Gender Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var str = JsonSerializer.Deserialize(ref reader, BangumiJsonSerializerContext.Default.String);
-        return Gender.FromJsonStringValue(str);
+        return Gender.FromJsonStringValue(str!);
     }
 
     public override void Write(Utf8JsonWriter writer, Gender value, JsonSerializerOptions options)
@@ -24,7 +25,7 @@ internal sealed class PersonCareerJsonConverter : JsonConverter<PersonCareer>
     public override PersonCareer Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var str = JsonSerializer.Deserialize(ref reader, BangumiJsonSerializerContext.Default.String);
-        return PersonCareer.FromJsonStringValue(str);
+        return PersonCareer.FromJsonStringValue(str!);
     }
 
     public override void Write(Utf8JsonWriter writer, PersonCareer value, JsonSerializerOptions options)
@@ -34,15 +35,15 @@ internal sealed class PersonCareerJsonConverter : JsonConverter<PersonCareer>
     }
 }
 
-internal sealed class SearchSubjectsSortJsonConverter : JsonConverter<SearchSubjectsSort>
+internal sealed class SearchSubjectsSortJsonConverter : JsonConverter<SubjectsSearchSortKind>
 {
-    public override SearchSubjectsSort Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override SubjectsSearchSortKind Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var str = JsonSerializer.Deserialize(ref reader, BangumiJsonSerializerContext.Default.String);
-        return SearchSubjectsSort.FromJsonStringValue(str);
+        return SubjectsSearchSortKind.FromJsonStringValue(str!);
     }
 
-    public override void Write(Utf8JsonWriter writer, SearchSubjectsSort value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, SubjectsSearchSortKind value, JsonSerializerOptions options)
     {
         var str = value.ToJsonStringValue();
         JsonSerializer.Serialize(writer, str, BangumiJsonSerializerContext.Default.String);

@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
+using Trarizon.Bangumi.Api.Requests.Models.Filters;
 
-namespace Trarizon.Bangumi.Api.Requests;
+namespace Trarizon.Bangumi.Api.Requests.Payloads;
 /// <summary>
 /// 
 /// </summary>

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Text.Json.Serialization;
-using Trarizon.Bangumi.Api.Requests;
+using Trarizon.Bangumi.Api.Requests.Payloads;
 using Trarizon.Bangumi.Api.Responses;
 using Trarizon.Bangumi.Api.Responses.Models;
 using Trarizon.Bangumi.Api.Responses.Models.Collections;
@@ -12,7 +12,7 @@ namespace Trarizon.Bangumi.Api.Serialization;
 [JsonSourceGenerationOptions(WriteIndented = true)]
 #endif
 [JsonSerializable(typeof(RequestError))]
-[JsonSerializable(typeof(RequestDetail))]
+[JsonSerializable(typeof(RequestDetails))]
 
 [JsonSerializable(typeof(Calendar))]
 [JsonSerializable(typeof(CalendarDay[]))]

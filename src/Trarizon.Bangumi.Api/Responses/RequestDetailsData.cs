@@ -4,19 +4,19 @@ using Trarizon.Bangumi.Api.Serialization.Converters.Model;
 
 namespace Trarizon.Bangumi.Api.Responses;
 /// <summary>
-/// HTTP 请求详细信息，值可能为string或<see cref="RequestDetail"/>
+/// HTTP 请求详细信息，值可能为string或<see cref="RequestDetails"/>
 /// </summary>
 [JsonConverter(typeof(RequestDetailJsonConverter))]
-public readonly struct RequestDetailUnion
+public readonly struct RequestDetailsData
 {
     private readonly object? _obj;
 
-    internal RequestDetailUnion(string str)
+    internal RequestDetailsData(string str)
     {
         _obj = str;
     }
 
-    internal RequestDetailUnion(RequestDetail requestDetail)
+    internal RequestDetailsData(RequestDetails requestDetail)
     {
         _obj = requestDetail;
     }
@@ -30,13 +30,13 @@ public readonly struct RequestDetailUnion
     /// 获取string值，如果非string值，返回null
     /// </summary>
     /// <returns></returns>
-    public string? GetString() => _obj as string;
+    public string? GetRawString() => _obj as string;
 
     /// <summary>
-    /// 获取<see cref="RequestDetail"/>值，如果非<see cref="RequestDetail"/>值，返回null
+    /// 获取<see cref="RequestDetails"/>值，如果非<see cref="RequestDetails"/>值，返回null
     /// </summary>
     /// <returns></returns>
-    public RequestDetail? GetDetail() => _obj as RequestDetail;
+    public RequestDetails? GetRawDetail() => _obj as RequestDetails;
 
     /// <summary>
     /// 输出格式化信息
@@ -44,7 +44,7 @@ public readonly struct RequestDetailUnion
     /// <returns></returns>
     public string ToDetailString()
     {
-        if (_obj is RequestDetail detail)
+        if (_obj is RequestDetails detail)
             return detail.ToDetailString();
         Debug.Assert(_obj is string, "Api doc wrong");
         return _obj.ToString() ?? "";

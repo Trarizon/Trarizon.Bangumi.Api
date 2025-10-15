@@ -18,6 +18,7 @@ internal sealed class EnumPropertyGenerator : IIncrementalGenerator
         {
             context.AddEmbeddedAttributeDefinition();
             context.AddSource("JsonStringEnum.g.i.cs", """
+                #nullable enable
                 #pragma warning disable CS9113
                 
                 namespace Trarizon.Bangumi.Api.Internal.Attributes

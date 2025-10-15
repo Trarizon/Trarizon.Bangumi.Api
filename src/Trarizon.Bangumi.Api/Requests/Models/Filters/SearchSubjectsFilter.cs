@@ -4,7 +4,7 @@ using Trarizon.Bangumi.Api.Responses.Models;
 using Trarizon.Bangumi.Api.Serialization.Converters;
 using Trarizon.Bangumi.Api.Serialization.Converters.Model;
 
-namespace Trarizon.Bangumi.Api.Requests;
+namespace Trarizon.Bangumi.Api.Requests.Models.Filters;
 /// <summary>
 /// 条目搜索过滤器，各条件之间是且的关系
 /// </summary>

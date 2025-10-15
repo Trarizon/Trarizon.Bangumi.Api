@@ -4,7 +4,7 @@ namespace Trarizon.Bangumi.Api.Responses;
 /// <summary>
 /// HTTP 请求详细信息
 /// </summary>
-public sealed class RequestDetail
+public sealed class RequestDetails
 {
     /// <summary>
     /// HTTP 请求路径
@@ -19,7 +19,7 @@ public sealed class RequestDetail
     public string? Method { get; internal set; }
 
     [JsonConstructor]
-    internal RequestDetail() { }
+    internal RequestDetails() { }
 
     /// <summary>
     /// 输出格式化信息

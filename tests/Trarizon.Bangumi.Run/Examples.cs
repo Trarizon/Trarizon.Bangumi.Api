@@ -40,7 +40,7 @@ public static class Examples
         var searchSubjectsRequestBody = new SearchSubjectsRequestBody
         {
             Keyword = "Summer Pockets",
-            Sort = SearchSubjectsSort.Match,
+            Sort = SubjectsSearchSortKind.Match,
             Filter = new()
             {
                 Types = [SubjectType.Game],
@@ -67,7 +67,7 @@ public static class Examples
             Category = new(SubjectGameCategory.Game),
             IsSeries = false,
             GamePlatform = "PC",
-            Sort = GetSubjectsSortKind.Date,
+            Sort = SubjectsSortKind.Date,
             Year = 2018,
             Month = 6,
         };

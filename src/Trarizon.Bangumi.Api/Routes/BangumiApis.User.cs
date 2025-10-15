@@ -1,14 +1,12 @@
 ﻿using Trarizon.Bangumi.Api.Responses.Models.Users;
 using Json = Trarizon.Bangumi.Api.Serialization.BangumiJsonSerializerContext;
+using ApiRoutes = Trarizon.Bangumi.Api.Routes.BangumiApiRoutes;
 
 namespace Trarizon.Bangumi.Api.Routes;
+
+// src: https://github.com/bangumi/server/blob/master/web/handler/user
 partial class BangumiApis
 {
-    // src: https://github.com/bangumi/server/blob/master/web/handler/user
-    
-    private const string UsersUrl = V0Url + "/users";
-    private const string MeUrl = V0Url + "/me";
-
     /// <summary>
     /// 获取用户信息
     /// </summary>
@@ -19,7 +17,7 @@ partial class BangumiApis
     public static Task<User> GetUserAsync(this IBangumiClient client, string userName, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
-            $"{UsersUrl}/{userName}", Json.Default.User, cancellationToken);
+            $"{ApiRoutes.UsersUrl}/{userName}", Json.Default.User, cancellationToken);
     }
 
     /// <summary>
@@ -33,7 +31,7 @@ partial class BangumiApis
     public static Task<Uri> GetUserAvatarUrlAsync(this IBangumiClient client, string userName, AvatarSize avatarSize, CancellationToken cancellationToken = default)
     {
         return client.GetHeadersLocationWhenStatusFoundOrThrowAsync(
-            $"{UsersUrl}/{userName}/avatar?type={avatarSize.ToQueryString()}", 
+            $"{ApiRoutes.UsersUrl}/{userName}/avatar?type={avatarSize.ToQueryString()}",
             cancellationToken)!;
     }
 
@@ -46,7 +44,7 @@ partial class BangumiApis
     public static Task<UserSelf> GetSelfAsync(this IBangumiClient client, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
-            MeUrl,
+            ApiRoutes.MeUrl,
             Json.Default.UserSelf, cancellationToken);
     }
 }

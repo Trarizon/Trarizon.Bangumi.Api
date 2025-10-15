@@ -1,7 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 using Trarizon.Bangumi.Api.Requests.Models;
+using Trarizon.Bangumi.Api.Requests.Models.Filters;
 
-namespace Trarizon.Bangumi.Api.Requests;
+namespace Trarizon.Bangumi.Api.Requests.Payloads;
 /// <summary>
 /// 
 /// </summary>
@@ -22,7 +23,7 @@ public sealed class SearchSubjectsRequestBody
     /// 结果排序
     /// </summary>
     [JsonInclude, JsonPropertyName("sort"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-    public SearchSubjectsSort Sort { get; set; }
+    public SubjectsSearchSortKind Sort { get; set; }
 
     /// <summary>
     /// 筛选条件

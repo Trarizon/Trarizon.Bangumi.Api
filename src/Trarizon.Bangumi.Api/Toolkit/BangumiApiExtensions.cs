@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Trarizon.Bangumi.Api.Requests;
+using Trarizon.Bangumi.Api.Requests.Payloads;
 using Trarizon.Bangumi.Api.Responses.Models;
 using Trarizon.Bangumi.Api.Responses.Models.Collections;
 using Trarizon.Bangumi.Api.Responses.Models.Revisions;
@@ -25,7 +25,7 @@ public static class BangumiApiExtensions
     {
         requestBody = requestBody?.Clone();
         return new AsyncPagedDataCollection<SearchResponsedSubject>(pageLimit, options ?? AsyncPageCollectionOptions.Default,
-            (lmt, ofs, cancellationToken) => client.SearchPagedSubjectsAsync(requestBody, lmt, ofs, cancellationToken));
+            (p, cancellationToken) => client.SearchPagedSubjectsAsync(requestBody, p, cancellationToken));
     }
 
     /// <summary>
@@ -40,7 +40,7 @@ public static class BangumiApiExtensions
     {
         query = query.Clone();
         return new AsyncPagedDataCollection<Subject>(pageLimit, options ?? AsyncPageCollectionOptions.Default,
-            (lmt, ofs, token) => client.GetPagedSubjectsAsync(query, lmt, ofs, token));
+            (p, token) => client.GetPagedSubjectsAsync(query, p, token));
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public static class BangumiApiExtensions
     public static AsyncPagedDataCollection<Episode> GetEpisodes(this IBangumiClient client, uint subjectId, EpisodeType? episodeType = null, int? pageLimit = null, AsyncPageCollectionOptions? options = null)
     {
         return new AsyncPagedDataCollection<Episode>(pageLimit, options ?? AsyncPageCollectionOptions.Default,
-            (lmt, ofs, token) => client.GetPagedEpisodesAsync(subjectId, episodeType, lmt, ofs, token));
+            (p, token) => client.GetPagedEpisodesAsync(subjectId, episodeType, p, token));
     }
 
     /// <summary>
@@ -71,7 +71,7 @@ public static class BangumiApiExtensions
     {
         requestBody = requestBody?.Clone();
         return new(pageLimit, options ?? AsyncPageCollectionOptions.Default,
-            (lmt, ofs, token) => client.SearchPagedCharactersAsync(requestBody, lmt, ofs, token));
+            (p, token) => client.SearchPagedCharactersAsync(requestBody, p, token));
     }
 
     /// <summary>
@@ -87,7 +87,7 @@ public static class BangumiApiExtensions
     {
         requestBody = requestBody?.Clone();
         return new(pageLimit, options ?? AsyncPageCollectionOptions.Default,
-            (lmt, ofs, token) => client.SearchPagedPersonsAsync(requestBody, lmt, ofs, token));
+            (p, token) => client.SearchPagedPersonsAsync(requestBody, p, token));
     }
 
     /// <summary>
@@ -103,7 +103,7 @@ public static class BangumiApiExtensions
     public static AsyncPagedDataCollection<UserSubjectCollection> GetUserSubjectCollections(this IBangumiClient client, string userName, SubjectType? subjectType = null, SubjectCollectionType? collectionType = null, int? pageLimit = null, AsyncPageCollectionOptions? options = null)
     {
         return new(pageLimit, options ?? AsyncPageCollectionOptions.Default,
-            (lmt, ofs, token) => client.GetPagedUserSubjectCollectionsAsync(userName, subjectType, collectionType, lmt, ofs, token));
+            (p, token) => client.GetPagedUserSubjectCollectionsAsync(userName, subjectType, collectionType, p, token));
     }
 
     /// <summary>
@@ -118,7 +118,7 @@ public static class BangumiApiExtensions
     public static AsyncPagedDataCollection<UserEpisodeCollection> GetUserSubjectEpisodeCollections(this IBangumiClient client, uint subjectId, EpisodeType? episodeType = null, int? pageLimit = null, AsyncPageCollectionOptions? options = null)
     {
         return new(pageLimit, options ?? AsyncPageCollectionOptions.Default,
-            (lmt, ofs, token) => client.GetPagedUserSubjectEpisodeCollectionsAsync(subjectId, episodeType, lmt, ofs, token));
+            (p, token) => client.GetPagedUserSubjectEpisodeCollectionsAsync(subjectId, episodeType, p, token));
     }
 
     /// <summary>
@@ -132,7 +132,7 @@ public static class BangumiApiExtensions
     public static AsyncPagedDataCollection<UserCharacterCollection> GetUserCharacterCollections(this IBangumiClient client, string userName, int? pageLimit = null, AsyncPageCollectionOptions? options = null)
     {
         return new(pageLimit, options ?? AsyncPageCollectionOptions.Default,
-            (lmt, ofs, token) => client.GetPagedUserCharacterCollectionsAsync(userName, lmt, ofs, token));
+            (p, token) => client.GetPagedUserCharacterCollectionsAsync(userName, p, token));
     }
 
     /// <summary>
@@ -146,7 +146,7 @@ public static class BangumiApiExtensions
     public static AsyncPagedDataCollection<UserPersonCollection> GetUserPersonCollections(this IBangumiClient client, string userName, int? pageLimit = null, AsyncPageCollectionOptions? options = null)
     {
         return new(pageLimit, options ?? AsyncPageCollectionOptions.Default,
-            (lmt, ofs, token) => client.GetPagedUserPersonCollectionsAsync(userName, lmt, ofs, token));
+            (p, token) => client.GetPagedUserPersonCollectionsAsync(userName, p, token));
     }
 
     /// <summary>
@@ -160,7 +160,7 @@ public static class BangumiApiExtensions
     public static AsyncPagedDataCollection<PersonRevision> GetPersonRevisions(this IBangumiClient client, uint personId, int? pageLimit = null, AsyncPageCollectionOptions? options = null)
     {
         return new(pageLimit, options ?? AsyncPageCollectionOptions.Default,
-            (lmt, ofs, token) => client.GetPagedPersonRevisionsAsync(personId, lmt, ofs, token));
+            (p, token) => client.GetPagedPersonRevisionsAsync(personId, p, token));
     }
 
     /// <summary>
@@ -174,7 +174,7 @@ public static class BangumiApiExtensions
     public static AsyncPagedDataCollection<CharacterRevision> GetCharacterRevisions(this IBangumiClient client, uint characterId, int? pageLimit = null, AsyncPageCollectionOptions? options = null)
     {
         return new(pageLimit, options ?? AsyncPageCollectionOptions.Default,
-            (lmt, ofs, token) => client.GetPagedCharacterRevisionsAsync(characterId, lmt, ofs, token));
+            (p, token) => client.GetPagedCharacterRevisionsAsync(characterId, p, token));
     }
 
     /// <summary>
@@ -188,7 +188,7 @@ public static class BangumiApiExtensions
     public static AsyncPagedDataCollection<SubjectRevision> GetSubjectRevisions(this IBangumiClient client, uint subjectId, int? pageLimit = null, AsyncPageCollectionOptions? options = null)
     {
         return new(pageLimit, options ?? AsyncPageCollectionOptions.Default,
-            (lmt, ofs, token) => client.GetPagedSubjectRevisionsAsync(subjectId, lmt, ofs, token));
+            (p, token) => client.GetPagedSubjectRevisionsAsync(subjectId, p, token));
     }
 
     /// <summary>
@@ -202,7 +202,7 @@ public static class BangumiApiExtensions
     public static AsyncPagedDataCollection<EpisodeRevision> GetEpisodeRevisions(this IBangumiClient client, uint episodeId, int? pageLimit = null, AsyncPageCollectionOptions? options = null)
     {
         return new(pageLimit, options ?? AsyncPageCollectionOptions.Default,
-            (lmt, ofs, token) => client.GetPagedEpisodeRevisionsAsync(episodeId, lmt, ofs, token));
+            (p, token) => client.GetPagedEpisodeRevisionsAsync(episodeId, p, token));
     }
 
     /// <summary>
@@ -217,6 +217,6 @@ public static class BangumiApiExtensions
     public static AsyncPagedDataCollection<IndexSubject> GetIndexSubjects(this IBangumiClient client, uint indexId, SubjectType? subjectType = null, int? pageLimit = null, AsyncPageCollectionOptions? options = null)
     {
         return new(pageLimit, options ?? AsyncPageCollectionOptions.Default,
-            (lmt, ofs, token) => client.GetPagedIndexSubjectsAsync(indexId, subjectType, lmt, ofs, token));
+            (p, token) => client.GetPagedIndexSubjectsAsync(indexId, subjectType, p, token));
     }
 }

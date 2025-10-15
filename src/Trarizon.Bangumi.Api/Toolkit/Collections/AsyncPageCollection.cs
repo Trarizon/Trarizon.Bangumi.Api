@@ -58,7 +58,7 @@ public sealed partial class AsyncPageCollection<T> : IAsyncEnumerable<PagedData<
     Retry:
         PagedData<T> result;
         try {
-            result = await _pageFetcher(limit, offset, cancellationToken).ConfigureAwait(false);
+            result = await _pageFetcher(new(limit, offset), cancellationToken).ConfigureAwait(false);
         }
         catch (OperationCanceledException) { throw; }
         catch (BangumiApiException ex) when (retryCount < _options.MaxRetryCount

@@ -7,7 +7,7 @@ namespace Trarizon.Bangumi.Api;
 /// <remarks>
 /// 使用HttpClient时，需要将<see cref="HttpClientHandler.AllowAutoRedirect"/>设为false
 /// </remarks>
-public interface IBangumiClient
+public interface IBangumiClient : IDisposable
 {
     /// <summary>
     /// 发送HTTP请求

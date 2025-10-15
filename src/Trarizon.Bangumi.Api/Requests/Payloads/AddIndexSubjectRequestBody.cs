@@ -1,15 +1,17 @@
 ﻿using System.Text.Json.Serialization;
 using Trarizon.Bangumi.Api.Responses.Models;
 
-namespace Trarizon.Bangumi.Api.Requests;
+namespace Trarizon.Bangumi.Api.Requests.Payloads;
 /// <summary>
 /// 
 /// </summary>
-public sealed class UpdateIndexSubjectRequestBody
+public sealed class AddIndexSubjectRequestBody
 {
-    /// <summary>
-    /// 目录内排序
-    /// </summary>
+    /// <inheritdoc cref="Subject.Id"/>
+    [JsonInclude, JsonPropertyName("subject_id")]
+    public uint SubjectId { get; set; }
+
+    /// <inheritdoc cref="UpdateIndexSubjectRequestBody.Sort"/>
     [JsonInclude, JsonPropertyName("sort")]
     public int? Sort { get; set; }
 
@@ -17,10 +19,11 @@ public sealed class UpdateIndexSubjectRequestBody
     [JsonInclude, JsonPropertyName("comment")]
     public string? Comment { get; set; }
 
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+#pragma warning disable CS1591 
 
-    public UpdateIndexSubjectRequestBody Clone() => new()
+    public AddIndexSubjectRequestBody Clone() => new()
     {
+        SubjectId = SubjectId,
         Sort = Sort,
         Comment = Comment,
     };

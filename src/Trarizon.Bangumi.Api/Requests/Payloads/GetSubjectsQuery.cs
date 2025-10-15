@@ -1,7 +1,8 @@
 ﻿using Trarizon.Bangumi.Api.Requests.Models;
 using Trarizon.Bangumi.Api.Responses.Models;
+using Trarizon.Bangumi.Api.Utilities;
 
-namespace Trarizon.Bangumi.Api.Requests;
+namespace Trarizon.Bangumi.Api.Requests.Payloads;
 /// <summary>
 /// 
 /// </summary>
@@ -22,7 +23,7 @@ public sealed class GetSubjectsQuery
     /// <summary>
     /// 排序
     /// </summary>
-    public GetSubjectsSortKind? Sort { get; set; }
+    public SubjectsSortKind? Sort { get; set; }
     /// <summary>
     /// 年份
     /// </summary>
@@ -45,4 +46,18 @@ public sealed class GetSubjectsQuery
     };
 
 #pragma warning restore CS1591
+}
+
+internal static class GetSubjectsQueryExtensions
+{
+    internal static void Append(this QueryBuilder builder, GetSubjectsQuery query)
+    {
+        builder.AppendQuery("type", query.Category.SubjectType.ToQueryValue());
+        builder.TryAppendQuery("cat", query.Category.ToQueryValue());
+        builder.TryAppendQuery("series", query.IsSeries switch { true => "true", false => "false", null => null });
+        builder.TryAppendQuery("platform", query.GamePlatform);
+        builder.TryAppendQuery("sort", query.Sort?.ToQueryString());
+        builder.TryAppendQuery("year", query.Year);
+        builder.TryAppendQuery("month", query.Month);
+    }
 }

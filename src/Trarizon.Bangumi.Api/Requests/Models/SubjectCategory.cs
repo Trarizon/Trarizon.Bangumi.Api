@@ -8,10 +8,8 @@ namespace Trarizon.Bangumi.Api.Requests.Models;
 /// <remarks>
 /// 该类型提供了`Subject.XXX()`，`new(XXX)`，隐式转换三种构造方式
 /// <br/>
-/// src: <see href="https://github.com/bangumi/server/blob/master/web/handler/subject/browse.go#L88">
-/// uint16
-/// </see>
 /// </remarks>
+// src: uint16 https://github.com/bangumi/server/blob/master/web/handler/subject/browse.go#L88
 public readonly struct SubjectCategory
 {
     /// <summary>

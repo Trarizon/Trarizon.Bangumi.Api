@@ -2,6 +2,7 @@
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Trarizon.Bangumi.Api.Requests;
 using Trarizon.Bangumi.Api.Requests.Models;
 using Trarizon.Bangumi.Api.Utilities;
 
@@ -40,7 +41,7 @@ internal class ComparisonFilterUtf8JsonConverter<T> : ComparisonFilterJsonConver
     static ComparisonFilterUtf8JsonConverter<T> IConstructable<ComparisonFilterUtf8JsonConverter<T>>.Construct() => new();
 
     protected override ComparisonFilter<T> Parse(ReadOnlySpan<byte> utf8, IFormatProvider? formatProvider)
-        => ComparisonFilter<T>.Parse(utf8, formatProvider);
+        => ComparisonFilter.Parse<T>(utf8, formatProvider);
 }
 
 internal class ComparisonFilterUtf16JsonConverter<T>(string? format, IFormatProvider? formatProvider) : ComparisonFilterJsonConverter<T>(format, formatProvider)
@@ -55,7 +56,7 @@ internal class ComparisonFilterUtf16JsonConverter<T>(string? format, IFormatProv
             : (rentedArray = ArrayPool<char>.Shared.Rent(charLength));
 
         try {
-            return ComparisonFilter<T>.Parse(chars, formatProvider);
+            return ComparisonFilter.Parse<T>(chars, formatProvider);
         }
         finally {
             if (rentedArray is not null) {

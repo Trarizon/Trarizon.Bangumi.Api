@@ -1,17 +1,17 @@
 ﻿using Trarizon.Bangumi.Api.Requests;
+using Trarizon.Bangumi.Api.Requests.Payloads;
 using Trarizon.Bangumi.Api.Responses;
 using Trarizon.Bangumi.Api.Responses.Models;
 using Trarizon.Bangumi.Api.Utilities;
 using Json = Trarizon.Bangumi.Api.Serialization.BangumiJsonSerializerContext;
+using ApiRoutes = Trarizon.Bangumi.Api.Routes.BangumiApiRoutes;
 
 namespace Trarizon.Bangumi.Api.Routes;
+
+// API页有大量错误，Index参考源码
+// src: https://github.com/bangumi/server/tree/master/web/handler/index
 partial class BangumiApis
 {
-    // API页有大量错误，Index参考源码
-    // src: https://github.com/bangumi/server/tree/master/web/handler/index
-
-    private const string IndicesUrl = V0Url + "/indices";
-
     /// <summary>
     /// 创建新目录
     /// </summary>
@@ -22,7 +22,7 @@ partial class BangumiApis
     public static Task<BangumiIndex> CreateIndexAsync(this IBangumiClient client, AddIndexRequestBody requestBody, CancellationToken cancellationToken = default)
     {
         return client.PostAsJsonAndFromJsonWhenSuccessStatusCodeOrThrowAsync(
-            IndicesUrl,
+            ApiRoutes.IndicesUrl,
             requestBody, Json.Default.AddIndexRequestBody,
             Json.Default.BangumiIndex, cancellationToken);
     }
@@ -37,7 +37,7 @@ partial class BangumiApis
     public static Task<BangumiIndex> GetIndexAsync(this IBangumiClient client, uint indexId, CancellationToken cancellationToken = default)
     {
         return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
-            $"{IndicesUrl}/{indexId}", Json.Default.BangumiIndex, cancellationToken);
+            $"{ApiRoutes.IndicesUrl}/{indexId}", Json.Default.BangumiIndex, cancellationToken);
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ partial class BangumiApis
     public static Task UpdateIndexInfoAsync(this IBangumiClient client, uint indexId, UpdateIndexInfoRequestBody requestBody, CancellationToken cancellationToken = default)
     {
         return client.PutAsJsonEnsureSuccessStatusCodeOrThrowAsync(
-            $"{IndicesUrl}/{indexId}",
+            $"{ApiRoutes.IndicesUrl}/{indexId}",
             requestBody, Json.Default.UpdateIndexInfoRequestBody,
             cancellationToken);
     }
@@ -59,19 +59,11 @@ partial class BangumiApis
     /// <summary>
     /// 获取单页目录内条目信息
     /// </summary>
-    /// <param name="client"></param>
-    /// <param name="indexId"></param>
-    /// <param name="subjectType"></param>
-    /// <param name="pageLimit"></param>
-    /// <param name="pageOffset"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    public static Task<PagedData<IndexSubject>> GetPagedIndexSubjectsAsync(this IBangumiClient client, uint indexId, SubjectType? subjectType = null, int? pageLimit = null, int? pageOffset = null, CancellationToken cancellationToken = default)
+    public static Task<PagedData<IndexSubject>> GetPagedIndexSubjectsAsync(this IBangumiClient client, uint indexId, SubjectType? subjectType = null, Pagination pagination = default, CancellationToken cancellationToken = default)
     {
-        var builder = new QueryBuilder($"{IndicesUrl}/{indexId}/subjects");
-        builder.CheckAppendQuery("type", subjectType?.ToQueryValue());
-        builder.CheckAppendQuery("limit", pageLimit);
-        builder.CheckAppendQuery("offset", pageOffset);
+        var builder = new QueryBuilder($"{ApiRoutes.IndicesUrl}/{indexId}/subjects");
+        builder.TryAppendQuery("type", subjectType?.ToQueryValue());
+        builder.AppendPagination(pagination);
 
         return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(builder.Build(),
             Json.Default.PagedDataIndexSubject, cancellationToken);
@@ -88,7 +80,7 @@ partial class BangumiApis
     public static Task<IndexSubject> AddSubjectToIndexAsync(this IBangumiClient client, uint indexId, AddIndexSubjectRequestBody requestBody, CancellationToken cancellationToken = default)
     {
         return client.PostAsJsonAndFromJsonWhenSuccessStatusCodeOrThrowAsync(
-            $"{IndicesUrl}/{indexId}/subjects",
+            $"{ApiRoutes.IndicesUrl}/{indexId}/subjects",
             requestBody, Json.Default.AddIndexSubjectRequestBody,
             Json.Default.IndexSubject, cancellationToken);
     }
@@ -105,7 +97,7 @@ partial class BangumiApis
     public static Task<IndexSubject> UpdateIndexSubjectAsync(this IBangumiClient client, uint indexId, uint subjectId, UpdateIndexSubjectRequestBody requestBody, CancellationToken cancellationToken = default)
     {
         return client.PutAsJsonAndFromJsonWhenSuccessStatusCodeOrThrowAsync(
-            $"{IndicesUrl}/{indexId}/subjects/{subjectId}",
+            $"{ApiRoutes.IndicesUrl}/{indexId}/subjects/{subjectId}",
             requestBody, Json.Default.UpdateIndexSubjectRequestBody,
             Json.Default.IndexSubject, cancellationToken);
     }
@@ -121,7 +113,7 @@ partial class BangumiApis
     public static Task RemoveSubjectFromIndexAsync(this IBangumiClient client, uint indexId, uint subjectId, CancellationToken cancellationToken = default)
     {
         return client.DeleteEnsureSuccessStatusCodeOrThrowAsync(
-            $"{IndicesUrl}/{indexId}/subjects/{subjectId}",
+            $"{ApiRoutes.IndicesUrl}/{indexId}/subjects/{subjectId}",
             cancellationToken);
     }
 
@@ -135,7 +127,7 @@ partial class BangumiApis
     public static Task CollectIndexAsync(this IBangumiClient client, uint indexId, CancellationToken cancellationToken = default)
     {
         return client.PostEnsureSuccessStatusCodeOrThrowAsync(
-            $"{IndicesUrl}/{indexId}/collect",
+            $"{ApiRoutes.IndicesUrl}/{indexId}/collect",
             cancellationToken);
     }
 
@@ -149,7 +141,7 @@ partial class BangumiApis
     public static Task UncollectIndexAsync(this IBangumiClient client, uint indexId, CancellationToken cancellationToken = default)
     {
         return client.DeleteEnsureSuccessStatusCodeOrThrowAsync(
-            $"{IndicesUrl}/{indexId}/collect",
+            $"{ApiRoutes.IndicesUrl}/{indexId}/collect",
             cancellationToken);
     }
 }

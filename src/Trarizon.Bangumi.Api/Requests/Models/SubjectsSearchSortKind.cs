@@ -8,7 +8,7 @@ namespace Trarizon.Bangumi.Api.Requests.Models;
 /// </summary>
 [JsonConverter(typeof(SearchSubjectsSortJsonConverter))]
 [JsonStringEnum]
-public enum SearchSubjectsSort
+public enum SubjectsSearchSortKind
 {
     /// <summary>
     /// 匹配程度（默认）
