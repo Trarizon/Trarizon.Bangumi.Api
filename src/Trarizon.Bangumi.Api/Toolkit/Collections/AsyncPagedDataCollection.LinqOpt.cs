@@ -17,7 +17,7 @@ partial class AsyncPagedDataCollection<T>
 
         async Task<int> Core(CancellationToken cancellationToken)
         {
-            var page = await FetchFromStartWithRetryAsync(1, cancellationToken).ConfigureAwait(false);
+            var page = await FetchFromStartAsync(1, cancellationToken).ConfigureAwait(false);
             var total = page.Total - _offset;
 
             if (_takeCount < 0)
@@ -39,7 +39,7 @@ partial class AsyncPagedDataCollection<T>
 
         async Task<long> Core(CancellationToken cancellationToken)
         {
-            var page = await FetchFromStartWithRetryAsync(1, cancellationToken).ConfigureAwait(false);
+            var page = await FetchFromStartAsync(1, cancellationToken).ConfigureAwait(false);
             var total = page.Total - _offset;
 
             if (_takeCount < 0)
@@ -148,7 +148,7 @@ partial class AsyncPagedDataCollection<T>
 
         async Task<T?> Core(int index, bool throwIfNotFound, CancellationToken cancellationToken)
         {
-            var page = await FetchPageWithRetryAsync(1, _offset + index, false, cancellationToken).ConfigureAwait(false);
+            var page = await FetchPageAsync(1, _offset + index, false, cancellationToken).ConfigureAwait(false);
             if (page?.Datas is null or []) {
                 if (throwIfNotFound)
                     Throws.ThrowArgumentOutOfRange(nameof(index));
@@ -187,7 +187,7 @@ partial class AsyncPagedDataCollection<T>
             if (index < 0)
                 goto CoreError;
 
-            var page = await FetchPageWithRetryAsync(1, index, false, cancellationToken).ConfigureAwait(false);
+            var page = await FetchPageAsync(1, index, false, cancellationToken).ConfigureAwait(false);
             Debug.Assert(page is not null);
 
             if (page.Datas is [])
@@ -229,7 +229,7 @@ partial class AsyncPagedDataCollection<T>
 
         async Task<T?> Core(bool throwIfNotFound, CancellationToken cancellationToken)
         {
-            var page = await FetchFromStartWithRetryAsync(1, cancellationToken).ConfigureAwait(false);
+            var page = await FetchFromStartAsync(1, cancellationToken).ConfigureAwait(false);
             if (page.Datas is []) {
                 if (throwIfNotFound)
                     Throws.ThrowInvalidOperation("Collection has no element");
@@ -266,7 +266,7 @@ partial class AsyncPagedDataCollection<T>
 
         async Task<T?> Core(bool throwIfNotFound, CancellationToken cancellationToken)
         {
-            var first = await FetchFromStartWithRetryAsync(1, cancellationToken).ConfigureAwait(false);
+            var first = await FetchFromStartAsync(1, cancellationToken).ConfigureAwait(false);
             if (first.Datas is []) {
                 if (throwIfNotFound)
                     Throws.ThrowInvalidOperation("Collection has no element");
@@ -276,7 +276,7 @@ partial class AsyncPagedDataCollection<T>
             var total = checked((int)first.Total);
             var last = _takeCount < 0 ? total : int.Min(total, _offset + _takeCount);
 
-            var page = await FetchPageWithRetryAsync(1, last - 1, false, cancellationToken).ConfigureAwait(false);
+            var page = await FetchPageAsync(1, last - 1, false, cancellationToken).ConfigureAwait(false);
             Debug.Assert(page is not null && page.Datas is not []);
             return page.Datas[0];
         }

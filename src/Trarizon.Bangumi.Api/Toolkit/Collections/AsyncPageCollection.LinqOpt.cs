@@ -13,11 +13,11 @@ partial class AsyncPageCollection<T>
         PagedData<T> page;
         int limit;
         if (_limit is null) {
-            page = await FetchFromStartWithRetryAsync(null, cancellationToken).ConfigureAwait(false);
+            page = await FetchFromStartAsync(null, cancellationToken).ConfigureAwait(false);
             limit = page.Limit;
         }
         else {
-            page = await FetchFromStartWithRetryAsync(1, cancellationToken).ConfigureAwait(false);
+            page = await FetchFromStartAsync(1, cancellationToken).ConfigureAwait(false);
             limit = _limit.Value;
         }
         var total = page.Total - _offset;
@@ -34,11 +34,11 @@ partial class AsyncPageCollection<T>
         PagedData<T> page;
         int limit;
         if (_limit is null) {
-            page = await FetchFromStartWithRetryAsync(null, cancellationToken).ConfigureAwait(false);
+            page = await FetchFromStartAsync(null, cancellationToken).ConfigureAwait(false);
             limit = page.Limit;
         }
         else {
-            page = await FetchFromStartWithRetryAsync(1, cancellationToken).ConfigureAwait(false);
+            page = await FetchFromStartAsync(1, cancellationToken).ConfigureAwait(false);
             limit = _limit.Value;
         }
         var total = page.Total - _offset;

@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Net;
+using System.Net.Http.Headers;
 
 namespace Trarizon.Bangumi.Api;
 
@@ -10,6 +11,10 @@ public sealed class BangumiHttpClient : IBangumiClient, IDisposable
     private const string ApiServerBaseAddress = "https://api.bgm.tv";
 
     private readonly HttpClientHandler _httpClientHandler;
+    private readonly BangumiHttpClientOptions _options;
+
+    private readonly Timer? _sendTimer;
+    private readonly SemaphoreSlim _sendSemaphore = default!;
 
     /// <summary>
     /// HttpClient
@@ -21,20 +26,12 @@ public sealed class BangumiHttpClient : IBangumiClient, IDisposable
     /// </summary>
     /// <param name="userAgent"></param>
     /// <param name="accessToken">为null或空时，不设置AccessToken</param>
-    public BangumiHttpClient(string userAgent, string? accessToken = null)
+    public BangumiHttpClient(string userAgent, string? accessToken = null) : this(new BangumiHttpClientOptions
     {
-        _httpClientHandler = new HttpClientHandler
-        {
-            AllowAutoRedirect = false
-        };
-        HttpClient = new HttpClient(_httpClientHandler)
-        {
-            BaseAddress = new Uri(ApiServerBaseAddress),
-        };
-        HttpClient.DefaultRequestHeaders.Add("User-Agent", userAgent);
-        if (!string.IsNullOrEmpty(accessToken))
-            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-    }
+        UserAgent = userAgent,
+        AccessToken = accessToken,
+    })
+    { }
 
     /// <summary>
     /// 使用BangumiClientOptions创建BangumiClient
@@ -46,6 +43,7 @@ public sealed class BangumiHttpClient : IBangumiClient, IDisposable
         {
             AllowAutoRedirect = false
         };
+        _options = options;
         HttpClient = new HttpClient(_httpClientHandler)
         {
             BaseAddress = new Uri(options.BaseAddress ?? ApiServerBaseAddress),
@@ -55,6 +53,10 @@ public sealed class BangumiHttpClient : IBangumiClient, IDisposable
             HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", options.AccessToken);
         if (options.Timeout is { } timeout)
             HttpClient.Timeout = timeout;
+        if (options.RequestInterval is { } interval) {
+            _sendSemaphore = new SemaphoreSlim(1, 1);
+            _sendTimer = new Timer(obj => { _sendSemaphore.Release(); }, null, Timeout.Infinite, Timeout.Infinite);
+        }
     }
 
     /// <inheritdoc />
@@ -62,6 +64,8 @@ public sealed class BangumiHttpClient : IBangumiClient, IDisposable
     {
         HttpClient.Dispose();
         _httpClientHandler.Dispose();
+        _sendTimer?.Dispose();
+        _sendSemaphore?.Dispose();
     }
 
     /// <inheritdoc/>
@@ -70,7 +74,53 @@ public sealed class BangumiHttpClient : IBangumiClient, IDisposable
 #if DEBUG
         Console.WriteLine($"Client requesting on {DateTime.Now} : {request.RequestUri}");
 #endif
-        return HttpClient.SendAsync(request, cancellationToken);
+
+        if (_options.MaxRetryCount <= 0)
+            return SendWithIntervalAsync(request, cancellationToken);
+
+        return WithRetry();
+
+        async Task<HttpResponseMessage> WithRetry()
+        {
+            int retryCount = -1;
+
+        Retry:
+            retryCount++;
+
+            HttpResponseMessage resp;
+            try {
+                resp = await SendWithIntervalAsync(request, cancellationToken).ConfigureAwait(false);
+                
+                if (resp.StatusCode is HttpStatusCode.TooManyRequests) {
+                    // Force wait to if status code is TooManyRequests and not set RequestInterval
+                    if (_options.RequestInterval is null) {
+                        await Task.Delay(500, cancellationToken).ConfigureAwait(false);
+                    }
+                    goto Retry;
+                }
+                if (resp.StatusCode >= HttpStatusCode.InternalServerError) {
+                    goto Retry;
+                }
+                return resp;
+            }
+            catch (OperationCanceledException) { throw; }
+        }
     }
 
+    private Task<HttpResponseMessage> SendWithIntervalAsync(HttpRequestMessage request, CancellationToken cancellationToken = default)
+    {
+        if (_sendTimer is null) {
+            return HttpClient.SendAsync(request, cancellationToken);
+        }
+
+        return WithInterval();
+
+        async Task<HttpResponseMessage> WithInterval()
+        {
+            await _sendSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+            var resp = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+            _sendTimer.Change(_options.RequestInterval!.Value, Timeout.InfiniteTimeSpan);
+            return resp;
+        }
+    }
 }

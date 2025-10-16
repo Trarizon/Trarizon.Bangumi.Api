@@ -15,7 +15,7 @@ public sealed partial class AsyncPagedDataCollection<T> : IAsyncEnumerable<T>
     private static readonly AsyncPagedDataCollection<T> Empty = new(default, default, takeCount: 0, default!, pageFetcher: default!);
 
     /// <remarks>
-    /// Do not directly invoke this, use <see cref="FetchPageWithRetryAsync(int?, int, bool, CancellationToken)"/> instead
+    /// Do not directly invoke this, use <see cref="FetchPageAsync(int?, int, bool, CancellationToken)"/> instead
     /// </remarks>
     private readonly PageFetchCallback<T> _pageFetcher;
     private readonly int? _limit;
@@ -66,11 +66,9 @@ public sealed partial class AsyncPagedDataCollection<T> : IAsyncEnumerable<T>
 
         while (true) {
             bool isFirst = offset == _offset;
-            PagedData<T>? page = await FetchPageWithRetryAsync(_limit, offset, isFirst, cancellationToken).ConfigureAwait(false);
+            PagedData<T>? page = await FetchPageAsync(_limit, offset, isFirst, cancellationToken).ConfigureAwait(false);
             if (page?.Datas is null or [])
                 yield break;
-
-            var delayTask = Task.Delay(_options.RequestInterval, cancellationToken);
 
             var items = page.Datas;
             // Finite
@@ -97,29 +95,18 @@ public sealed partial class AsyncPagedDataCollection<T> : IAsyncEnumerable<T>
             // No more data, we can sure the next fetch result is empty.
             if (items.Length < _limit)
                 yield break;
-
-            await delayTask.ConfigureAwait(false);
         }
     }
 
-    private async Task<PagedData<T>?> FetchPageWithRetryAsync(int? limit, int offset, bool throwIfOutOfRange, CancellationToken cancellationToken)
+    private async Task<PagedData<T>?> FetchPageAsync(int? limit, int offset, bool throwIfOutOfRange, CancellationToken cancellationToken)
     {
-        int retryCount = 0;
-
-    Retry:
-        PagedData<T> result;
         try {
-            result = await _pageFetcher(new(limit, offset), cancellationToken).ConfigureAwait(false);
+            return await _pageFetcher(new(limit, offset), cancellationToken).ConfigureAwait(false);
         }
-        catch (OperationCanceledException) { throw; }
-        catch (BangumiApiException ex) when (retryCount < _options.MaxRetryCount
-            && ex.HttpStatusCode is HttpStatusCode.TooManyRequests or >= HttpStatusCode.InternalServerError) {
-            goto WaitAndRetry;
-        }
-        catch (BangumiApiException ex) when (retryCount < _options.MaxRetryCount) {
+        catch (BangumiApiException ex) {
             if (!throwIfOutOfRange && ex.HttpStatusCode is HttpStatusCode.BadRequest) {
-                // 正常来说，offset为0是肯定不会越界的，但是为了保险还是直接抛
-                var countProvider = await FetchFromStartWithRetryAsync(1, cancellationToken).ConfigureAwait(false);
+                // 正常来说，offset为0是一定不会越界的
+                var countProvider = await _pageFetcher(new(1, 0), cancellationToken).ConfigureAwait(false);
                 var count = countProvider.Total;
                 // 如果offset >= count，说明是越界导致的，那么返回null作为替代
                 if (offset >= count) {
@@ -128,17 +115,8 @@ public sealed partial class AsyncPagedDataCollection<T> : IAsyncEnumerable<T>
             }
             throw;
         }
-        catch (HttpRequestException) when (retryCount < _options.MaxRetryCount) {
-            goto WaitAndRetry;
-        }
-        return result;
-
-    WaitAndRetry:
-        retryCount++;
-        await Task.Delay(_options.RetryInterval ?? _options.RequestInterval, cancellationToken);
-        goto Retry;
     }
 
-    private Task<PagedData<T>> FetchFromStartWithRetryAsync(int? limit, CancellationToken cancellationToken)
-        => FetchPageWithRetryAsync(limit, 0, true, cancellationToken)!;
+    private Task<PagedData<T>> FetchFromStartAsync(int? limit, CancellationToken cancellationToken)
+        => FetchPageAsync(limit, 0, true, cancellationToken)!;
 }
