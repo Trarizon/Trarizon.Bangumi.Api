@@ -2,7 +2,7 @@
 /// <summary>
 /// 构造BangumiClient的选项
 /// </summary>
-public sealed class BangumiClientOptions
+public sealed class BangumiHttpClientOptions
 {
     /// <summary>
     /// 服务器使用的域名，为null使用默认

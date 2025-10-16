@@ -12,15 +12,19 @@
 
 ``` C#
 using Trarizon.Bangumi.Api;
-using Trarizon.Bangumi.Routes; // API直接实现的方法位置
+using Trarizon.Bangumi.Api.Exceptions;
+using Trarizon.Bangumi.Api.Routes; // API直接实现的方法位置
 
-var client = new BangumiClient(UserAgent, AccessToken);
+var client = new BangumiHttpClient(UserAgent, AccessToken);
 
 try {
-    Subject subject = await client.GetSubjectAsync(200763);
-    Console.WriteLine(subject.Name)
+    var subject = await client.GetSubjectAsync(200763);
+    Console.WriteLine(subject.Name);
 }
 catch (BangumiApiException ex) {
-    Console.WriteLine(ex.Error);
+    Console.WriteLine(ex.HttpStatusCode);
+    Console.WriteLine(ex.Error.Title);
+    Console.WriteLine(ex.Error.Description);
+	throw;
 }
 ```

@@ -16,7 +16,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<User> GetUserAsync(this IBangumiClient client, string userName, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.GetFromJsonOrThrowAsync(
             $"{ApiRoutes.UsersUrl}/{userName}", Json.Default.User, cancellationToken);
     }
 
@@ -30,7 +30,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<Uri> GetUserAvatarUrlAsync(this IBangumiClient client, string userName, AvatarSize avatarSize, CancellationToken cancellationToken = default)
     {
-        return client.GetHeadersLocationWhenStatusFoundOrThrowAsync(
+        return client.GetHeadersLocationOrThrowAsync(
             $"{ApiRoutes.UsersUrl}/{userName}/avatar?type={avatarSize.ToQueryString()}",
             cancellationToken)!;
     }
@@ -43,7 +43,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<UserSelf> GetSelfAsync(this IBangumiClient client, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.GetFromJsonOrThrowAsync(
             ApiRoutes.MeUrl,
             Json.Default.UserSelf, cancellationToken);
     }

@@ -6,8 +6,8 @@ using Trarizon.Bangumi.Api.Requests.Payloads;
 using Trarizon.Bangumi.Api.Responses;
 using Trarizon.Bangumi.Api.Responses.Models;
 using Trarizon.Bangumi.Api.Utilities;
-using Json = Trarizon.Bangumi.Api.Serialization.BangumiJsonSerializerContext;
 using ApiRoutes = Trarizon.Bangumi.Api.Routes.BangumiApiRoutes;
+using Json = Trarizon.Bangumi.Api.Serialization.BangumiJsonSerializerContext;
 
 namespace Trarizon.Bangumi.Api.Routes;
 
@@ -23,7 +23,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<Calendar> GetCalendarAsync(this IBangumiClient client, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.GetFromJsonOrThrowAsync(
             ApiRoutes.CalendarUrl,
             Json.Default.Calendar, cancellationToken);
     }
@@ -45,7 +45,7 @@ partial class BangumiApis
         var builder = new QueryBuilder(ApiRoutes.SearchSubjectsUrl);
         builder.AppendPagination(pagination);
 
-        return client.PostAsJsonAndFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.PostFromJsonOrThrowAsync(
             builder.Build(),
             requestBody!, Json.Default.SearchSubjectsRequestBody,
             Json.Default.PagedDataSearchResponsedSubject, cancellationToken);
@@ -65,7 +65,7 @@ partial class BangumiApis
         builder.Append(query);
         builder.AppendPagination(pagination);
 
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.GetFromJsonOrThrowAsync(
             builder.Build(),
             Json.Default.PagedDataSubject, cancellationToken);
     }
@@ -79,7 +79,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<Subject> GetSubjectAsync(this IBangumiClient client, uint subjectId, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.GetFromJsonOrThrowAsync(
             $"{ApiRoutes.SubjectsUrl}/{subjectId}",
             Json.Default.Subject, cancellationToken);
     }
@@ -94,7 +94,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<Uri> GetSubjectImageUrlAsync(this IBangumiClient client, uint subjectId, SubjectImageSize imageSize, CancellationToken cancellationToken = default)
     {
-        return client.GetHeadersLocationWhenStatusFoundOrThrowAsync(
+        return client.GetHeadersLocationOrThrowAsync(
             $"{ApiRoutes.SubjectsUrl}/{subjectId}/image?type={imageSize.ToQueryString()}",
             cancellationToken)!;
     }
@@ -108,7 +108,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<ImmutableArray<SubjectRelatedPerson>> GetSubjectRelatedPersonsAsync(this IBangumiClient client, uint subjectId, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.GetFromJsonOrThrowAsync(
             $"{ApiRoutes.SubjectsUrl}/{subjectId}/persons",
             Json.Default.ImmutableArraySubjectRelatedPerson, cancellationToken);
     }
@@ -122,7 +122,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<ImmutableArray<SubjectRelatedCharacter>> GetSubjectRelatedCharactersAsync(this IBangumiClient client, uint subjectId, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.GetFromJsonOrThrowAsync(
             $"{ApiRoutes.SubjectsUrl}/{subjectId}/characters",
             Json.Default.ImmutableArraySubjectRelatedCharacter, cancellationToken);
     }
@@ -136,7 +136,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<ImmutableArray<SubjectRelatedSubject>> GetSubjectRelatedSubjectsAsync(this IBangumiClient client, uint subjectId, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.GetFromJsonOrThrowAsync(
             $"{ApiRoutes.SubjectsUrl}/{subjectId}/subjects",
             Json.Default.ImmutableArraySubjectRelatedSubject, cancellationToken);
     }

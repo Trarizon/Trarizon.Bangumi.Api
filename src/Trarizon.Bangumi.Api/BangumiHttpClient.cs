@@ -1,27 +1,11 @@
 ﻿using System.Net.Http.Headers;
 
 namespace Trarizon.Bangumi.Api;
-/// <summary>
-/// Bangumi API客户端
-/// </summary>
-/// <remarks>
-/// 使用HttpClient时，需要将<see cref="HttpClientHandler.AllowAutoRedirect"/>设为false
-/// </remarks>
-public interface IBangumiClient : IDisposable
-{
-    /// <summary>
-    /// 发送HTTP请求
-    /// </summary>
-    /// <param name="request"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken = default);
-}
 
 /// <summary>
 /// Bangumi API客户端
 /// </summary>
-public sealed class BangumiClient : IBangumiClient, IDisposable
+public sealed class BangumiHttpClient : IBangumiClient, IDisposable
 {
     private const string ApiServerBaseAddress = "https://api.bgm.tv";
 
@@ -37,7 +21,7 @@ public sealed class BangumiClient : IBangumiClient, IDisposable
     /// </summary>
     /// <param name="userAgent"></param>
     /// <param name="accessToken">为null或空时，不设置AccessToken</param>
-    public BangumiClient(string userAgent, string? accessToken = null)
+    public BangumiHttpClient(string userAgent, string? accessToken = null)
     {
         _httpClientHandler = new HttpClientHandler
         {
@@ -56,7 +40,7 @@ public sealed class BangumiClient : IBangumiClient, IDisposable
     /// 使用BangumiClientOptions创建BangumiClient
     /// </summary>
     /// <param name="options"></param>
-    public BangumiClient(BangumiClientOptions options)
+    public BangumiHttpClient(BangumiHttpClientOptions options)
     {
         _httpClientHandler = new HttpClientHandler
         {

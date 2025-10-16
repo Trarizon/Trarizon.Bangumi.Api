@@ -19,7 +19,7 @@ partial class BangumiApis
         var builder = new QueryBuilder(url);
         builder.AppendQuery(idQueryName, id);
         builder.AppendPagination(pagination);
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(builder.Build(), jsonTypeInfo, cancellationToken);
+        return client.GetFromJsonOrThrowAsync(builder.Build(), jsonTypeInfo, cancellationToken);
     }
 
     /// <summary>
@@ -40,7 +40,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<PersonRevision> GetPersonRevisionAsync(this IBangumiClient client, uint revisionId, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.GetFromJsonOrThrowAsync(
             $"{ApiRoutes.RevisionsUrl}/persons/{revisionId}",
             Json.Default.PersonRevision, cancellationToken);
     }
@@ -63,7 +63,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<CharacterRevision> GetCharacterRevisionAsync(this IBangumiClient client, uint revisionId, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.GetFromJsonOrThrowAsync(
             $"{ApiRoutes.RevisionsUrl}/characters/{revisionId}",
             Json.Default.CharacterRevision, cancellationToken);
     }
@@ -86,7 +86,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<SubjectRevision> GetSubjectRevisionAsync(this IBangumiClient client, uint revisionId, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.GetFromJsonOrThrowAsync(
             $"{ApiRoutes.RevisionsUrl}/subjects/{revisionId}",
             Json.Default.SubjectRevision, cancellationToken);
     }
@@ -109,7 +109,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<EpisodeRevision> GetEpisodeRevisionAsync(this IBangumiClient client, uint revisionId, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.GetFromJsonOrThrowAsync(
             $"{ApiRoutes.RevisionsUrl}/episodes/{revisionId}",
             Json.Default.EpisodeRevision, cancellationToken);
     }

@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Net;
-using System.Runtime.CompilerServices;
 using Trarizon.Bangumi.Api.Exceptions;
 
 namespace Trarizon.Bangumi.Api.Responses;

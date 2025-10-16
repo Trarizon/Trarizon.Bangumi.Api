@@ -21,7 +21,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<BangumiIndex> CreateIndexAsync(this IBangumiClient client, AddIndexRequestBody requestBody, CancellationToken cancellationToken = default)
     {
-        return client.PostAsJsonAndFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.PostFromJsonOrThrowAsync(
             ApiRoutes.IndicesUrl,
             requestBody, Json.Default.AddIndexRequestBody,
             Json.Default.BangumiIndex, cancellationToken);
@@ -36,7 +36,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<BangumiIndex> GetIndexAsync(this IBangumiClient client, uint indexId, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.GetFromJsonOrThrowAsync(
             $"{ApiRoutes.IndicesUrl}/{indexId}", Json.Default.BangumiIndex, cancellationToken);
     }
 
@@ -50,7 +50,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task UpdateIndexInfoAsync(this IBangumiClient client, uint indexId, UpdateIndexInfoRequestBody requestBody, CancellationToken cancellationToken = default)
     {
-        return client.PutAsJsonEnsureSuccessStatusCodeOrThrowAsync(
+        return client.PutOrThrowAsync(
             $"{ApiRoutes.IndicesUrl}/{indexId}",
             requestBody, Json.Default.UpdateIndexInfoRequestBody,
             cancellationToken);
@@ -65,7 +65,7 @@ partial class BangumiApis
         builder.TryAppendQuery("type", subjectType?.ToQueryValue());
         builder.AppendPagination(pagination);
 
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(builder.Build(),
+        return client.GetFromJsonOrThrowAsync(builder.Build(),
             Json.Default.PagedDataIndexSubject, cancellationToken);
     }
 
@@ -79,7 +79,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<IndexSubject> AddSubjectToIndexAsync(this IBangumiClient client, uint indexId, AddIndexSubjectRequestBody requestBody, CancellationToken cancellationToken = default)
     {
-        return client.PostAsJsonAndFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.PostFromJsonOrThrowAsync(
             $"{ApiRoutes.IndicesUrl}/{indexId}/subjects",
             requestBody, Json.Default.AddIndexSubjectRequestBody,
             Json.Default.IndexSubject, cancellationToken);
@@ -96,7 +96,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<IndexSubject> UpdateIndexSubjectAsync(this IBangumiClient client, uint indexId, uint subjectId, UpdateIndexSubjectRequestBody requestBody, CancellationToken cancellationToken = default)
     {
-        return client.PutAsJsonAndFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.PutFromJsonOrThrowAsync(
             $"{ApiRoutes.IndicesUrl}/{indexId}/subjects/{subjectId}",
             requestBody, Json.Default.UpdateIndexSubjectRequestBody,
             Json.Default.IndexSubject, cancellationToken);
@@ -112,7 +112,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task RemoveSubjectFromIndexAsync(this IBangumiClient client, uint indexId, uint subjectId, CancellationToken cancellationToken = default)
     {
-        return client.DeleteEnsureSuccessStatusCodeOrThrowAsync(
+        return client.DeleteOrThrowAsync(
             $"{ApiRoutes.IndicesUrl}/{indexId}/subjects/{subjectId}",
             cancellationToken);
     }
@@ -126,7 +126,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task CollectIndexAsync(this IBangumiClient client, uint indexId, CancellationToken cancellationToken = default)
     {
-        return client.PostEnsureSuccessStatusCodeOrThrowAsync(
+        return client.PostOrThrowAsync(
             $"{ApiRoutes.IndicesUrl}/{indexId}/collect",
             cancellationToken);
     }
@@ -140,7 +140,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task UncollectIndexAsync(this IBangumiClient client, uint indexId, CancellationToken cancellationToken = default)
     {
-        return client.DeleteEnsureSuccessStatusCodeOrThrowAsync(
+        return client.DeleteOrThrowAsync(
             $"{ApiRoutes.IndicesUrl}/{indexId}/collect",
             cancellationToken);
     }

@@ -23,7 +23,7 @@ partial class BangumiApis
         var builder = new QueryBuilder(ApiRoutes.SearchCharactersUrl);
         builder.AppendPagination(pagination);
 
-        return client.PostAsJsonAndFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.PostFromJsonOrThrowAsync(
             builder.Build(),
             requestBody!, Json.Default.SearchCharactersRequestBody,
             Json.Default.PagedDataCharacter, cancellationToken);
@@ -38,7 +38,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<Character> GetCharacterAsync(this IBangumiClient client, uint characterId, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.GetFromJsonOrThrowAsync(
             $"{ApiRoutes.CharactersUrl}/{characterId}",
             Json.Default.Character, cancellationToken);
     }
@@ -53,7 +53,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<Uri> GetCharacterImageUrlAsync(this IBangumiClient client, uint characterId, PersonImageSize imageSize, CancellationToken cancellationToken = default)
     {
-        return client.GetHeadersLocationWhenStatusFoundOrThrowAsync(
+        return client.GetHeadersLocationOrThrowAsync(
             $"{ApiRoutes.CharactersUrl}/{characterId}/image?type={imageSize.ToQueryString()}",
             cancellationToken);
     }
@@ -67,7 +67,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<ImmutableArray<CharacterRelatedSubject>> GetCharacterRelatedSubjectAsync(this IBangumiClient client, uint characterId, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.GetFromJsonOrThrowAsync(
             $"{ApiRoutes.CharactersUrl}/{characterId}/subjects",
             Json.Default.ImmutableArrayCharacterRelatedSubject, cancellationToken);
     }
@@ -81,7 +81,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<ImmutableArray<CharacterRelatedPerson>> GetCharacterRelatedPersonAsync(this IBangumiClient client, uint characterId, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.GetFromJsonOrThrowAsync(
             $"{ApiRoutes.CharactersUrl}/{characterId}/persons",
             Json.Default.ImmutableArrayCharacterRelatedPerson, cancellationToken);
     }
@@ -95,7 +95,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task CollectCharacterAsync(this IBangumiClient client, uint characterId, CancellationToken cancellationToken = default)
     {
-        return client.PostEnsureSuccessStatusCodeOrThrowAsync(
+        return client.PostOrThrowAsync(
             $"{ApiRoutes.CharactersUrl}/{characterId}/collect", cancellationToken);
     }
 
@@ -110,7 +110,7 @@ partial class BangumiApis
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static Task UncollectCharacterAsync(this IBangumiClient client, uint characterId, CancellationToken cancellationToken = default)
     {
-        return client.DeleteEnsureSuccessStatusCodeOrThrowAsync(
+        return client.DeleteOrThrowAsync(
             $"{ApiRoutes.CharactersUrl}/{characterId}/collect", cancellationToken);
     }
 }

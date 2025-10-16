@@ -26,7 +26,7 @@ partial class BangumiApis
         builder.TryAppendQuery("type", episodeType?.ToQueryValue());
         builder.AppendPagination(pagination);
 
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.GetFromJsonOrThrowAsync(
             builder.Build(),
             Json.Default.PagedDataEpisode,
             cancellationToken);
@@ -41,7 +41,7 @@ partial class BangumiApis
     /// <returns></returns>
     public static Task<Episode> GetEpisodeAsync(this IBangumiClient client, uint episodeId, CancellationToken cancellationToken = default)
     {
-        return client.GetFromJsonWhenSuccessStatusCodeOrThrowAsync(
+        return client.GetFromJsonOrThrowAsync(
             $"{ApiRoutes.EpisodesUrl}/{episodeId}",
             Json.Default.Episode, cancellationToken);
     }
