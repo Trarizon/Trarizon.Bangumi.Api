@@ -24,7 +24,7 @@ internal static class PaginationExtensions
     /// <param name="pagination"></param>
     /// <param name="limitQueryName"></param>
     /// <param name="offsetQueryName"></param>
-    internal static void AppendPagination(this QueryBuilder builder, Pagination pagination, string limitQueryName = "limit", string offsetQueryName = "offset")
+    internal static void AppendPagination(this ref QueryBuilder builder, Pagination pagination, string limitQueryName = "limit", string offsetQueryName = "offset")
     {
         if (pagination.Limit is { } limit)
             builder.AppendQuery(limitQueryName, limit);

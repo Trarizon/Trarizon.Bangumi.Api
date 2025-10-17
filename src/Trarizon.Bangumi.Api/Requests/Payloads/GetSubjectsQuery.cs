@@ -50,7 +50,7 @@ public sealed class GetSubjectsQuery
 
 internal static class GetSubjectsQueryExtensions
 {
-    internal static void Append(this QueryBuilder builder, GetSubjectsQuery query)
+    internal static void Append(this ref QueryBuilder builder, GetSubjectsQuery query)
     {
         builder.AppendQuery("type", query.Category.SubjectType.ToQueryValue());
         builder.TryAppendQuery("cat", query.Category.ToQueryValue());
