@@ -43,6 +43,13 @@ public sealed class SearchSubjectsFilter
     public List<ComparisonFilter<int>> Rating { get => field ??= []; set; }
 
     /// <summary>
+    /// 评分人数
+    /// </summary>
+    [JsonInclude, JsonPropertyName("rating_count"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonConverter(typeof(ListJsonConverter<ComparisonFilter<int>, ComparisonFilterUtf8JsonConverter<int>>))]
+    public List<ComparisonFilter<int>> RatingCount { get => field ??= []; set; }
+
+    /// <summary>
     /// 排名
     /// </summary>
     [JsonInclude, JsonPropertyName("rank"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

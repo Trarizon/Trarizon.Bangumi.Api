@@ -24,6 +24,12 @@ public sealed class PersonRelatedSubject : ISubject, ISubjectImageUrlProvider
     [JsonInclude, JsonPropertyName("staff")]
     public string Staff { get; internal set; }
 
+    /// <summary>
+    /// 参与的章节/曲目
+    /// </summary>
+    [JsonInclude, JsonPropertyName("eps")]
+    public string Episodes { get; internal set; }
+
     /// <inheritdoc />
     [JsonInclude, JsonPropertyName("name")]
     public string Name { get; internal set; }
