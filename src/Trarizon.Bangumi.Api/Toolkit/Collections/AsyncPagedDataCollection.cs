@@ -93,7 +93,10 @@ public sealed partial class AsyncPagedDataCollection<T> : IAsyncEnumerable<T>
             }
 
             // No more data, we can sure the next fetch result is empty.
-            if (items.Length < _limit)
+            if (offset >= page.Total)
+                yield break;
+
+            if (items.Length < page.Limit)
                 yield break;
         }
     }

@@ -18,13 +18,12 @@ var AccessToken = File.ReadAllText("access_token.priv");
 
 var client = new BangumiHttpClient(UserAgent, AccessToken);
 
-var subjects = client.SearchSubjects(new SearchSubjectsRequestBody { Keyword = "命运石" }, 5);
+//var subjects = client.SearchSubjects(new SearchSubjectsRequestBody { Keyword = "异国日记" }, 5);
 
-int i = 0;
-await foreach (var item in subjects) {
-    if (i++ >= 11)
-        break;
-    Console.WriteLine(item.Name);
+var eps= client.GetUserSubjectEpisodeCollections(493016);
+
+await foreach (var item in eps) {
+    Console.WriteLine(item.Episode.Name);
 }
 
 //try {

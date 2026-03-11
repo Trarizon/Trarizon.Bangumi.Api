@@ -71,6 +71,7 @@ public sealed class Episode : IEpisodeIdentity
     /// 放送日期
     /// </summary>
     [JsonInclude, JsonPropertyName("airdate")]
+    [JsonConverter(typeof(NullableDataOnlyJsonConverter))]
     public DateOnly? AirDate { get; internal set; }
 
     // api: scheme没有，实际存在

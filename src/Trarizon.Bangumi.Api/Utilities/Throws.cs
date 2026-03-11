@@ -72,4 +72,13 @@ internal static class Throws
         if (actual != expected)
             ThrowUnexpectedJsonToken(actual, expected);
     }
+
+    public static void ThrowIfUnexpectedJsonToken(JsonTokenType actual, params ReadOnlySpan<JsonTokenType> expecteds)
+    {
+        foreach (var item in expecteds) {
+            if (actual == item)
+                return;
+        }
+        ThrowUnexpectedJsonToken(actual, expecteds);
+    }
 }
