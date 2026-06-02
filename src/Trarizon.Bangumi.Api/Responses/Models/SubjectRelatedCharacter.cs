@@ -23,6 +23,12 @@ public sealed class SubjectRelatedCharacter : ICharacter, ICharacterImagesProvid
     [JsonInclude, JsonPropertyName("name")]
     public string Name { get; internal set; }
 
+    /// <summary>
+    /// 角色简介
+    /// </summary>
+    [JsonInclude, JsonPropertyName("summary")]
+    public string Summary { get; internal set; }
+
     /// <inheritdoc />
     [JsonInclude, JsonPropertyName("type")]
     public CharacterType Type { get; internal set; }
@@ -36,7 +42,7 @@ public sealed class SubjectRelatedCharacter : ICharacter, ICharacterImagesProvid
     /// 角色在条目中的身份
     /// </summary>
     /// <remarks>
-    /// 文档返回string但是源码中只有4个值[主角, 配角, 客串, ""]，此处暂且保留string
+    /// 文档返回string，源码中有确定值，值可能增加，此处保留string
     /// <br/>
     /// src: <see href="https://github.com/bangumi/server/blob/master/web/res/character.go#L49">
     /// map1
